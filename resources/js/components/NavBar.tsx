@@ -1,10 +1,13 @@
 import { useState } from "react";
 import Logo from "@images/5th_avenue_logo.png";
 import NavLink from "@/components/NavLink";
+import { usePage } from "@inertiajs/react";
 
 function NavBar() {
     const [showMenu, setShowMenu] = useState<boolean>(false);
+    const { component } = usePage();
 
+    console.log(component);
     return (
         <nav className="relative flex justify-between items-center text-white py-5 mx-5 gap-5">
             <h1 className="text-md sm:text-xl md:text-2xl font-semibold hover:text-orange">
@@ -20,16 +23,16 @@ function NavBar() {
                 />
             </a>
             <ul className="flex items-center text-lg gap-3 me-4">
-                <NavLink path="#" isActive={true}>
+                <NavLink path="/" isActive={"Welcome" === component}>
                     Home
                 </NavLink>
                 <NavLink path="#" isActive={false}>
                     Menu
                 </NavLink>
-                <NavLink path="#" isActive={false}>
+                <NavLink path="/register" isActive={"Register" === component}>
                     Register
                 </NavLink>
-                <NavLink path="#" isActive={false}>
+                <NavLink path="/login" isActive={"Login" === component}>
                     Login
                 </NavLink>
                 <button className="border-2 text-white px-4 py-2 hover:bg-orange">
