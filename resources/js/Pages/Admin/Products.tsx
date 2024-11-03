@@ -10,18 +10,24 @@ import TableBody from "@/components/TableBody";
 import TableBodyRow from "@/components/TableBodyRow";
 import TableBodyRowData from "@/components/TableBodyRowData";
 import Modal from "@/components/Modal";
+import ProductModal from "@/components/ProductModal";
+import CategoryModal from "@/components/CategoryModal";
+import SupplierModal from "@/components/SupplierModal";
 
 function Products() {
     const [check, setCheck] = useState<boolean>(false);
-    const [showModal, setShowModal] = useState<boolean>(false);
-    const [byQuantity, setByQuantity] = useState<boolean>(true);
     function handleToggle(value: boolean): void {
         setCheck(!value);
     }
+
     return (
         <AdminLayout>
             <Head title="Products" />
             <h1 className="text-white text-2xl font-semibold">Products</h1>
+            <div className="w-full flex justify-end gap-2">
+                <SupplierModal />
+                <CategoryModal />
+            </div>
             <Table>
                 <TableHead>
                     <TableHeadData>Image</TableHeadData>
@@ -89,77 +95,8 @@ function Products() {
                 </TableBody>
             </Table>
             <div className="w-full text-right mt-5 pe-1">
-                <button
-                    onClick={() => setShowModal(!showModal)}
-                    className="text-white px-4 py-2 text-md border-2 border-white hover:bg-orange"
-                >
-                    Create
-                </button>
+                <ProductModal />
             </div>
-            <Modal
-                title="Create Product"
-                show={showModal}
-                setShow={setShowModal}
-            >
-                <form className="space-y-3">
-                    <div className="space-y-2">
-                        <label className="text-md text-white">Name</label>
-                        <input
-                            type="text"
-                            className="px-4 py-2 w-full rounded"
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <label className="text-md text-white">Category</label>
-                        <input
-                            type="text"
-                            className="px-4 py-2 w-full rounded"
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <label className="text-md text-white">Price</label>
-                        <input
-                            type="text"
-                            className="px-4 py-2 w-full rounded"
-                        />
-                    </div>
-                    <div>
-                        <Toggle
-                            active={byQuantity}
-                            click={() => setByQuantity(!byQuantity)}
-                            text="By Quantity?"
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <label className="text-md text-white">Quantiy</label>
-                        <input
-                            type="text"
-                            className={`px-4 py-2 w-full rounded ${
-                                !byQuantity ? "bg-gray opacity-95" : "bg-white"
-                            }`}
-                            disabled={!byQuantity}
-                        />
-                    </div>
-                    <div className="space-y-2">
-                        <label className="text-md text-white">Image</label>
-                        <input
-                            type="file"
-                            className="w-full rounded bg-white file:px-4 file:py-2 file:mr-2 file:bg-black file:text-white file:border-2 file:border-white hover:file:bg-orange"
-                        />
-                    </div>
-                    <div>
-                        <img
-                            src={LOGO}
-                            className="object-contain h-[75px] w-[75px] rounded-full"
-                        />
-                    </div>
-                    <div className="pt-3">
-                        <button className="px-4 py-2 w-full border-2 border-white text-white text-md hover:bg-orange">
-                            Save
-                        </button>
-                    </div>
-                </form>
-            </Modal>
         </AdminLayout>
     );
 }

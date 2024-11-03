@@ -1,35 +1,43 @@
-import React, { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 
 function Modal({
     children,
-    show,
     title,
-    setShow,
+    showModal,
+    setShowModal,
+    center = false,
 }: {
     children: ReactNode;
-    show: boolean;
     title: string;
-    setShow: Function;
+    showModal: boolean;
+    setShowModal: Function;
+    center: boolean;
 }) {
     return (
         <div
+            onClick={() => setShowModal(false)}
             className={`absolute ${
-                show ? "block" : "hidden"
-            } h-full w-full bg-white bg-opacity-80 top-0 z-50 left-0 flex flex-row items-center justify-center bg-blur p-5`}
+                showModal ? "translate-y-0" : "-translate-y-full"
+            } text-start transition duration-300 ${
+                center ? "flex items-center justify-center h-full " : ""
+            }   w-full bg-white bg-blur top-0 z-50 left-0  p-5 overscroll-y-auto `}
         >
-            <div className="w-full max-w-lg mx-auto bg-black p-4 mt-4 rounded-lg">
+            <div
+                className="w-full max-w-lg mx-auto bg-black p-4 mt-4 rounded-lg"
+                onClick={(e) => e.stopPropagation()}
+            >
                 <div className="w-full flex justify-between mb-5">
                     <div>
-                        <h2 className="text-white text-2xl">Create Product</h2>
+                        <h2 className="text-white text-2xl">{title}</h2>
                     </div>
                     <button
-                        onClick={() => setShow(!show)}
+                        onClick={() => setShowModal(false)}
                         className="text-white text-lg hover:text-orange"
                     >
                         <i className="fa-solid fa-x"></i>
                     </button>
                 </div>
-                {children}
+                <div>{children}</div>
             </div>
         </div>
     );

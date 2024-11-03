@@ -19,7 +19,11 @@ function Toggle({
                     text ? "" : "mx-auto"
                 } focus:outline-2 hover:outline-2 hover:outline-orange`}
             >
-                <input type="check" checked={active} className="sr-only peer" />
+                <input
+                    type="check"
+                    defaultChecked={active}
+                    className="sr-only peer"
+                />
                 <span
                     className={`absolute w-[18px] h-[18px] rounded-full top-1 ${
                         active ? "left-8 bg-white" : "left-1 bg-orange"
