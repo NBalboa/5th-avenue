@@ -60,6 +60,12 @@ function Sidebar() {
                         >
                             Suppliers
                         </SidebarLink>
+                        <SidebarLink
+                            active={"Admin/Categories" === component}
+                            to="/categories"
+                        >
+                            Category
+                        </SidebarLink>
                     </ul>
                     <button className="w-full text-xl text-white px-4 py-2 border-2 border-white rounded hover:bg-orange">
                         Logout

@@ -23,14 +23,27 @@ export type Supplier = {
     phone: string | null;
     telephone: string | null;
     address: Address;
+    created_at: string;
+    updated_at: string;
 };
 
 export type Address = {
     id: number;
+    user_id: number;
+    supplier_id: number;
     street: string;
     barangay: string;
     city: string;
     province: string;
+    created_at: string;
+    updated_at: string;
+};
+
+export type Category = {
+    id: number;
+    name: string;
+    created_at: string;
+    updated_at: string;
 };
 
 export type Link = {

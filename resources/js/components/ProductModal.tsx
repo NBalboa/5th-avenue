@@ -2,8 +2,15 @@ import { useState } from "react";
 import Modal from "./Modal";
 import Toggle from "./Toggle";
 import { useForm } from "@inertiajs/react";
+import { Category, Supplier } from "@/Types/types";
 
-function ProductModal() {
+function ProductModal({
+    categories,
+    suppliers,
+}: {
+    categories: Category[];
+    suppliers: Supplier[];
+}) {
     const { data, setData, post, errors, processing, reset } = useForm({
         name: "",
         category: "",
@@ -59,6 +66,11 @@ function ProductModal() {
                             className="px-4 py-3 w-full rounded"
                         >
                             <option>Select Category</option>
+                            {categories.map((category) => (
+                                <option key={category.id} value={category.id}>
+                                    {category.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div className="space-y-2">
@@ -109,7 +121,12 @@ function ProductModal() {
                             }`}
                             disabled={!data.by_quantity}
                         >
-                            <option>Choose Supplier</option>
+                            <option value="">Choose Supplier</option>
+                            {suppliers.map((supplier) => (
+                                <option key={supplier.id} value={supplier.id}>
+                                    {supplier.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div className="space-y-2">

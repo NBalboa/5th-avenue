@@ -8,7 +8,7 @@ import TableHead from "@/components/TableHead";
 import TableHeadData from "@/components/TableHeadData";
 import AdminLayout from "@/Layouts/AdminLayout";
 import { PaginatedData, Supplier } from "@/Types/types";
-import { Head, Link, router, useForm } from "@inertiajs/react";
+import { Head, Link, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
 function Suppliers({
@@ -133,7 +133,7 @@ function Suppliers({
                 <SupplierModal />
             </div>
             <div>
-                {suppliers.data ? (
+                {supplier ? (
                     <SupplierTargetModal
                         supplier={supplier}
                         setShow={setEditModal}

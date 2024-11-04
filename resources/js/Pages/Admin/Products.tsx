@@ -13,8 +13,17 @@ import Modal from "@/components/Modal";
 import ProductModal from "@/components/ProductModal";
 import CategoryModal from "@/components/CategoryModal";
 import SupplierModal from "@/components/SupplierModal";
+import { Category, Supplier } from "@/Types/types";
 
-function Products() {
+function Products({
+    categories,
+    suppliers,
+}: {
+    categories: Category[];
+    suppliers: Supplier[];
+}) {
+    console.log(categories, suppliers);
+
     const [check, setCheck] = useState<boolean>(false);
     function handleToggle(value: boolean): void {
         setCheck(!value);
@@ -95,7 +104,7 @@ function Products() {
                 </TableBody>
             </Table>
             <div className="w-full text-right mt-5 pe-1">
-                <ProductModal />
+                <ProductModal suppliers={suppliers} categories={categories} />
             </div>
         </AdminLayout>
     );

@@ -4,7 +4,6 @@ import Modal from "./Modal";
 import useAddress from "@/Hooks/useAddress";
 import Error from "./Error";
 import Spinner from "./Spinner";
-import { Address } from "@/Types/types";
 import { router, usePage } from "@inertiajs/react";
 import toast, { Toast, Toaster } from "react-hot-toast";
 
@@ -70,6 +69,7 @@ function SupplierTargetModal({
 
     function deleteSupplier(t: Toast) {
         router.delete(`/suppliers/${supplier.id}`, {
+            replace: true,
             onSuccess: () => {
                 toast.dismiss(t.id);
                 setShow(false);
