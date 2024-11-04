@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import useAddress from "@/Hooks/useAddress";
 import { useForm } from "@inertiajs/react";
@@ -67,6 +67,10 @@ function SupplierModal() {
         });
     }
 
+    useEffect(() => {
+        return () => toast.remove();
+    }, []);
+
     return (
         <div>
             <button
@@ -75,7 +79,6 @@ function SupplierModal() {
             >
                 Create Supplier
             </button>
-            <Toaster />
             <Modal
                 title="Create Supplier"
                 center={true}

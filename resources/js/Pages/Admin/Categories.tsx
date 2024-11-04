@@ -10,6 +10,7 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import { PaginatedData, Category } from "@/Types/types";
 import { Head, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 function Categories({
     categories,
@@ -23,18 +24,6 @@ function Categories({
     });
     const [edit, setEdit] = useState<boolean>(false);
     const [category, setCategory] = useState<Category>(categories.data[0]);
-
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            get("/categories", {
-                preserveScroll: true,
-                preserveState: true,
-                replace: true,
-            });
-        }, 300);
-
-        return () => clearInterval(timeout);
-    }, [data]);
 
     function handleSearch(e: React.FormEvent<HTMLElement>) {
         e.preventDefault();
@@ -50,9 +39,14 @@ function Categories({
         setEdit(true);
     }
 
+    useEffect(() => {
+        return () => toast.remove();
+    }, []);
+
     return (
         <AdminLayout>
-            <Head title="Admin" />
+            <Toaster />
+            <Head title="Category" />
             <h1 className="text-white text-2xl">Suppliers</h1>
             <div>
                 <div>

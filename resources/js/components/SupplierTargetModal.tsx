@@ -70,6 +70,7 @@ function SupplierTargetModal({
     function deleteSupplier(t: Toast) {
         router.delete(`/suppliers/${supplier.id}`, {
             replace: true,
+            preserveState: true,
             onSuccess: () => {
                 toast.dismiss(t.id);
                 setShow(false);
@@ -154,8 +155,6 @@ function SupplierTargetModal({
 
     return (
         <div>
-            <Toaster />
-
             <Modal
                 title="Edit Supplier"
                 showModal={show}

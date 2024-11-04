@@ -23,7 +23,7 @@ function Modal({
             }   w-full top-0 z-50 left-0  p-5 bg-white`}
         >
             <div
-                className="w-full max-w-lg mx-auto bg-black p-4 mt-4 rounded-lg max-h-[80vh] overflow-y-auto"
+                className="w-full max-w-lg mx-auto bg-black p-4 mt-4 rounded-lg max-h-[80vh] overflow-y-auto  shadow-lg"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="w-full flex justify-between mb-5">

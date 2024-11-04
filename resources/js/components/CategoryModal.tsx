@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import { useForm } from "@inertiajs/react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Spinner from "./Spinner";
 import Error from "./Error";
 
@@ -27,9 +27,12 @@ function CategoryModal() {
         });
     }
 
+    useEffect(() => {
+        return () => toast.remove();
+    }, []);
+
     return (
         <div>
-            <Toaster />
             <button
                 onClick={() => setShow(true)}
                 className="px-4 py-2 text-white border-2 border-white hover:bg-orange"

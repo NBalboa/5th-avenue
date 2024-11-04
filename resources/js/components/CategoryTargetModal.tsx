@@ -21,7 +21,7 @@ function CategoryTargetModal({
 
     function deleteCategory(t: Toast) {
         router.delete(`/categories/${category.id}`, {
-            preserveState: false,
+            preserveState: true,
             replace: true,
             onSuccess: () => {
                 toast.dismiss(t.id);
@@ -29,6 +29,7 @@ function CategoryTargetModal({
                 toast.success("Supplier deleted successfully", {
                     position: "top-right",
                 });
+                toast.remove();
             },
         });
     }
@@ -76,12 +77,14 @@ function CategoryTargetModal({
                         position: "top-right",
                     });
                     setLoading(false);
+                    toast.remove();
                 },
                 onError: () => {
                     toast.error("Somethin went wrong", {
                         position: "top-right",
                     });
                     setLoading(false);
+                    toast.remove();
                 },
             }
         );
@@ -93,7 +96,6 @@ function CategoryTargetModal({
 
     return (
         <div>
-            <Toaster />
             <Modal
                 title="Edit Category"
                 center={true}

@@ -10,6 +10,7 @@ import AdminLayout from "@/Layouts/AdminLayout";
 import { PaginatedData, Supplier } from "@/Types/types";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 function Suppliers({
     suppliers,
@@ -25,18 +26,6 @@ function Suppliers({
     const [editModal, setEditModal] = useState<boolean>(false);
     const [supplier, setSupplier] = useState<Supplier>(suppliers.data[0]);
 
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            get("/suppliers", {
-                preserveScroll: true,
-                preserveState: true,
-                replace: true,
-            });
-        }, 300);
-
-        return () => clearInterval(timeout);
-    }, [data]);
-
     function handleEdit(supplier: Supplier) {
         setSupplier(supplier);
         setEditModal(true);
@@ -51,9 +40,14 @@ function Suppliers({
         });
     }
 
+    useEffect(() => {
+        return () => toast.remove();
+    }, []);
+
     return (
         <AdminLayout>
             <Head title="Suppliers" />
+            <Toaster />
             <h1 className="text-white text-2xl">Suppliers</h1>
             <div>
                 <div>
