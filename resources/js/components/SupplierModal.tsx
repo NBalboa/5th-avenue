@@ -4,8 +4,9 @@ import useAddress from "@/Hooks/useAddress";
 import { useForm } from "@inertiajs/react";
 import Spinner from "./Spinner";
 import Error from "./Error";
+import toast, { Toaster } from "react-hot-toast";
 function SupplierModal() {
-    const [show, setShow] = useState<boolean>(true);
+    const [show, setShow] = useState<boolean>(false);
     const {
         provinces,
         cities,
@@ -59,7 +60,9 @@ function SupplierModal() {
             preserveState: true,
             onSuccess: () => {
                 reset();
-                handleProvince(" ");
+                toast.success("Supplier created successfully", {
+                    position: "top-right",
+                });
             },
         });
     }
@@ -72,9 +75,10 @@ function SupplierModal() {
             >
                 Create Supplier
             </button>
+            <Toaster />
             <Modal
                 title="Create Supplier"
-                center={false}
+                center={true}
                 showModal={show}
                 setShowModal={setShow}
             >

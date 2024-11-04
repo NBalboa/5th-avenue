@@ -21,6 +21,7 @@
     "dependencies": {
         "@aivangogh/ph-address": "^1.4.2",
         "@inertiajs/react": "^1.2.0",
-        "react-dom": "^18.3.1"
+        "react-dom": "^18.3.1",
+        "react-hot-toast": "^2.4.1"
     }
 }

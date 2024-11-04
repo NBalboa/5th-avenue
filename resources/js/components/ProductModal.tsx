@@ -34,7 +34,7 @@ function ProductModal() {
                 Create Product
             </button>
             <Modal
-                center={false}
+                center={true}
                 title="Create Product"
                 showModal={show}
                 setShowModal={setShow}

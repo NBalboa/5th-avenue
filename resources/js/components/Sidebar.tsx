@@ -17,16 +17,16 @@ function Sidebar() {
                     className="text-white text-xl md:text-2xl hover:text-orange md:hidden"
                 >
                     {showSidebar ? (
-                        <i className="fa-solid fa-bars"></i>
-                    ) : (
                         <i className="fa-solid fa-xmark"></i>
+                    ) : (
+                        <i className="fa-solid fa-bars"></i>
                     )}
                 </button>
             </nav>
             <aside
                 className={`fixed ${
-                    showSidebar ? "-translate-x-full" : "translate-x-0"
-                } transition ease-in  md:translate-x-0 top-0 z-30 w-64 h-screen border-r-2 border-orange mt-12 py-14 px-4 bg-black `}
+                    showSidebar ? "translate-x-0" : "-translate-x-full"
+                } transition ease-in   md:translate-x-0 top-0 z-30 w-64 h-screen border-r-2 border-orange mt-12 py-14 px-4 bg-black `}
             >
                 <div className="flex flex-col justify-between h-full">
                     <div className="grid grid-cols-3 items-center gap-4 border-b-2 border-white pb-4">
@@ -53,6 +53,12 @@ function Sidebar() {
                             to="/products"
                         >
                             Products
+                        </SidebarLink>
+                        <SidebarLink
+                            active={"Admin/Suppliers" === component}
+                            to="/suppliers"
+                        >
+                            Suppliers
                         </SidebarLink>
                     </ul>
                     <button className="w-full text-xl text-white px-4 py-2 border-2 border-white rounded hover:bg-orange">

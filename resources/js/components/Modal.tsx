@@ -16,14 +16,14 @@ function Modal({
     return (
         <div
             onClick={() => setShowModal(false)}
-            className={`absolute ${
+            className={`fixed ${
                 showModal ? "translate-y-0" : "-translate-y-full"
             } text-start transition duration-300 ${
-                center ? "flex items-center justify-center h-full " : ""
-            }   w-full bg-white bg-blur top-0 z-50 left-0  p-5 overscroll-y-auto `}
+                center ? "flex items-center justify-center h-full" : ""
+            }   w-full top-0 z-50 left-0  p-5 bg-white`}
         >
             <div
-                className="w-full max-w-lg mx-auto bg-black p-4 mt-4 rounded-lg"
+                className="w-full max-w-lg mx-auto bg-black p-4 mt-4 rounded-lg max-h-[80vh] overflow-y-auto"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="w-full flex justify-between mb-5">
