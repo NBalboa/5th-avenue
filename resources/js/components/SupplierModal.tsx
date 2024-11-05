@@ -67,10 +67,6 @@ function SupplierModal() {
         });
     }
 
-    useEffect(() => {
-        return () => toast.remove();
-    }, []);
-
     return (
         <div>
             <button

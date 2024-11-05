@@ -5,7 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 function AdminLayout({ children }: { children: ReactNode }) {
     useEffect(() => {
         return () => toast.remove();
-    });
+    }, []);
     return (
         <div>
             <Toaster />

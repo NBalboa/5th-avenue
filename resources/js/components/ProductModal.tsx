@@ -3,6 +3,9 @@ import Modal from "./Modal";
 import Toggle from "./Toggle";
 import { useForm } from "@inertiajs/react";
 import { Category, Supplier } from "@/Types/types";
+import Spinner from "./Spinner";
+import toast from "react-hot-toast";
+import Error from "./Error";
 
 function ProductModal({
     categories,
@@ -20,7 +23,6 @@ function ProductModal({
         supplier: "",
         image: null as File | null | string,
     });
-
     const [show, setShow] = useState<boolean>(false);
     const [preview, setPreview] = useState<string | null>(null);
 
@@ -29,7 +31,23 @@ function ProductModal({
         if (!data.by_quantity) {
             reset("quantity", "supplier");
         }
-        console.log(data);
+
+        post("/products", {
+            preserveState: true,
+            onSuccess: () => {
+                toast.success("Product created successfully", {
+                    position: "top-right",
+                });
+                setPreview(null);
+                reset();
+            },
+            onError: () => {
+                console.log(errors);
+                toast.error("Something went wrong", {
+                    position: "top-right",
+                });
+            },
+        });
     }
 
     return (
@@ -55,6 +73,7 @@ function ProductModal({
                             onChange={(e) => setData("name", e.target.value)}
                             className="px-4 py-2 w-full rounded"
                         />
+                        {errors.name ? <Error>{errors.name}</Error> : null}
                     </div>
                     <div className="space-y-2">
                         <label className="text-md text-white">Category</label>
@@ -72,6 +91,9 @@ function ProductModal({
                                 </option>
                             ))}
                         </select>
+                        {errors.category ? (
+                            <Error>{errors.category}</Error>
+                        ) : null}
                     </div>
                     <div className="space-y-2">
                         <label className="text-md text-white">Price</label>
@@ -81,6 +103,7 @@ function ProductModal({
                             onChange={(e) => setData("price", e.target.value)}
                             className="px-4 py-2 w-full rounded"
                         />
+                        {errors.price ? <Error>{errors.price}</Error> : null}
                     </div>
                     <div>
                         <Toggle
@@ -106,6 +129,9 @@ function ProductModal({
                             }`}
                             disabled={!data.by_quantity}
                         />
+                        {errors.quantity ? (
+                            <Error>{errors.quantity}</Error>
+                        ) : null}
                     </div>
                     <div className="space-y-2">
                         <label className="text-md text-white">Supplier</label>
@@ -128,6 +154,9 @@ function ProductModal({
                                 </option>
                             ))}
                         </select>
+                        {errors.supplier ? (
+                            <Error>{errors.supplier}</Error>
+                        ) : null}
                     </div>
                     <div className="space-y-2">
                         <label className="text-md text-white">Image</label>
@@ -143,6 +172,7 @@ function ProductModal({
                             }}
                             className="w-full rounded bg-white file:px-4 file:py-2 file:mr-2 file:bg-black file:text-white file:border-2 file:border-white hover:file:bg-orange"
                         />
+                        {errors.image ? <Error>{errors.image}</Error> : null}
                     </div>
                     <div>
                         {preview ? (
@@ -153,9 +183,16 @@ function ProductModal({
                         ) : null}
                     </div>
                     <div className="pt-3">
-                        <button className="px-4 py-2 w-full border-2 border-white text-white text-md hover:bg-orange">
-                            Save
-                        </button>
+                        {processing ? (
+                            <Spinner />
+                        ) : (
+                            <button
+                                type="submit"
+                                className="px-4 py-2 w-full border-2 border-white text-white text-md hover:bg-orange"
+                            >
+                                Save
+                            </button>
+                        )}
                     </div>
                 </form>
             </Modal>

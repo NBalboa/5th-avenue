@@ -1,3 +1,4 @@
+import Spinner from "@/components/Spinner";
 import SupplierModal from "@/components/SupplierModal";
 import SupplierTargetModal from "@/components/SupplierTargetModal";
 import Table from "@/components/Table";
@@ -19,7 +20,7 @@ function Suppliers({
     suppliers: PaginatedData<Supplier>;
     search: string;
 }) {
-    const { data, setData, get } = useForm({
+    const { data, setData, get, processing } = useForm({
         search: search ?? "",
     });
 
@@ -40,14 +41,9 @@ function Suppliers({
         });
     }
 
-    useEffect(() => {
-        return () => toast.remove();
-    }, []);
-
     return (
         <AdminLayout>
             <Head title="Suppliers" />
-            <Toaster />
             <h1 className="text-white text-2xl">Suppliers</h1>
             <div>
                 <div>
@@ -59,13 +55,17 @@ function Suppliers({
                             type="text"
                             value={data.search}
                             onChange={(e) => setData("search", e.target.value)}
-                            className="w-full ps-4 py-2 text-black pe-14 rounded-full"
+                            className="w-full ps-4 py-1 text-black pe-14 rounded-full text-sm"
                         />
                         <button
                             type="submit"
-                            className="absolute top-0 right-0 bottom-0 text-2xl bg-orange px-3 hover:opacity-90 rounded-r-full"
+                            className="absolute top-0 right-0 bottom-0 text-md bg-orange px-3 hover:opacity-90 rounded-r-full"
                         >
-                            <i className="fa-solid fa-magnifying-glass"></i>
+                            {processing ? (
+                                <Spinner />
+                            ) : (
+                                <i className="fa-solid fa-magnifying-glass"></i>
+                            )}
                         </button>
                     </form>
                 </div>

@@ -52,6 +52,30 @@ export type Link = {
     active: boolean;
 };
 
+export enum IsDeleted {
+    YES = 1,
+    NO = 0,
+}
+
+export enum IsAvailable {
+    YES = 1,
+    NO = 0,
+}
+
+export type Product = {
+    id: number;
+    category_id: number;
+    name: string;
+    price: number;
+    quantity: number | null;
+    image: string;
+    is_deleted: IsDeleted;
+    is_available: IsAvailable;
+    category: Category;
+    created_at: string;
+    updated_at: string;
+};
+
 export type PaginatedData<T> = {
     data: T[];
     current_page: number;

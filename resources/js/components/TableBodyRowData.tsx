@@ -12,7 +12,9 @@ function TableBodyRowData({
     click?: Function;
 }) {
     return (
-        <td className={`px-4 py-[20px] ${isLink ? "hover:underline" : ""}`}>
+        <td
+            className={`px-[15px] py-[20px] ${isLink ? "hover:underline" : ""}`}
+        >
             {isLink ? (
                 <a href={to} onClick={() => click?.()}>
                     {children}

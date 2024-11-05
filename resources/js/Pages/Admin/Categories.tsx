@@ -1,5 +1,6 @@
 import CategoryModal from "@/components/CategoryModal";
 import CategoryTargetModal from "@/components/CategoryTargetModal";
+import Spinner from "@/components/Spinner";
 import Table from "@/components/Table";
 import TableBody from "@/components/TableBody";
 import TableBodyRow from "@/components/TableBodyRow";
@@ -19,7 +20,7 @@ function Categories({
     categories: PaginatedData<Category>;
     search: string;
 }) {
-    const { data, setData, get } = useForm({
+    const { data, setData, get, processing } = useForm({
         search: search ?? "",
     });
     const [edit, setEdit] = useState<boolean>(false);
@@ -58,13 +59,17 @@ function Categories({
                             type="text"
                             value={data.search}
                             onChange={(e) => setData("search", e.target.value)}
-                            className="w-full ps-4 py-2 text-black pe-14 rounded-full"
+                            className="w-full ps-4 py-1 text-black text-sm pe-14 rounded-full"
                         />
                         <button
                             type="submit"
-                            className="absolute top-0 right-0 bottom-0 text-2xl bg-orange px-3 hover:opacity-90 rounded-r-full"
+                            className="absolute top-0 right-0 bottom-0 text-sm bg-orange px-3 hover:opacity-90 rounded-r-full"
                         >
-                            <i className="fa-solid fa-magnifying-glass"></i>
+                            {processing ? (
+                                <Spinner />
+                            ) : (
+                                <i className="fa-solid fa-magnifying-glass"></i>
+                            )}
                         </button>
                     </form>
                 </div>
