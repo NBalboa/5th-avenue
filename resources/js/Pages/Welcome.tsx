@@ -1,4 +1,3 @@
-import NavBar from "@/components/NavBar";
 import ImageOne from "@images/1.jpg";
 import ImageTwo from "@images/2.jpg";
 import ImageThree from "@images/3.jpg";
@@ -8,15 +7,39 @@ import ImageSix from "@images/6.jpg";
 import ImageEight from "@images/8.jpg";
 import ImageNine from "@images/9.jpg";
 import ImageTen from "@images/10.jpg";
-import { useState } from "react";
+import React, { useState } from "react";
 import Title from "@/components/Title";
 import FoodCard from "@/components/FoodCard";
 import MAP from "@images/map.jpg";
 import UserLayout from "@/Layouts/UserLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
+import { Category, Product } from "@/Types/types";
+import toast from "react-hot-toast";
 
-function Welcome() {
+type WelcomeProductSearch = {
+    search: string;
+    category: string;
+};
+type WelcomeProps = {
+    products: Product[];
+    categories: Category[];
+    filters: WelcomeProductSearch;
+};
+function Welcome({ products, categories, filters }: WelcomeProps) {
     const [showImage, setShowImage] = useState<number>(1);
+    const [search, setSearch] = useState<string>(filters.search ?? "");
+
+    function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+        e.preventDefault();
+
+        const data = {
+            search: search,
+            category: filters.category ?? "",
+        };
+        router.get("/", data, {
+            preserveScroll: true,
+        });
+    }
 
     function handlePreviousImage(): void {
         if (showImage == 1) {
@@ -32,6 +55,10 @@ function Welcome() {
         } else {
             setShowImage(showImage + 1);
         }
+    }
+
+    function handleAddToCart() {
+        toast.error("Coming Soon");
     }
 
     return (
@@ -155,9 +182,14 @@ function Welcome() {
             <div className="m-5">
                 <Title>Menu</Title>
                 <div>
-                    <form className="text-white relative w-full md:w-[500px] mx-auto my-4 border-4 border-orange rounded-full">
+                    <form
+                        onSubmit={handleSubmit}
+                        className="text-white relative w-full md:w-[500px] mx-auto my-4 border-4 border-orange rounded-full"
+                    >
                         <input
                             type="text"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
                             className="w-full ps-4 py-3 text-black pe-14 rounded-full"
                         />
                         <button
@@ -170,30 +202,44 @@ function Welcome() {
                 </div>
                 <div>
                     <div className="w-full mx-auto text-white flex flex-col md:flex-row justify-center border-4 border-gray rounded sm:text-xl md:text-xl font-semibold">
-                        <button className="w-full px-4 py-2 bg-orange">
+                        <Link
+                            preserveScroll={true}
+                            href="/"
+                            className={`w-full px-4 py-2 ${
+                                filters.category
+                                    ? "hover:bg-orange"
+                                    : "bg-orange"
+                            }  text-center`}
+                        >
                             All
-                        </button>
-                        <button className="w-full px-4 py-2 hover:bg-orange">
-                            Foods
-                        </button>
-                        <button className="w-full px-4 py-2 hover:bg-orange">
-                            Drinks
-                        </button>
+                        </Link>
+                        {categories.map((category) => (
+                            <Link
+                                preserveScroll={true}
+                                href={`/?category=${category.id}`}
+                                key={category.id}
+                                className={`w-full px-4 py-2 ${
+                                    filters.category === category.id.toString()
+                                        ? "bg-orange"
+                                        : "hover:bg-orange"
+                                } text-center`}
+                            >
+                                {category.name}
+                            </Link>
+                        ))}
                     </div>
                 </div>
             </div>
             <div className="m-5">
                 <div className="grid sm:grid-cols-3 md:grid-cols-4 gap-4">
-                    <FoodCard />
-                    <FoodCard />
-                    <FoodCard />
-                    <FoodCard />
-                    <FoodCard />
-                    <FoodCard />
-                    <FoodCard />
-                    <FoodCard />
-                    <FoodCard />
-                    <FoodCard />
+                    {products.map((product) => (
+                        <FoodCard
+                            key={product.id}
+                            product={product}
+                            label="Add to Cart"
+                            onHandleClick={() => handleAddToCart()}
+                        />
+                    ))}
                 </div>
             </div>
             <div className="m-5">

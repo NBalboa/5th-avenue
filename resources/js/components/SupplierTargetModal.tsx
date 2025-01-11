@@ -158,7 +158,7 @@ function SupplierTargetModal({
             <Modal
                 title="Edit Supplier"
                 showModal={show}
-                setShowModal={setShow}
+                setShowModal={() => setShow(false)}
                 center={true}
             >
                 <form className="space-y-3" onSubmit={handleSubmit}>

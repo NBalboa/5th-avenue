@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Modal from "./Modal";
 import Toggle from "./Toggle";
 import { useForm } from "@inertiajs/react";
@@ -23,6 +23,8 @@ function ProductModal({
         supplier: "",
         image: null as File | null | string,
     });
+
+    const imageRef = useRef<HTMLInputElement | null>(null);
     const [show, setShow] = useState<boolean>(false);
     const [preview, setPreview] = useState<string | null>(null);
 
@@ -39,6 +41,9 @@ function ProductModal({
                     position: "top-right",
                 });
                 setPreview(null);
+                if (imageRef?.current && imageRef?.current.value) {
+                    imageRef.current.value = "";
+                }
                 reset();
             },
             onError: () => {
@@ -62,7 +67,7 @@ function ProductModal({
                 center={true}
                 title="Create Product"
                 showModal={show}
-                setShowModal={setShow}
+                setShowModal={() => setShow(false)}
             >
                 <form className="space-y-3" onSubmit={handleSubmit}>
                     <div className="space-y-2">
@@ -162,6 +167,7 @@ function ProductModal({
                         <label className="text-md text-white">Image</label>
                         <input
                             type="file"
+                            ref={imageRef}
                             accept="image/*"
                             onChange={(e) => {
                                 if (e.target.files && e.target.files[0]) {

@@ -1,13 +1,16 @@
 import { useState } from "react";
 import Logo from "@images/5th_avenue_logo.png";
 import NavLink from "@/components/NavLink";
-import { usePage } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 
 function NavBar() {
     const [showMenu, setShowMenu] = useState<boolean>(false);
     const { component } = usePage();
+    const { auth } = usePage().props;
 
-    console.log(component);
+    const handleLogout = () => {
+        router.post("/logout", {});
+    };
     return (
         <nav className="relative flex justify-between items-center text-white py-5 mx-5 gap-5">
             <h1 className="text-md sm:text-xl md:text-2xl font-semibold hover:text-orange">
@@ -29,12 +32,26 @@ function NavBar() {
                 <NavLink path="#" isActive={false}>
                     Menu
                 </NavLink>
-                <NavLink path="/register" isActive={"Register" === component}>
-                    Register
-                </NavLink>
-                <NavLink path="/login" isActive={"Login" === component}>
-                    Login
-                </NavLink>
+                {!auth ? (
+                    <>
+                        <NavLink
+                            path="/register"
+                            isActive={"Register" === component}
+                        >
+                            Register
+                        </NavLink>
+                        <NavLink path="/login" isActive={"Login" === component}>
+                            Login
+                        </NavLink>
+                    </>
+                ) : (
+                    <button
+                        onClick={() => handleLogout()}
+                        className="border-2 text-white px-4 py-2 hover:bg-orange"
+                    >
+                        Logout
+                    </button>
+                )}
                 <button className="border-2 text-white px-4 py-2 hover:bg-orange">
                     Reservation
                 </button>

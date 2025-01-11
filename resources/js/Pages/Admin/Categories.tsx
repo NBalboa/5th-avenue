@@ -1,5 +1,6 @@
 import CategoryModal from "@/components/CategoryModal";
 import CategoryTargetModal from "@/components/CategoryTargetModal";
+import PaginatedLinks from "@/components/PaginatedLinks";
 import Spinner from "@/components/Spinner";
 import Table from "@/components/Table";
 import TableBody from "@/components/TableBody";
@@ -28,9 +29,8 @@ function Categories({
 
     function handleSearch(e: React.FormEvent<HTMLElement>) {
         e.preventDefault();
-        get("/suppliers", {
+        get("/categories", {
             preserveScroll: true,
-            preserveState: true,
             replace: true,
         });
     }
@@ -92,6 +92,12 @@ function Categories({
                     ))}
                 </TableBody>
             </Table>
+            <div className="w-full text-center mt-5">
+                {categories.links.map((link, index) => (
+                    <PaginatedLinks key={index} link={link} />
+                ))}
+            </div>
+
             <div className="w-full text-right mt-5 pe-1">
                 <CategoryModal />
             </div>

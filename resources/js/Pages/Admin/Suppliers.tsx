@@ -1,3 +1,4 @@
+import PaginatedLinks from "@/components/PaginatedLinks";
 import Spinner from "@/components/Spinner";
 import SupplierModal from "@/components/SupplierModal";
 import SupplierTargetModal from "@/components/SupplierTargetModal";
@@ -106,6 +107,13 @@ function Suppliers({
                     ))}
                 </TableBody>
             </Table>
+
+            <div className="w-full text-center mt-5">
+                {suppliers.links.map((link, index) => (
+                    <PaginatedLinks key={index} link={link} />
+                ))}
+            </div>
+
             {suppliers.total > suppliers.per_page ? (
                 <div className="my-5 text-white w-full text-center space-x-3">
                     {suppliers.links.map((link, index) => (

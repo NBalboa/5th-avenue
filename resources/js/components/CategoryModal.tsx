@@ -43,7 +43,7 @@ function CategoryModal() {
                 center={true}
                 title="Create Category"
                 showModal={show}
-                setShowModal={setShow}
+                setShowModal={() => setShow(false)}
             >
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <div className="space-y-2">

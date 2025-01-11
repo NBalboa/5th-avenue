@@ -79,7 +79,7 @@ function SupplierModal() {
                 title="Create Supplier"
                 center={true}
                 showModal={show}
-                setShowModal={setShow}
+                setShowModal={() => setShow(false)}
             >
                 <form className="space-y-3" onSubmit={handleSubmit}>
                     <div className="space-y-2">

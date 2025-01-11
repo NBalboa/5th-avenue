@@ -1,11 +1,19 @@
 import { useState } from "react";
 import DefaultProfile from "@images/default-pfp.png";
 import SidebarLink from "./SidebarLink";
-import { usePage } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
+import { User } from "@/Types/types";
+import getUserRoleString from "@/helpers/getUserRoleString";
 
 function Sidebar() {
     const [showSidebar, setShowSidebar] = useState<boolean>(false);
     const { component } = usePage();
+    const { auth } = usePage().props;
+
+    const handleLogout = () => {
+        router.post("/logout", {});
+    };
+
     return (
         <div>
             <nav className="fixed top-0 bg-black z-40 w-full flex justify-between border-b-2 border-orange px-4 py-3 items-center">
@@ -36,9 +44,11 @@ function Sidebar() {
                         />
                         <div className="col-span-2">
                             <h3 className="text-white max-text-xl">
-                                John Nigel Sipe
+                                {auth.first_name} {auth.last_name}
                             </h3>
-                            <span className="text-gray max-text-md">Admin</span>
+                            <span className="text-gray max-text-md">
+                                {getUserRoleString(auth.role)}
+                            </span>
                         </div>
                     </div>
                     <ul className="overflow-y-auto pr-3 h-96">
@@ -47,6 +57,12 @@ function Sidebar() {
                             to="/dashboard"
                         >
                             Dashboard
+                        </SidebarLink>
+                        <SidebarLink
+                            active={"Admin/Orders" === component}
+                            to="/orders"
+                        >
+                            Orders
                         </SidebarLink>
                         <SidebarLink
                             active={"Admin/Products" === component}
@@ -66,8 +82,17 @@ function Sidebar() {
                         >
                             Category
                         </SidebarLink>
+                        <SidebarLink
+                            active={"Admin/Tables" === component}
+                            to="/tables"
+                        >
+                            Tables
+                        </SidebarLink>
                     </ul>
-                    <button className="w-full text-xl text-white px-4 py-2 border-2 border-white rounded hover:bg-orange">
+                    <button
+                        onClick={() => handleLogout()}
+                        className="w-full text-xl text-white px-4 py-2 border-2 border-white rounded hover:bg-orange"
+                    >
                         Logout
                     </button>
                 </div>

@@ -23,6 +23,7 @@ import {
 import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
 import ProductTargetModal from "@/components/ProductTargetModal";
+import PaginatedLinks from "@/components/PaginatedLinks";
 
 function Products({
     categories,
@@ -58,7 +59,6 @@ function Products({
 
         get("/products", {
             preserveScroll: true,
-            preserveState: true,
             replace: true,
         });
     }
@@ -94,6 +94,8 @@ function Products({
             });
         }
     }
+
+    console.log(products);
 
     return (
         <AdminLayout>
@@ -201,6 +203,13 @@ function Products({
                     ))}
                 </TableBody>
             </Table>
+
+            <div className="w-full text-center mt-5">
+                {products.links.map((link, index) => (
+                    <PaginatedLinks key={index} link={link} />
+                ))}
+            </div>
+
             <div className="w-full text-right mt-5 pe-1">
                 <ProductModal suppliers={suppliers} categories={categories} />
             </div>

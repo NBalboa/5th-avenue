@@ -10,12 +10,12 @@ function Modal({
     children: ReactNode;
     title: string;
     showModal: boolean;
-    setShowModal: Function;
+    setShowModal: () => void;
     center: boolean;
 }) {
     return (
         <div
-            onClick={() => setShowModal(false)}
+            onClick={setShowModal}
             className={`fixed ${
                 showModal ? "translate-y-0" : "-translate-y-full"
             } text-start transition duration-300 ${
@@ -31,7 +31,7 @@ function Modal({
                         <h2 className="text-white text-2xl">{title}</h2>
                     </div>
                     <button
-                        onClick={() => setShowModal(false)}
+                        onClick={setShowModal}
                         className="text-white text-lg hover:text-orange"
                     >
                         <i className="fa-solid fa-x"></i>

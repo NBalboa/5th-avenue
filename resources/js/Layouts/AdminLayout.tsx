@@ -8,7 +8,7 @@ function AdminLayout({ children }: { children: ReactNode }) {
     }, []);
     return (
         <div>
-            <Toaster />
+            <Toaster position="top-right" />
             <Sidebar />
             <div className="p-4 md:ml-64 mt-14">{children}</div>
         </div>

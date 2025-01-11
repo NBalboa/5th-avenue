@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Enums\IsAvailable;
 use App\Enums\IsDeleted;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -15,7 +17,12 @@ class Product extends Model
         'price',
         'quantity'
     ];
-
+    public function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => Storage::url($value)
+        );
+    }
 
     public function scopeIsNotDeleted($query)
     {
@@ -33,7 +40,6 @@ class Product extends Model
             [
                 'name',
                 'quantity',
-                'price'
             ],
             'like',
             '%' . $search . '%'

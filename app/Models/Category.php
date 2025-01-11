@@ -15,4 +15,8 @@ class Category extends Model
     {
         return $query->where('is_deleted', "=", IsDeleted::NO->value);
     }
+
+    public function scopeSearch($query, $search){
+        return $query->where('name', 'like', "%$search%");
+    }
 }

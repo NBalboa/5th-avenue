@@ -99,7 +99,7 @@ function CategoryTargetModal({
             <Modal
                 title="Edit Category"
                 center={true}
-                setShowModal={setShow}
+                setShowModal={() => setShow(false)}
                 showModal={show}
             >
                 <form className="space-y-4" onSubmit={handleSubmit}>

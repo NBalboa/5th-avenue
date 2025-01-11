@@ -109,7 +109,10 @@ class ProductController extends Controller
         $products = Product::with('category')->isNotDeleted();
 
         if ($search) {
-            $products = $products->search($search);
+            $products = $products->search($search)
+                    ->orWhereHas('category', function($query) use($search) {
+                        $query->isNotDeleted()->search($search);
+                    });
         }
 
         if ($category) {
@@ -118,10 +121,6 @@ class ProductController extends Controller
 
         $products =  $products->latest()->paginate(10)->withQueryString();
 
-        $products->getCollection()->transform(function ($product) {
-            $product->image = Storage::url($product->image);
-            return $product;
-        });
 
         return Inertia::render("Admin/Products", [
             'suppliers' => $suppliers,

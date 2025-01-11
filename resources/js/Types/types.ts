@@ -62,6 +62,11 @@ export enum IsAvailable {
     NO = 0,
 }
 
+export type Order<Product> = {
+    product: Product;
+    order_quantity: number;
+};
+
 export type Product = {
     id: number;
     category_id: number;
@@ -72,6 +77,75 @@ export type Product = {
     is_deleted: IsDeleted;
     is_available: IsAvailable;
     category: Category;
+    created_at: string;
+    updated_at: string;
+};
+
+export type TTable = {
+    id: number;
+    no: number;
+    name: string;
+    description: string;
+    created_at: string;
+    updated_at: string;
+};
+
+export enum PaymentStatus {
+    PENDING = 1,
+    PAID = 2,
+}
+
+export enum OrderStatus {
+    PENDING = 1,
+    CONFIRMED = 2,
+    READY = 3,
+    COMPLETED = 4,
+}
+
+export enum UserRole {
+    ADMIN = 1,
+    MANAGER = 2,
+    CASHIER = 3,
+    CUSTOMER = 4,
+}
+
+export type TOrder = {
+    id: number;
+    customer_id: number | null;
+    table_id: number | null;
+    tendered_by: number;
+    amount_render: number;
+    total: number;
+    payment_status: PaymentStatus;
+    order_status: OrderStatus;
+    created_at: string;
+    updated_at: string;
+};
+
+export type ProductSearchFilters = {
+    search: string | null;
+    category: string | null;
+};
+
+export type Item = {
+    id: number;
+    order_id: number;
+    product_id: number;
+    product: Product;
+    price: number;
+    quantity: number;
+    created_at: string;
+    updated_at: string;
+};
+
+export type User = {
+    id: number;
+    first_name: string;
+    last_name: string;
+    middle_name: string | null;
+    phone: string;
+    email: string;
+    role: UserRole;
     created_at: string;
     updated_at: string;
 };

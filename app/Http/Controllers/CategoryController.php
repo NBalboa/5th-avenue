@@ -19,7 +19,7 @@ class CategoryController extends Controller
         if ($search) {
             $categories =  $categories->where('name', 'like', '%' . $search . '%');
         }
-        $categories = $categories->latest()->paginate(10);
+        $categories = $categories->latest()->paginate(10)->withQueryString();
         return Inertia::render("Admin/Categories", [
             'categories' => $categories,
             'search' => $request->input('search')
