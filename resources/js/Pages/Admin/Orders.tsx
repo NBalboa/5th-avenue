@@ -179,9 +179,7 @@ function Orders({ orders, filters }: OrderProps) {
                             <TableBodyRowData>
                                 {order.table_id}
                             </TableBodyRowData>
-                            <TableBodyRowData>
-                                P{order.total.toFixed(2)}
-                            </TableBodyRowData>
+                            <TableBodyRowData>P{order.total}</TableBodyRowData>
                             <TableBodyRowData>
                                 <select
                                     value={order.order_status}

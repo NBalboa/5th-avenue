@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('customer_id')->nullable();
             $table->foreignId('tendered_by')->nullable();
             $table->foreignId('table_id')->nullable();
-            $table->unsignedInteger('total');
-            $table->unsignedInteger('amount_render')->nullable();
+            $table->decimal('total', 10, 2);
+            $table->decimal('amount_render', 10, 2)->nullable();
             $table->tinyInteger('order_status');
             $table->tinyInteger('payment_status');
             $table->timestamps();

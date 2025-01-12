@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Logo from "@images/5th_avenue_logo.png";
 import NavLink from "@/components/NavLink";
-import { router, usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import toast from "react-hot-toast";
 
 function NavBar() {
@@ -61,9 +61,12 @@ function NavBar() {
                         >
                             Orders
                         </NavLink>
-                        <button className="border-2 text-white px-4 py-2 hover:bg-orange hidden md:block">
+                        <Link
+                            href="/my/booking"
+                            className="border-2 text-white px-4 py-2 hover:bg-orange hidden md:block"
+                        >
                             Reservation
-                        </button>
+                        </Link>
 
                         <button
                             onClick={() => handleLogout()}

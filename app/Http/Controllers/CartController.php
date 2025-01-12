@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\CartType;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
+use App\Http\Requests\BookingCartStoreRequest;
 use App\Http\Requests\CartStoreRequest;
 use App\Http\Requests\OnlineOrderStoreRequest;
 use App\Models\Cart;
@@ -51,6 +52,30 @@ class CartController extends Controller
                 'product_id' => $data['product'],
                 'user_id' => $user->id,
                 'cart_type' => CartType::ORDER,
+                'quantity' => 1
+            ]);
+
+            return back();
+
+        }
+        else {
+            return back()->withErrors(['exist' => 'Product already added to cart']);
+        }
+    }
+
+    public function booking(BookingCartStoreRequest $request){
+        $data = $request->validated();
+        $user_id = Auth::user()->id;
+        $user = User::where('id', '=',  $user_id)->first();
+        $productExist = $user->carts()->where('product_id', '=', $data['product'])
+            ->where('cart_type', '=', CartType::BOOKING->value)
+            ->exists();
+
+        if(!$productExist){
+            Cart::create([
+                'product_id' => $data['product'],
+                'user_id' => $user->id,
+                'cart_type' => CartType::BOOKING->value,
                 'quantity' => 1
             ]);
 

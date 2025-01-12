@@ -1,6 +1,3 @@
-import React from "react";
-import Spinner from "./Spinner";
-
 function Toggle({
     active,
     click,

@@ -1,8 +1,8 @@
 import React from "react";
 
 type InputNumberProps = {
-    value: string;
-    onHandleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    value?: string;
+    onHandleChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     isWidthFull?: boolean;
 };
 function InputNumber({

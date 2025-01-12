@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 
 type FormProps = {
-    children: ReactNode;
-    onHandleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+    children?: ReactNode;
+    onHandleSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
 };
 
 function Form({ children, onHandleSubmit }: FormProps) {

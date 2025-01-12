@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id');
             $table->foreignId('product_id');
-            $table->unsignedInteger('price');
-            $table->unsignedInteger('quantity');
+            $table->decimal('price', 10, 2);
+            $table->decimal('quantity', 10, 2);
             $table->timestamps();
         });
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
@@ -39,6 +40,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my/orders', [UserController::class, 'orders'])->name('users.orders');
     Route::get('/my/orders/items/{order}', [UserController::class, 'items'])->name('users.items');
 
+    Route::get('/my/booking', [BookingController::class, 'create'])->name('booking.create');
+    Route::post('/booking', [CartController::class, 'booking'])->name('carts.booking');
 });
 
 Route::middleware(['auth', AdminOnly::class])->group(function () {

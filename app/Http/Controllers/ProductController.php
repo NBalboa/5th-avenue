@@ -110,9 +110,9 @@ class ProductController extends Controller
 
         if ($search) {
             $products = $products->search($search)
-                    ->orWhereHas('category', function($query) use($search) {
-                        $query->isNotDeleted()->search($search);
-                    });
+                ->orWhereHas('category', function($query) use($search) {
+                    $query->isNotDeleted()->search($search);
+                });
         }
 
         if ($category) {
