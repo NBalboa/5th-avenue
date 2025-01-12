@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\UserRole;
 use App\Http\Requests\SigninRequest;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -41,6 +42,27 @@ class UserController extends Controller
                 'category' => $category,
                 'search' => $search
             ]
+        ]);
+    }
+
+    public function orders(){
+        $user_id = Auth::user()->id;
+        $user = User::where('id', '=', $user_id)->first();
+        $orders = $user->orders()->with('table')->latest()->get();
+
+        return Inertia::render('MyOrders', [
+            'orders' => $orders
+        ]);
+    }
+
+
+    public function items(Order $order) {
+        $order = $order->load( 'cashier', 'table');
+        $items = $order->items()->with('product')->get();
+
+        return Inertia::render('MyItems', [
+            "order" => $order,
+            "items" => $items
         ]);
     }
 

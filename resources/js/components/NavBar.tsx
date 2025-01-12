@@ -14,7 +14,7 @@ function NavBar() {
     };
     return (
         <nav className="relative flex justify-between items-center text-white py-5 mx-5 gap-5">
-            <h1 className="text-md sm:text-xl md:text-2xl font-semibold hover:text-orange">
+            <h1 className="text-md sm:text-sm md:text-2xl font-semibold hover:text-orange">
                 <a href="#">5th Avenue Grill and Restobar </a>
             </h1>
             <a
@@ -55,6 +55,16 @@ function NavBar() {
                         <NavLink path="/cart" isActive={"Carts" === component}>
                             Cart
                         </NavLink>
+                        <NavLink
+                            path="/my/orders"
+                            isActive={"MyOrders" === component}
+                        >
+                            Orders
+                        </NavLink>
+                        <button className="border-2 text-white px-4 py-2 hover:bg-orange hidden md:block">
+                            Reservation
+                        </button>
+
                         <button
                             onClick={() => handleLogout()}
                             className="border-2 text-white px-4 py-2 hover:bg-orange"
@@ -63,9 +73,7 @@ function NavBar() {
                         </button>
                     </>
                 )}
-                <button className="border-2 text-white px-4 py-2 hover:bg-orange">
-                    Reservation
-                </button>
+
                 <button
                     onClick={() => setShowMenu(!showMenu)}
                     className="text-2xl block md:hidden hover:text-orange"

@@ -9,36 +9,29 @@ import getOrderStatusString from "@/helpers/getOrderStatusString";
 import getPaymentColorStatus from "@/helpers/getPaymentColorStatus";
 import getPaymentStatusString from "@/helpers/getPaymentStatusString";
 import getTotalPrice from "@/helpers/getTotalPrice";
-import AdminLayout from "@/Layouts/AdminLayout";
+import UserLayout from "@/Layouts/UserLayout";
 import { Item, TOrder } from "@/Types/types";
-import { Head } from "@inertiajs/react";
 
-type OrderItemsProps = {
+type MyItemsProps = {
     order: TOrder;
     items: Item[];
 };
 
-function OrderItems({ order, items }: OrderItemsProps) {
+const MyItems = ({ order, items }: MyItemsProps) => {
+    console.log(order, items);
     return (
-        <AdminLayout>
-            <Head title="Items" />
+        <UserLayout>
             <h1 className="text-white text-2xl font-semibold my-2">
                 List of Orders #{order.id}
             </h1>
             <div className="flex flex-col gap-2">
                 <h2 className="text-lg font-medium text-white">
-                    Price: P{order.total}
+                    Price: P{order.total.toFixed(2)}
                 </h2>
                 <h2 className="text-lg font-medium text-white">
                     No. of Items: {items.length}
                 </h2>
 
-                {order.customer ? (
-                    <h2 className="text-lg font-medium text-white">
-                        Customer: {order.customer.first_name}{" "}
-                        {order.customer.last_name}
-                    </h2>
-                ) : null}
                 {order.cashier ? (
                     <h2 className="text-lg font-medium text-white">
                         Cashier: {order.cashier.first_name}{" "}
@@ -51,7 +44,6 @@ function OrderItems({ order, items }: OrderItemsProps) {
                         Table No: {order.table_id}
                     </h2>
                 ) : null}
-
                 <div className="flex gap-2">
                     <h1 className="text-lg font-medium text-white">
                         Order Status:
@@ -98,16 +90,18 @@ function OrderItems({ order, items }: OrderItemsProps) {
                                 {item.product.name}
                             </TableBodyRowData>
                             <TableBodyRowData>{item.quantity}</TableBodyRowData>
-                            <TableBodyRowData>{item.price}</TableBodyRowData>
                             <TableBodyRowData>
-                                {getTotalPrice(item)}
+                                {item.price.toFixed(2)}
+                            </TableBodyRowData>
+                            <TableBodyRowData>
+                                {getTotalPrice(item).toFixed(2)}
                             </TableBodyRowData>
                         </TableBodyRow>
                     ))}
                 </TableBody>
             </Table>
-        </AdminLayout>
+        </UserLayout>
     );
-}
+};
 
-export default OrderItems;
+export default MyItems;

@@ -36,6 +36,9 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/cart/add/{cart}', [CartController::class, 'addQuantity'])->name('cart.addQuantity');
     Route::put('/cart/minus/{cart}', [CartController::class, 'minusQuantity'])->name('minus.minusQuantity');
     Route::delete('/cart/{cart}', [CartController::class, 'delete'])->name('cart.delete');
+    Route::get('/my/orders', [UserController::class, 'orders'])->name('users.orders');
+    Route::get('/my/orders/items/{order}', [UserController::class, 'items'])->name('users.items');
+
 });
 
 Route::middleware(['auth', AdminOnly::class])->group(function () {

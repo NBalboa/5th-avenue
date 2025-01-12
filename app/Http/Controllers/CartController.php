@@ -67,7 +67,11 @@ class CartController extends Controller
 
         $user_id = Auth::user()->id;
         $user = User::where('id', '=', $user_id)->first();
-        $carts = $user->carts()->with('product')->where('user_id', '=', $user->id)->where('table_id', '=', $table->id)->get();
+        $carts = $user->carts()->with('product')
+            ->where('user_id', '=', $user->id)
+            ->where('table_id', '=', $table->id)
+            ->where('cart_type', '=', CartType::ORDER->value)
+            ->get();
 
 
 
@@ -82,7 +86,12 @@ class CartController extends Controller
         $data  = $request->validated();
         $user_id = Auth::user()->id;
         $user = User::where('id', '=', $user_id)->first();
-        $carts = $user->carts()->with('product')->where('user_id', '=', $user->id)->where('table_id', '=', $table->id)->get();
+        $carts = $user->carts()
+            ->with('product')
+            ->where('user_id', '=', $user->id)
+            ->where('table_id', '=', $table->id)
+            ->where('cart_type', '=', CartType::ORDER->value)
+            ->get();
 
         $order = Order::create([
             'customer_id' => $user->id,
@@ -101,7 +110,11 @@ class CartController extends Controller
             ]);
         }
 
-        $user->carts()->with('product')->where('user_id', '=', $user->id)->where('table_id', '=', $table->id)->delete();
+        $user->carts()->with('product')
+            ->where('user_id', '=', $user->id)
+            ->where('table_id', '=', $table->id)
+            ->where('cart_type', '=', CartType::ORDER->value)
+            ->delete();
         return redirect()->route('home');
     }
 
