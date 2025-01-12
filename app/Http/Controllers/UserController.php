@@ -45,13 +45,36 @@ class UserController extends Controller
         ]);
     }
 
-    public function orders(){
+    public function orders(Request $request){
         $user_id = Auth::user()->id;
         $user = User::where('id', '=', $user_id)->first();
-        $orders = $user->orders()->with('table')->latest()->get();
+        $orders = $user->orders()->with('table');
+
+        $order = $request->input('order');
+        $search = $request->input('search');
+        $payment = $request->input('payment');
+
+        if($search){
+            $orders = $orders->search($search);
+        }
+
+        if($order){
+            $orders = $orders->orderStatus($order);
+        }
+
+        if($payment){
+            $orders = $orders->paymentStatus($payment);
+        }
+
+        $orders = $orders->latest()->paginate(10)->withQueryString();
 
         return Inertia::render('MyOrders', [
-            'orders' => $orders
+            'orders' => $orders,
+            'filters' => [
+                'order' => $order,
+                'payment' => $payment,
+                'search' => $search
+            ]
         ]);
     }
 
