@@ -15,7 +15,6 @@ type OrderItemsProps = {
 };
 
 function OrderItems({ order, items }: OrderItemsProps) {
-    console.log(items);
     return (
         <AdminLayout>
             <Head title="Items" />
@@ -29,9 +28,20 @@ function OrderItems({ order, items }: OrderItemsProps) {
                 <h2 className="text-lg font-medium text-white">
                     No. of Items: {items.length}
                 </h2>
-                <h2 className="text-lg font-medium text-white">
-                    Cashier: Nicko Balboa
-                </h2>
+
+                {order.customer ? (
+                    <h2 className="text-lg font-medium text-white">
+                        Customer: {order.customer.first_name}{" "}
+                        {order.customer.last_name}
+                    </h2>
+                ) : null}
+                {order.cashier ? (
+                    <h2 className="text-lg font-medium text-white">
+                        Cashier: {order.cashier.first_name}{" "}
+                        {order.cashier.last_name}
+                    </h2>
+                ) : null}
+
                 {order.table_id ? (
                     <h2 className="text-lg font-medium text-white">
                         Table No: {order.table_id}

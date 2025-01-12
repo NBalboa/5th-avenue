@@ -16,6 +16,16 @@ class Order extends Model
         'payment_status'
     ];
 
+
+    public function customer() {
+        return $this->belongsTo(User::class, 'customer_id');
+    }
+    public function cashier() {
+        return $this->belongsTo(User::class, 'tendered_by');
+    }
+    public function table() {
+        return $this->belongsTo(Table::class, 'table_id');
+    }
     public function items(){
 
         return $this->hasMany(OrderItem::class, 'order_id');

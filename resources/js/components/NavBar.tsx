@@ -2,6 +2,7 @@ import { useState } from "react";
 import Logo from "@images/5th_avenue_logo.png";
 import NavLink from "@/components/NavLink";
 import { router, usePage } from "@inertiajs/react";
+import toast from "react-hot-toast";
 
 function NavBar() {
     const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -29,7 +30,12 @@ function NavBar() {
                 <NavLink path="/" isActive={"Welcome" === component}>
                     Home
                 </NavLink>
-                <NavLink path="#" isActive={false}>
+                <NavLink
+                    path="/menus"
+                    isActive={
+                        "Menus" === component || "MenuOrder" === component
+                    }
+                >
                     Menu
                 </NavLink>
                 {!auth ? (
@@ -45,12 +51,17 @@ function NavBar() {
                         </NavLink>
                     </>
                 ) : (
-                    <button
-                        onClick={() => handleLogout()}
-                        className="border-2 text-white px-4 py-2 hover:bg-orange"
-                    >
-                        Logout
-                    </button>
+                    <>
+                        <NavLink path="/cart" isActive={"Carts" === component}>
+                            Cart
+                        </NavLink>
+                        <button
+                            onClick={() => handleLogout()}
+                            className="border-2 text-white px-4 py-2 hover:bg-orange"
+                        >
+                            Logout
+                        </button>
+                    </>
                 )}
                 <button className="border-2 text-white px-4 py-2 hover:bg-orange">
                     Reservation
@@ -81,7 +92,7 @@ function NavBar() {
                 </li>
                 <li>
                     <a
-                        href="#"
+                        href="/menus"
                         className="p-2 hover:border-b-2 hover:border-orange w-full block"
                     >
                         Menu

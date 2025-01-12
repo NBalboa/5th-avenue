@@ -1,24 +1,31 @@
 import FoodCard from "@/components/FoodCard";
 import PaginatedLinks from "@/components/PaginatedLinks";
 import UserLayout from "@/Layouts/UserLayout";
-import { Category, PaginatedData, Product } from "@/Types/types";
+import { Category, PaginatedData, Product, TTable } from "@/Types/types";
 import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-type MenuProductSearch = {
-    search: string;
+type MenuOrderFilters = {
     category: string;
+    search: string;
 };
 
-type MenusProps = {
-    categories: Category[];
+type MenuOrderProps = {
+    table: TTable;
     products: PaginatedData<Product>;
-    filters: MenuProductSearch;
+    categories: Category[];
+    filters: MenuOrderFilters;
 };
 
-function Menus({ categories, filters, products }: MenusProps) {
+const MenuOrder = ({
+    table,
+    products,
+    categories,
+    filters,
+}: MenuOrderProps) => {
     const [search, setSearch] = useState<string>(filters.search ?? "");
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleSearch = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
@@ -27,16 +34,42 @@ function Menus({ categories, filters, products }: MenusProps) {
             category: filters.category ?? "",
         };
 
-        router.get("/menus", data, {
+        router.get(`/menus/order/tables/${table.id}`, data, {
             preserveScroll: true,
             replace: true,
         });
     };
 
-    const handleAddToCart = () => {
-        toast.error("Scan QR Code to make an Order");
-    };
+    const handleAddToCart = (table_id: number, product_id: number): void => {
+        setLoading(true);
 
+        const data = {
+            table: table_id,
+            product: product_id,
+        };
+        if (!loading) {
+            toast("Adding to cart...", {
+                icon: "⏳",
+                duration: 1000,
+            });
+            router.post("/cart", data, {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success("Product added to cart");
+                },
+                onError: (err) => {
+                    if (err.exist) {
+                        toast.error(err.exist);
+                    } else {
+                        toast.error("Something went wrong");
+                    }
+                },
+                onFinish: () => {
+                    setLoading(false);
+                },
+            });
+        }
+    };
     return (
         <UserLayout>
             <Head title="Menus" />
@@ -66,7 +99,7 @@ function Menus({ categories, filters, products }: MenusProps) {
                         <div className="w-full mx-auto text-white flex flex-col md:flex-row justify-center border-4 border-gray rounded sm:text-xl md:text-xl font-semibold">
                             <Link
                                 preserveScroll={true}
-                                href="/menus"
+                                href={`/menus/order/tables/${table.id}`}
                                 className={`w-full px-4 py-2 ${
                                     filters.category
                                         ? "hover:bg-orange"
@@ -78,7 +111,7 @@ function Menus({ categories, filters, products }: MenusProps) {
                             {categories.map((category) => (
                                 <Link
                                     preserveScroll={true}
-                                    href={`/menus?category=${category.id}`}
+                                    href={`/menus/order/tables/${table.id}?category=${category.id}`}
                                     key={category.id}
                                     className={`w-full px-4 py-2 ${
                                         filters.category ===
@@ -101,7 +134,9 @@ function Menus({ categories, filters, products }: MenusProps) {
                                 key={product.id}
                                 product={product}
                                 label="Add to Cart"
-                                onHandleClick={() => handleAddToCart()}
+                                onHandleClick={() =>
+                                    handleAddToCart(table.id, product.id)
+                                }
                             />
                         ))}
                     </div>
@@ -116,6 +151,6 @@ function Menus({ categories, filters, products }: MenusProps) {
             ) : null}
         </UserLayout>
     );
-}
+};
 
-export default Menus;
+export default MenuOrder;

@@ -2,14 +2,17 @@ import { useState } from "react";
 import DefaultProfile from "@images/default-pfp.png";
 import SidebarLink from "./SidebarLink";
 import { router, usePage } from "@inertiajs/react";
-import { User } from "@/Types/types";
 import getUserRoleString from "@/helpers/getUserRoleString";
+import { User } from "@/Types/types";
+import { PageProps as InertiaPageProps } from "@inertiajs/core";
 
 function Sidebar() {
     const [showSidebar, setShowSidebar] = useState<boolean>(false);
     const { component } = usePage();
     const { auth } = usePage().props;
-
+    if (!auth) {
+        router.get("/");
+    }
     const handleLogout = () => {
         router.post("/logout", {});
     };
@@ -43,12 +46,16 @@ function Sidebar() {
                             className="object-fit w-full col-span-1"
                         />
                         <div className="col-span-2">
-                            <h3 className="text-white max-text-xl">
-                                {auth.first_name} {auth.last_name}
-                            </h3>
-                            <span className="text-gray max-text-md">
-                                {getUserRoleString(auth.role)}
-                            </span>
+                            {auth ? (
+                                <>
+                                    <h3 className="text-white max-text-xl">
+                                        {auth.first_name} {auth.last_name}
+                                    </h3>
+                                    <span className="text-gray max-text-md">
+                                        {getUserRoleString(auth.role)}
+                                    </span>
+                                </>
+                            ) : null}
                         </div>
                     </div>
                     <ul className="overflow-y-auto pr-3 h-96">
@@ -63,6 +70,12 @@ function Sidebar() {
                             to="/orders"
                         >
                             Orders
+                        </SidebarLink>
+                        <SidebarLink
+                            active={"Admin/OnlineOrder" === component}
+                            to="/online/orders"
+                        >
+                            Online Order
                         </SidebarLink>
                         <SidebarLink
                             active={"Admin/Products" === component}

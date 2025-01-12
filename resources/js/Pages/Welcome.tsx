@@ -58,7 +58,7 @@ function Welcome({ products, categories, filters }: WelcomeProps) {
     }
 
     function handleAddToCart() {
-        toast.error("Coming Soon");
+        toast.error("Scan QR Code to make an Order");
     }
 
     return (

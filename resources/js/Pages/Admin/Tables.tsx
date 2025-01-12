@@ -9,7 +9,7 @@ import TableModal from "@/components/TableModal";
 import TableTargetModal from "@/components/TableTargetModal";
 import AdminLayout from "@/Layouts/AdminLayout";
 import { PaginatedData, TTable } from "@/Types/types";
-import { Head, router } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import { QRCodeCanvas, QRCodeSVG } from "qrcode.react";
 import { useRef, useState } from "react";
 
@@ -42,7 +42,14 @@ function Tables({ tables }: { tables: PaginatedData<TTable> }) {
 
     const [editModal, setEditModal] = useState<boolean>(false);
     const [table, setTable] = useState<TTable>(tables.data[0]);
+    const { base_url } = usePage().props;
 
+    console.log(base_url);
+
+    tables.data.map((table) => {
+        console.log(table.name);
+        console.log(`${base_url}/menus/order/tables/${table.id}`);
+    });
     function handleEdit(table: TTable) {
         setTable(table);
         setEditModal(true);
@@ -97,7 +104,7 @@ function Tables({ tables }: { tables: PaginatedData<TTable> }) {
                                     onClick={() => handleDownload(table)}
                                     className="cursor-pointer mx-auto border-2 border-orange rounded-lg"
                                     marginSize={2}
-                                    value={`http:127.0.0.1/tables/${table.no}/menu`}
+                                    value={`${base_url}/menus/order/tables/${table.id}`}
                                     size={200}
                                 />
                             </TableBodyRowData>

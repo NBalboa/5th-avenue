@@ -27,6 +27,18 @@ class User extends Authenticatable
         'role'
     ];
 
+    public function carts(){
+        return $this->hasMany(Cart::class, 'user_id');
+    }
+
+    public function scopeSearchByName($query, $search){
+        return $query->whereAny([
+            'first_name',
+            'last_name',
+            'middle_name',
+        ], 'like', "%$search%");
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

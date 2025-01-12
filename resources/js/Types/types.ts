@@ -109,11 +109,31 @@ export enum UserRole {
     CUSTOMER = 4,
 }
 
+export enum CartType {
+    ORDER = 1,
+    BOOKING = 2,
+}
+
+export type Cart = {
+    id: number;
+    product_id: number;
+    product: Product;
+    table_id: number;
+    user_id: number;
+    cart_type: CartType;
+    quantity: number;
+    created_at: string;
+    updated_at: string;
+};
+
 export type TOrder = {
     id: number;
     customer_id: number | null;
+    customer: User;
     table_id: number | null;
+    table: TTable;
     tendered_by: number;
+    cashier: User;
     amount_render: number;
     total: number;
     payment_status: PaymentStatus;

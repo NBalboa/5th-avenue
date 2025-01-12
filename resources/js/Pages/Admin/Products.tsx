@@ -204,7 +204,7 @@ function Products({
                 </TableBody>
             </Table>
 
-            <div className="w-full text-center mt-5">
+            <div className="w-full text-center mt-5 flex justify-center">
                 {products.links.map((link, index) => (
                     <PaginatedLinks key={index} link={link} />
                 ))}

@@ -37,7 +37,8 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            'auth' => Auth::user() ?? null
+            'auth' => Auth::user() ?? null,
+            'base_url' => env('APP_ENV') === 'production' ? env('APP_URL'): "http://127.0.0.1:8000"
         ]);
     }
 }

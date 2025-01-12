@@ -5,18 +5,21 @@ import TableBodyRow from "@/components/TableBodyRow";
 import TableBodyRowData from "@/components/TableBodyRowData";
 import TableHead from "@/components/TableHead";
 import TableHeadData from "@/components/TableHeadData";
+import getOrderColorStatus from "@/helpers/getOrderColorStatus";
+import getPaymentColorStatus from "@/helpers/getPaymentColorStatus";
 import AdminLayout from "@/Layouts/AdminLayout";
 import {
     OrderStatus,
     PaginatedData,
     PaymentStatus,
+    Product,
     TOrder,
 } from "@/Types/types";
 import { Head, Link, router } from "@inertiajs/react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-type OrderProps = {
+type OnlineOrderProps = {
     orders: PaginatedData<TOrder>;
     filters: OrderSearch;
 };
@@ -27,7 +30,7 @@ type OrderSearch = {
     paymentStatus: string | null;
 };
 
-function Orders({ orders, filters }: OrderProps) {
+const OnlineOrder = ({ orders, filters }: OnlineOrderProps) => {
     const [search, setSearch] = useState<string>(filters.search ?? "");
     const [orderStatus, setOrderStatus] = useState<string>(
         filters.orderStatus ?? ""
@@ -36,10 +39,23 @@ function Orders({ orders, filters }: OrderProps) {
         filters.paymentStatus ?? ""
     );
 
-    function handleOrderUpdateStatus(
+    const handleSearch = (): void => {
+        const data = {
+            search: search,
+            orderStatus: orderStatus,
+            paymentStatus: paymentStatus,
+        };
+
+        router.get("/online/orders", data, {
+            preserveScroll: true,
+            replace: true,
+        });
+    };
+
+    const handleOrderUpdateStatus = (
         e: React.ChangeEvent<HTMLSelectElement>,
         order_id: number
-    ): void {
+    ): void => {
         const data = {
             status: e.target.value,
         };
@@ -53,12 +69,12 @@ function Orders({ orders, filters }: OrderProps) {
                 toast.error("Something went wrong");
             },
         });
-    }
+    };
 
-    function handlePaymentUpdateStatus(
+    const handlePaymentUpdateStatus = (
         e: React.ChangeEvent<HTMLSelectElement>,
         order_id: number
-    ): void {
+    ): void => {
         const data = {
             status: e.target.value,
         };
@@ -73,44 +89,11 @@ function Orders({ orders, filters }: OrderProps) {
                 toast.error("Something went wrong");
             },
         });
-    }
-
-    function getOrderColorStatus(status: OrderStatus): string {
-        if (OrderStatus.PENDING === status) {
-            return "border-yellow-400 bg-yellow-500 text-white";
-        } else if (OrderStatus.CONFIRMED === status) {
-            return "border-blue-400 bg-blue-500 text-white";
-        } else if (OrderStatus.READY === status) {
-            return "border-green-400 bg-green-500 text-white";
-        } else {
-            return "border-orange bg-orange text-white";
-        }
-    }
-
-    function getPaymentColorStatus(status: PaymentStatus): string {
-        if (PaymentStatus.PENDING === status) {
-            return "border-yellow-400 bg-yellow-500 text-white";
-        } else {
-            return "border-green-400 bg-green-500 text-white";
-        }
-    }
-
-    function handleSearch() {
-        const data = {
-            search: search,
-            orderStatus: orderStatus,
-            paymentStatus: paymentStatus,
-        };
-
-        router.get("/orders", data, {
-            preserveScroll: true,
-            replace: true,
-        });
-    }
+    };
 
     return (
         <AdminLayout>
-            <Head title="Orders" />
+            <Head title="Online Orders" />
             <h1 className="text-white text-2xl font-semibold my-2">Orders</h1>
 
             <div>
@@ -162,10 +145,10 @@ function Orders({ orders, filters }: OrderProps) {
                     </div>
                 </div>
             </div>
-
             <Table>
                 <TableHead>
                     <TableHeadData>Order ID</TableHeadData>
+                    <TableHeadData>Customer Name</TableHeadData>
                     <TableHeadData>Table ID</TableHeadData>
                     <TableHeadData>Price</TableHeadData>
                     <TableHeadData>Order Status</TableHeadData>
@@ -173,9 +156,13 @@ function Orders({ orders, filters }: OrderProps) {
                     <TableHeadData>Orders</TableHeadData>
                 </TableHead>
                 <TableBody>
-                    {orders?.data.map((order) => (
+                    {orders.data.map((order) => (
                         <TableBodyRow key={order.id}>
                             <TableBodyRowData>{order.id}</TableBodyRowData>
+                            <TableBodyRowData>
+                                {order.customer.first_name}{" "}
+                                {order.customer.last_name}
+                            </TableBodyRowData>
                             <TableBodyRowData>
                                 {order.table_id}
                             </TableBodyRowData>
@@ -224,7 +211,7 @@ function Orders({ orders, filters }: OrderProps) {
                                     onChange={(e) =>
                                         handlePaymentUpdateStatus(e, order.id)
                                     }
-                                    className={`rounded border-2 ${getPaymentColorStatus(
+                                    className={`${getPaymentColorStatus(
                                         order.payment_status
                                     )}`}
                                 >
@@ -254,22 +241,14 @@ function Orders({ orders, filters }: OrderProps) {
                     ))}
                 </TableBody>
             </Table>
+
             <div className="w-full text-center mt-5 flex justify-center">
                 {orders.links.map((link, index) => (
                     <PaginatedLinks key={index} link={link} />
                 ))}
             </div>
-
-            <div className="w-full mt-5 text-right">
-                <Link
-                    href="/orders/create"
-                    className="px-4 py-2 text-white border-2 border-white hover:bg-orange"
-                >
-                    Create Order
-                </Link>
-            </div>
         </AdminLayout>
     );
-}
+};
 
-export default Orders;
+export default OnlineOrder;

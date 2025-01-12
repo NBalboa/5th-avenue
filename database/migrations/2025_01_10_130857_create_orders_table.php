@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->nullable();
-            $table->foreignId('tendered_by');
+            $table->foreignId('tendered_by')->nullable();
             $table->foreignId('table_id')->nullable();
             $table->unsignedInteger('total');
-            $table->unsignedInteger('amount_render');
+            $table->unsignedInteger('amount_render')->nullable();
             $table->tinyInteger('order_status');
             $table->tinyInteger('payment_status');
             $table->timestamps();

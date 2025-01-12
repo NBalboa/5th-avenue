@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use App\Enums\UserRole;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Table;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,6 +18,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        // Category::factory(count: 5)->has(Product::factory(5))->create();
+        // Table::factory(3)->create();
         // User::factory(10)->create();
 
         // User::factory()->create([
@@ -39,5 +45,15 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
             'password' =>  Hash::make('password')
         ]);
+
+        // User::create([
+        //     'first_name' => 'Nicko',
+        //     'last_name' => 'Balboa',
+        //     'email' => 'nickojek2x@gmail.com',
+        //     'phone' => '09123456789',
+        //     'role' => UserRole::CUSTOMER->value,
+        //     'remember_token' => Str::random(10),
+        //     'password' =>  Hash::make('password')
+        // ]);
     }
 }

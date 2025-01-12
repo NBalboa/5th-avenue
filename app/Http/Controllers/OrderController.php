@@ -13,6 +13,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Table;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class OrderController extends Controller
@@ -45,6 +46,36 @@ class OrderController extends Controller
                 'search' => $request->input('search'),
                 'orderStatus' => $request->input('orderStatus'),
                 'paymentStatus' => $request->input('paymentStatus')
+            ]
+        ]);
+    }
+
+    public function online(Request $request){
+        $orders = Order::with('customer', 'table')->where('customer_id',  '!=',null);
+        if($request->input('search')){
+            $search = $request->input('search');
+            $orders = $orders->search($search)
+                ->orWhereHas('customer', function($query) use($search) {
+                    $query->searchByName($search);
+                });
+        }
+
+        if($request->input('orderStatus')){
+            $orderStatus = (int) $request->input('orderStatus');
+            $orders = $orders->orderStatus($orderStatus);
+        }
+
+        if($request->input('paymentStatus')){
+            $paymentStatus = (int) $request->input('paymentStatus');
+            $orders = $orders->paymentStatus($paymentStatus);
+        }
+
+        $orders = $orders->paginate(10)->withQueryString();
+        return Inertia::render('Admin/OnlineOrder', [
+            'orders' => $orders,
+            'filters' => [
+                'search' => $request->input('search'),
+                'category' => $request->input('category')
             ]
         ]);
     }
@@ -110,6 +141,9 @@ class OrderController extends Controller
         $data = $request->validated();
         $status = (int) $data['status'];
         $order->order_status = $status;
+        if($status === OrderStatus::CONFIRMED->value && !$order->tendered_by){
+            $order->tendered_by = Auth::user()->id;
+        }
         $order->save();
 
 
@@ -125,7 +159,7 @@ class OrderController extends Controller
     }
 
     public function items(Order $order) {
-        $items = $order->items()->with('product')->get();
+        $items = $order->load('customer', 'cashier')->items()->with('product')->get();
 
         return Inertia::render('Admin/OrderItems', [
             'order' => $order,
