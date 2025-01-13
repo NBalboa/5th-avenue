@@ -27,6 +27,7 @@ class CartController extends Controller
 
         $carts = $user->carts()
             ->get()
+            ->where('cart_type', CartType::ORDER->value)
             ->groupBy('table_id')
             ->values()
             ->toArray();

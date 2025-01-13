@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrderType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->decimal('amount_render', 10, 2)->nullable();
             $table->tinyInteger('order_status');
             $table->tinyInteger('payment_status');
+            $table->tinyInteger('order_type')->default(OrderType::ORDER->value);
             $table->timestamps();
         });
     }

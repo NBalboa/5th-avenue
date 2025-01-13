@@ -25,7 +25,6 @@ class ProductController extends Controller
         if ($by_quantity === true) {
             $request->validate([
                 'quantity' => 'required|numeric',
-                'supplier' => 'required|numeric'
             ]);
         }
 

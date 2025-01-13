@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BookingStatus;
 use App\Enums\OrderStatus;
+use App\Enums\OrderType;
 use App\Enums\PaymentStatus;
 use App\Http\Requests\OrderPaymentStatusRequest;
 use App\Http\Requests\OrderStatusUpdateRequest;
@@ -20,7 +22,8 @@ class OrderController extends Controller
 {
     public function index(Request $request){
 
-        $orders = Order::where('customer_id',  '=',null);
+        $orders = Order::where('customer_id',  '=',null)
+            ->where('order_type', '=', OrderType::ORDER->value);
 
         if($request->input('search')){
             $search = $request->input('search');
@@ -51,7 +54,13 @@ class OrderController extends Controller
     }
 
     public function online(Request $request){
-        $orders = Order::with('customer', 'table')->where('customer_id',  '!=',null);
+        $orders = Order::with('customer', 'table', 'booking')
+            ->where('customer_id',  '!=',null)
+            ->where('order_type', '=', OrderType::ORDER->value)
+            ->orWhereHas('booking', function($query) {
+                $query->where('booking_status', '=', BookingStatus::CONFIRM->value);
+            });
+
         if($request->input('search')){
             $search = $request->input('search');
             $orders = $orders->search($search)
@@ -159,7 +168,7 @@ class OrderController extends Controller
     }
 
     public function items(Order $order) {
-        $items = $order->load('customer', 'cashier')->items()->with('product')->get();
+        $items = $order->load('customer', 'cashier', 'booking')->items()->with('product')->get();
 
         return Inertia::render('Admin/OrderItems', [
             'order' => $order,

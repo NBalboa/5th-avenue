@@ -1,6 +1,8 @@
+import Error from "@/components/Error";
 import FoodCard from "@/components/FoodCard";
 import Form from "@/components/Form";
 import FormButton from "@/components/FormButton";
+import Input from "@/components/Input";
 import InputNumber from "@/components/InputNumber";
 import InputWrapper from "@/components/InputWrapper";
 import Label from "@/components/Label";
@@ -13,12 +15,13 @@ import TableBodyRowData from "@/components/TableBodyRowData";
 import TableHead from "@/components/TableHead";
 import TableHeadData from "@/components/TableHeadData";
 import Toggle from "@/components/Toggle";
+import formattedTime from "@/helpers/formattedTime";
 import getOverAllCartPrice from "@/helpers/getOverAllCartPrice";
 import getTotalCartPrice from "@/helpers/getTotalCartPrice";
 import UserLayout from "@/Layouts/UserLayout";
 import { Cart, Category, PaginatedData, Product, TTable } from "@/Types/types";
 import { Link, router, usePage } from "@inertiajs/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 type BookingSearch = {
@@ -49,10 +52,14 @@ const MyBooking = ({
     const [date, setDate] = useState<string>("");
     const [time, setTime] = useState<string>("");
     const [noPeople, setNoPeople] = useState<string>("");
-    const { errors } = usePage().props;
+    const [image, setImage] = useState<File | null>(null);
+    const [preview, setPreview] = useState<string>("");
+    const [gcashReferenceId, setGcashReferenceId] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
+    const imageRef = useRef<HTMLInputElement | null>(null);
+    const { errors } = usePage().props;
 
-    console.log(carts);
+    console.log(errors);
 
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -72,7 +79,7 @@ const MyBooking = ({
             table: table,
             product: product.id,
         };
-        router.post("/booking", data, {
+        router.post("/my/booking", data, {
             preserveScroll: true,
             preserveState: true,
             onSuccess: () => {
@@ -130,6 +137,47 @@ const MyBooking = ({
             },
         });
     };
+
+    const handleAddBooking = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const data = {
+            table: table,
+            gcash_reference_id: gcashReferenceId,
+            image: image,
+            date: date,
+            time: formattedTime(time),
+            no_people: noPeople,
+            has_order: hasOrder,
+            total: getOverAllCartPrice(carts),
+            carts: carts,
+        };
+
+        console.log(data);
+
+        router.post("/booking", data, {
+            preserveScroll: true,
+            onSuccess: () => {
+                setTable("");
+                setDate("");
+                setTime("");
+                setNoPeople("");
+                setImage(null);
+                setPreview("");
+                setGcashReferenceId("");
+                if (imageRef?.current && imageRef?.current.value) {
+                    imageRef.current.value = "";
+                }
+            },
+            onError: () => {
+                if (errors.carts) {
+                    toast.error(errors.carts);
+                } else {
+                    toast.error("Something went wrong");
+                }
+            },
+        });
+    };
+
     return (
         <UserLayout>
             <div className="max-w-lg mx-auto px-14 py-12 border-2 border-white rounded">
@@ -137,7 +185,7 @@ const MyBooking = ({
                     <h2 className="text-white text-xl font-medium">
                         Create Booking
                     </h2>
-                    <Form>
+                    <Form onHandleSubmit={handleAddBooking}>
                         <InputWrapper>
                             <Label label="Table No." />
                             <select
@@ -152,6 +200,9 @@ const MyBooking = ({
                                     </option>
                                 ))}
                             </select>
+                            {errors.table ? (
+                                <Error>{errors.table}</Error>
+                            ) : null}
                         </InputWrapper>
                         <InputWrapper>
                             <Label label="Date" />
@@ -161,6 +212,7 @@ const MyBooking = ({
                                 type="date"
                                 className="px-4 py-2 text-md w-full rounded"
                             />
+                            {errors.date ? <Error>{errors.date}</Error> : null}
                         </InputWrapper>
                         <InputWrapper>
                             <Label label="Time" />
@@ -170,6 +222,7 @@ const MyBooking = ({
                                 type="time"
                                 className="px-4 py-2 text-md w-full rounded"
                             />
+                            {errors.time ? <Error>{errors.time}</Error> : null}
                         </InputWrapper>
                         <InputWrapper>
                             <Label label="No. of People" />
@@ -179,6 +232,9 @@ const MyBooking = ({
                                     setNoPeople(e.target.value)
                                 }
                             />
+                            {errors.no_people ? (
+                                <Error>{errors.no_people}</Error>
+                            ) : null}
                         </InputWrapper>
                         <InputWrapper>
                             <div className="flex gap-2">
@@ -193,6 +249,57 @@ const MyBooking = ({
                                 <Label label="Have orders?" />
                             </div>
                         </InputWrapper>
+                        {hasOrder ? (
+                            <>
+                                <InputWrapper>
+                                    <Label label="Gcash Reference ID" />
+                                    <Input
+                                        value={gcashReferenceId}
+                                        onHandleChange={(e) =>
+                                            setGcashReferenceId(e.target.value)
+                                        }
+                                    />
+                                    {errors.gcash_reference_id ? (
+                                        <Error>
+                                            {errors.gcash_reference_id}
+                                        </Error>
+                                    ) : null}
+                                </InputWrapper>
+                                <InputWrapper>
+                                    <Label label="Gcash Screenshot" />
+                                    <input
+                                        type="file"
+                                        ref={imageRef}
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                            if (
+                                                e.target.files &&
+                                                e.target.files[0]
+                                            ) {
+                                                const file = e.target.files[0];
+                                                setImage(file);
+                                                setPreview(
+                                                    URL.createObjectURL(file)
+                                                );
+                                            }
+                                        }}
+                                        className="w-full rounded bg-white file:px-4 file:py-2 file:mr-2 file:bg-black file:text-white file:border-2 file:border-white hover:file:bg-orange"
+                                    />
+                                    {errors.image ? (
+                                        <Error>{errors.image}</Error>
+                                    ) : null}
+                                </InputWrapper>
+                                <InputWrapper>
+                                    {preview ? (
+                                        <img
+                                            src={preview}
+                                            className="object-contain h-[75px] w-[75px] rounded-full"
+                                        />
+                                    ) : null}
+                                </InputWrapper>
+                            </>
+                        ) : null}
+
                         <FormButton label="Book Table" />
                     </Form>
                 </div>

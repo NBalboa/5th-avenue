@@ -122,8 +122,8 @@ function OrdersCreate({
             preserveState: true,
             onError: (err) => {
                 console.log(err);
-                if (err?.amount) {
-                    toast.error(err.amount);
+                if (err?.amountRender) {
+                    toast.error(err.amountRender);
                 }
             },
         });
@@ -189,11 +189,14 @@ function OrdersCreate({
                     />
                 ))}
             </div>
-            <div className="w-full text-center mt-5">
-                {products.links.map((link, index) => (
-                    <PaginatedLinks key={index} link={link} />
-                ))}
-            </div>
+            {products.total > products.per_page ? (
+                <div className="w-full text-center mt-5 flex justify-center">
+                    {products.links.map((link, index) => (
+                        <PaginatedLinks key={index} link={link} />
+                    ))}
+                </div>
+            ) : null}
+
             <h1 className="text-white text-2xl font-semibold my-2">
                 Create Order
             </h1>

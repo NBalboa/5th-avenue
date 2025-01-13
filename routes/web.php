@@ -41,7 +41,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my/orders/items/{order}', [UserController::class, 'items'])->name('users.items');
 
     Route::get('/my/booking', [BookingController::class, 'create'])->name('booking.create');
-    Route::post('/booking', [CartController::class, 'booking'])->name('carts.booking');
+    Route::post('/my/booking', [CartController::class, 'booking'])->name('carts.booking');
+    Route::post('/booking', [BookingController::class, 'store'])->name('booking.stores');
 });
 
 Route::middleware(['auth', AdminOnly::class])->group(function () {
@@ -76,5 +77,7 @@ Route::middleware(['auth', AdminOnly::class])->group(function () {
     Route::get('/orders/items/{order}', [OrderController::class, 'items'])->name('orders.items');
     Route::get('/online/orders', [OrderController::class, 'online'])->name('orders.online');
 
+    Route::get('/bookings', [BookingController::class, 'index'])->name('booking.index');
+    Route::post('/bookings/{booking}', [BookingController::class, 'updateStatus'])->name('booking.updateStatus');
 });
 

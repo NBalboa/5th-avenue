@@ -4,6 +4,8 @@ import TableBodyRow from "@/components/TableBodyRow";
 import TableBodyRowData from "@/components/TableBodyRowData";
 import TableHead from "@/components/TableHead";
 import TableHeadData from "@/components/TableHeadData";
+import getBookingColorStatus from "@/helpers/getBookingColorStatus";
+import getBookingStringStatus from "@/helpers/getBookingStringStatus";
 import getOrderColorStatus from "@/helpers/getOrderColorStatus";
 import getOrderStatusString from "@/helpers/getOrderStatusString";
 import getPaymentColorStatus from "@/helpers/getPaymentColorStatus";
@@ -76,6 +78,22 @@ function OrderItems({ order, items }: OrderItemsProps) {
                         {getPaymentStatusString(order.payment_status)}
                     </p>
                 </div>
+                {order.booking ? (
+                    <div className="flex gap-2">
+                        <h1 className="text-lg font-medium text-white">
+                            Booking Status:
+                        </h1>
+                        <p
+                            className={`text-center px-2 text-md font-medium ${getBookingColorStatus(
+                                order.booking.booking_status
+                            )}`}
+                        >
+                            {getBookingStringStatus(
+                                order.booking.booking_status
+                            )}
+                        </p>
+                    </div>
+                ) : null}
             </div>
             <Table>
                 <TableHead>

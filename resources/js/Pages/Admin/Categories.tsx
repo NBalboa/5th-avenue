@@ -48,7 +48,7 @@ function Categories({
         <AdminLayout>
             <Toaster />
             <Head title="Category" />
-            <h1 className="text-white text-2xl">Suppliers</h1>
+            <h1 className="text-white text-2xl">Categories</h1>
             <div>
                 <div>
                     <form

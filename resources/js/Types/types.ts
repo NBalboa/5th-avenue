@@ -138,6 +138,7 @@ export type TOrder = {
     total: number;
     payment_status: PaymentStatus;
     order_status: OrderStatus;
+    booking: Booking;
     created_at: string;
     updated_at: string;
 };
@@ -166,6 +167,29 @@ export type User = {
     phone: string;
     email: string;
     role: UserRole;
+    created_at: string;
+    updated_at: string;
+};
+
+export enum BookingStatus {
+    PENDING = 1,
+    CONFIRM = 2,
+}
+
+export type Booking = {
+    id: number;
+    table_id: number;
+    order_id: number;
+    user_id: number;
+    table: TTable;
+    order: TOrder;
+    user: User;
+    image: string;
+    no_people: string;
+    time: string;
+    date: string;
+    booking_status: BookingStatus;
+    gcash_reference_id: string;
     created_at: string;
     updated_at: string;
 };

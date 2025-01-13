@@ -13,12 +13,17 @@ class Order extends Model
         'total',
         'amount_render',
         'order_status',
-        'payment_status'
+        'payment_status',
+        'order_type'
     ];
 
 
     public function customer() {
         return $this->belongsTo(User::class, 'customer_id');
+    }
+
+    public function booking(){
+        return $this->hasOne(Booking::class, 'order_id');
     }
     public function cashier() {
         return $this->belongsTo(User::class, 'tendered_by');

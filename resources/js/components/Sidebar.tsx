@@ -75,7 +75,13 @@ function Sidebar() {
                             active={"Admin/OnlineOrder" === component}
                             to="/online/orders"
                         >
-                            Online Order
+                            Online Orders
+                        </SidebarLink>
+                        <SidebarLink
+                            active={"Admin/Bookings" === component}
+                            to="/bookings"
+                        >
+                            Bookings
                         </SidebarLink>
                         <SidebarLink
                             active={"Admin/Products" === component}

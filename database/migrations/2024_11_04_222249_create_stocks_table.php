@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id');
-            $table->foreignId('supplier_id');
+            $table->foreignId('supplier_id')->nullable();
             $table->unsignedInteger('quantity');
             $table->timestamps();
         });
