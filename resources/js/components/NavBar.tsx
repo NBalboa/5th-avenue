@@ -3,6 +3,7 @@ import Logo from "@images/5th_avenue_logo.png";
 import NavLink from "@/components/NavLink";
 import { Link, router, usePage } from "@inertiajs/react";
 import toast from "react-hot-toast";
+import MenuLink from "./MenuLink";
 
 function NavBar() {
     const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -62,6 +63,7 @@ function NavBar() {
                             Orders
                         </NavLink>
                         <Link
+                            preserveScroll={true}
                             href="/my/booking"
                             className="border-2 text-white px-4 py-2 hover:bg-orange hidden md:block"
                         >
@@ -96,35 +98,51 @@ function NavBar() {
                 <li>
                     <img src={Logo} className="w-[50px] h-[50px]" />
                 </li>
-                <li>
-                    <a href="#" className="p-2 text-orange w-full block">
-                        Home
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="/menus"
-                        className="p-2 hover:border-b-2 hover:border-orange w-full block"
-                    >
-                        Menu
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="#"
-                        className="p-2 hover:border-b-2 hover:border-orange w-full block"
-                    >
-                        Register
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="#"
-                        className="p-2 hover:border-b-2 hover:border-orange w-full block"
-                    >
-                        Login
-                    </a>
-                </li>
+                <MenuLink
+                    to="/"
+                    label="Home"
+                    active={"Welcome" === component}
+                />
+                <MenuLink
+                    to="/menus"
+                    label="Menu"
+                    active={"Menus" === component}
+                />
+                {!auth ? (
+                    <>
+                        <MenuLink
+                            to="/register"
+                            label="Register"
+                            active={"Register" === component}
+                        />
+                        <MenuLink
+                            to="/login"
+                            label="Login"
+                            active={"Login" === component}
+                        />
+                    </>
+                ) : (
+                    <>
+                        <MenuLink
+                            to="/cart"
+                            label="Cart"
+                            active={"Carts" === component}
+                        />
+
+                        <MenuLink
+                            to="/my/orders"
+                            label="Orders"
+                            active={"MyOrders" === component}
+                        />
+                        <Link
+                            preserveScroll={true}
+                            href="/my/booking"
+                            className="border-2 text-center text-white px-4 py-2 hover:bg-orange"
+                        >
+                            Reservation
+                        </Link>
+                    </>
+                )}
             </ul>
         </nav>
     );

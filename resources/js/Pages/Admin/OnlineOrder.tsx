@@ -149,7 +149,7 @@ const OnlineOrder = ({ orders, filters }: OnlineOrderProps) => {
                 <TableHead>
                     <TableHeadData>Order ID</TableHeadData>
                     <TableHeadData>Customer Name</TableHeadData>
-                    <TableHeadData>Table ID</TableHeadData>
+                    <TableHeadData>Table No.</TableHeadData>
                     <TableHeadData>Price</TableHeadData>
                     <TableHeadData>Order Status</TableHeadData>
                     <TableHeadData>Payment Status</TableHeadData>
@@ -164,7 +164,7 @@ const OnlineOrder = ({ orders, filters }: OnlineOrderProps) => {
                                 {order.customer.last_name}
                             </TableBodyRowData>
                             <TableBodyRowData>
-                                {order.table_id}
+                                {order.table.no}
                             </TableBodyRowData>
                             <TableBodyRowData>P{order.total}</TableBodyRowData>
                             <TableBodyRowData>

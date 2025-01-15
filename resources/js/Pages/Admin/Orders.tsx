@@ -166,7 +166,7 @@ function Orders({ orders, filters }: OrderProps) {
             <Table>
                 <TableHead>
                     <TableHeadData>Order ID</TableHeadData>
-                    <TableHeadData>Table ID</TableHeadData>
+                    <TableHeadData>Table No.</TableHeadData>
                     <TableHeadData>Price</TableHeadData>
                     <TableHeadData>Order Status</TableHeadData>
                     <TableHeadData>Payment Status</TableHeadData>
@@ -177,7 +177,7 @@ function Orders({ orders, filters }: OrderProps) {
                         <TableBodyRow key={order.id}>
                             <TableBodyRowData>{order.id}</TableBodyRowData>
                             <TableBodyRowData>
-                                {order.table_id}
+                                {order.table?.no}
                             </TableBodyRowData>
                             <TableBodyRowData>P{order.total}</TableBodyRowData>
                             <TableBodyRowData>

@@ -23,7 +23,7 @@ class OrderController extends Controller
 {
     public function index(Request $request){
 
-        $orders = Order::where('customer_id',  '=',null)
+        $orders = Order::with('table')->where('customer_id',  '=',null)
             ->where('order_type', '=', OrderType::ORDER->value);
 
         if($request->input('search')){
@@ -42,7 +42,6 @@ class OrderController extends Controller
         }
 
         $orders = $orders->paginate(10)->withQueryString();
-
 
         return Inertia::render('Admin/Orders', [
             'orders' => $orders,
@@ -79,7 +78,6 @@ class OrderController extends Controller
             $paymentStatus = (int) $request->input('paymentStatus');
             $orders = $orders->paymentStatus($paymentStatus);
         }
-
         $orders = $orders->paginate(10)->withQueryString();
         return Inertia::render('Admin/OnlineOrder', [
             'orders' => $orders,
@@ -104,8 +102,9 @@ class OrderController extends Controller
 
         if($request->input('category')){
             $category = (int) $request->input('category');
-            $products = $products->ByCategory($category);
+            $products = $products->with('table')->ByCategory($category);
         }
+
 
         $products = $products->isAvailable()->isNotDeleted()->paginate(10)->withQueryString();
 

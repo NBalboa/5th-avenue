@@ -63,7 +63,12 @@ class CustomerController extends Controller
         $data = $request->validated();
 
 
-        $user = User::create([
+        if ($request->hasFile('image')) {
+            $idPicturePath = $request->file('image')->store('idpicture/images', 'public');
+        }
+
+        User::create([
+            'image' => $idPicturePath,
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'middle_name' => $data['middle_name'],

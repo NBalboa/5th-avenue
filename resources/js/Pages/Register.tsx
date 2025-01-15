@@ -1,13 +1,27 @@
 import Error from "@/components/Error";
+import InputImage from "@/components/InputImage";
 import InputSeparator from "@/components/InputSeparator";
+import Label from "@/components/Label";
+import Phone from "@/components/Phone";
 import TwoInputsLayout from "@/Layouts/TwoInputsLayout";
 import UserLayout from "@/Layouts/UserLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
+type FormData = {
+    first_name: string;
+    middle_name: string;
+    last_name: string;
+    email: string;
+    phone: string;
+    password: string;
+    conf_password: string;
+    image: File | null;
+};
+
 function Register() {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm<FormData>({
         first_name: "",
         middle_name: "",
         last_name: "",
@@ -15,9 +29,14 @@ function Register() {
         phone: "",
         password: "",
         conf_password: "",
+        image: null,
     });
 
+    const [idPicture, setIdPicture] = useState<File | null>(null);
+    const idPictureRef = useRef<HTMLInputElement>(null);
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [isValid, setIsValid] = useState<boolean>(true);
+    const [previewIdPicture, setPreviewIdPicture] = useState<string>("");
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
@@ -33,6 +52,14 @@ function Register() {
     function handleShowPassword() {
         setShowPassword(!showPassword);
     }
+
+    const handleIdPicture = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files && e.target.files[0];
+        if (file) {
+            setData("image", file);
+            setPreviewIdPicture(URL.createObjectURL(file));
+        }
+    };
 
     return (
         <UserLayout>
@@ -69,7 +96,7 @@ function Register() {
                                 </InputSeparator>
                                 <InputSeparator>
                                     <label className="text-white text-md font-medium">
-                                        Middle Name
+                                        Middle Name (Optional)
                                     </label>
                                     <input
                                         value={data.middle_name}
@@ -123,13 +150,15 @@ function Register() {
                                     <label className="text-white text-md font-medium">
                                         Phone
                                     </label>
-                                    <input
-                                        value={data.phone}
-                                        onChange={(e) =>
-                                            setData("phone", e.target.value)
+                                    <Phone
+                                        isValid={isValid}
+                                        setIsValid={(valid) =>
+                                            setIsValid(valid)
                                         }
-                                        type="text"
-                                        className="w-full rounded-lg px-4 py-2"
+                                        phone={data.phone}
+                                        setPhone={(phone) =>
+                                            setData("phone", phone)
+                                        }
                                     />
                                     {errors.phone ? (
                                         <Error>{errors.phone}</Error>
@@ -160,6 +189,7 @@ function Register() {
                                             className="w-full rounded-lg px-4 py-2"
                                         />
                                         <button
+                                            tabIndex={-1}
                                             type="button"
                                             onClick={() => handleShowPassword()}
                                             className="absolute text-black top-0 bottom-0 right-2 text-xl"
@@ -197,6 +227,7 @@ function Register() {
                                         />
                                         <button
                                             type="button"
+                                            tabIndex={-1}
                                             onClick={() => handleShowPassword()}
                                             className="absolute text-black top-0 bottom-0 right-2 text-xl"
                                         >
@@ -212,6 +243,17 @@ function Register() {
                                     ) : null}
                                 </InputSeparator>
                             </TwoInputsLayout>
+                        </div>
+                        <div className="mt-5 space-y-2">
+                            <Label label="ID Picture" />
+                            <InputImage
+                                imageRef={idPictureRef}
+                                preview={previewIdPicture}
+                                onHandleChange={(e) => handleIdPicture(e)}
+                            />
+                            {errors.image ? (
+                                <Error>{errors.image}</Error>
+                            ) : null}
                         </div>
                         <div className="pt-3">
                             <button

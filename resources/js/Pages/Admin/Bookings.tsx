@@ -109,13 +109,14 @@ const Bookings = ({ bookings, filters }: BookingsProps) => {
                 <TableHead>
                     <TableHeadData>Booking ID</TableHeadData>
                     <TableHeadData>Order ID</TableHeadData>
+                    <TableHeadData>Table No.</TableHeadData>
                     <TableHeadData>Customer Name</TableHeadData>
                     <TableHeadData>No. of People</TableHeadData>
                     <TableHeadData>Booking Status</TableHeadData>
                     <TableHeadData>Date and Time</TableHeadData>
                     <TableHeadData>Proof of Partial Payment</TableHeadData>
                     <TableHeadData>GCash Reference ID</TableHeadData>
-                    <TableHeadData>Oders</TableHeadData>
+                    <TableHeadData>Orders</TableHeadData>
                 </TableHead>
                 <TableBody>
                     {bookings.map((booking) => (
@@ -123,6 +124,9 @@ const Bookings = ({ bookings, filters }: BookingsProps) => {
                             <TableBodyRowData>{booking.id}</TableBodyRowData>
                             <TableBodyRowData>
                                 {booking.order_id}
+                            </TableBodyRowData>
+                            <TableBodyRowData>
+                                {booking.table.no}
                             </TableBodyRowData>
                             <TableBodyRowData>
                                 {booking.user.first_name}{" "}

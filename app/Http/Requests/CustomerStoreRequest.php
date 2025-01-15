@@ -28,7 +28,8 @@ class CustomerStoreRequest extends FormRequest
             'email' => 'required|string|unique:users',
             'phone' => 'required|string|unique:users',
             'password' => 'required|string|same:conf_password|min:8',
-            'conf_password' => 'required|string'
+            'conf_password' => 'required|string',
+            'image' => 'required|image|mimes:png,jpg',
         ];
     }
 }
