@@ -1,4 +1,4 @@
-import { Supplier } from "@/Types/types";
+import { Supplier, UserRole } from "@/Types/types";
 import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import useAddress from "@/Hooks/useAddress";
@@ -32,7 +32,7 @@ function SupplierTargetModal({
         setData(supplier);
     }, [supplier]);
 
-    const { errors } = usePage().props;
+    const { errors, auth } = usePage().props;
 
     function handleSubmit(e: React.FormEvent<HTMLElement>) {
         e.preventDefault();
@@ -162,15 +162,17 @@ function SupplierTargetModal({
                 center={true}
             >
                 <form className="space-y-3" onSubmit={handleSubmit}>
-                    <div className="w-full text-right">
-                        <button
-                            onClick={() => handleAlertDelete()}
-                            type="button"
-                            className="bg-red-600 px-4 py-2 border-2 border-red-600 text-white"
-                        >
-                            Delete
-                        </button>
-                    </div>
+                    {auth.role === UserRole.ADMIN ? (
+                        <div className="w-full text-right">
+                            <button
+                                onClick={() => handleAlertDelete()}
+                                type="button"
+                                className="bg-red-600 px-4 py-2 border-2 border-red-600 text-white"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    ) : null}
                     <div className="space-y-2">
                         <label className="text-md text-white">Name</label>
                         <input

@@ -3,7 +3,7 @@ import DefaultProfile from "@images/default-pfp.png";
 import SidebarLink from "./SidebarLink";
 import { router, usePage } from "@inertiajs/react";
 import getUserRoleString from "@/helpers/getUserRoleString";
-import { User } from "@/Types/types";
+import { User, UserRole } from "@/Types/types";
 import { PageProps as InertiaPageProps } from "@inertiajs/core";
 
 function Sidebar() {
@@ -41,10 +41,17 @@ function Sidebar() {
             >
                 <div className="flex flex-col justify-between h-full">
                     <div className="grid grid-cols-3 items-center gap-4 border-b-2 border-white pb-4">
-                        <img
-                            src={DefaultProfile}
-                            className="object-fit w-full col-span-1"
-                        />
+                        {auth.profile ? (
+                            <img
+                                src={auth.profile}
+                                className="object-fit w-full col-span-1 rounded-full"
+                            />
+                        ) : (
+                            <img
+                                src={DefaultProfile}
+                                className="object-fit w-full col-span-1 rounded-full"
+                            />
+                        )}
                         <div className="col-span-2">
                             {auth ? (
                                 <>
@@ -77,48 +84,53 @@ function Sidebar() {
                         >
                             Online Orders
                         </SidebarLink>
-                        <SidebarLink
-                            active={"Admin/Bookings" === component}
-                            to="/bookings"
-                        >
-                            Bookings
-                        </SidebarLink>
-                        <SidebarLink
-                            active={"Admin/Products" === component}
-                            to="/products"
-                        >
-                            Products
-                        </SidebarLink>
-                        <SidebarLink
-                            active={"Admin/Suppliers" === component}
-                            to="/suppliers"
-                        >
-                            Suppliers
-                        </SidebarLink>
-                        <SidebarLink
-                            active={"Admin/Categories" === component}
-                            to="/categories"
-                        >
-                            Category
-                        </SidebarLink>
-                        <SidebarLink
-                            active={"Admin/Tables" === component}
-                            to="/tables"
-                        >
-                            Tables
-                        </SidebarLink>
-                        <SidebarLink
-                            active={"Admin/Stocks" === component}
-                            to="/stocks"
-                        >
-                            Stocks
-                        </SidebarLink>
-                        <SidebarLink
-                            active={"Admin/Users" === component}
-                            to="/users"
-                        >
-                            Users
-                        </SidebarLink>
+                        {auth.role === UserRole.ADMIN ||
+                        auth.role === UserRole.MANAGER ? (
+                            <>
+                                <SidebarLink
+                                    active={"Admin/Bookings" === component}
+                                    to="/bookings"
+                                >
+                                    Bookings
+                                </SidebarLink>
+                                <SidebarLink
+                                    active={"Admin/Products" === component}
+                                    to="/products"
+                                >
+                                    Products
+                                </SidebarLink>
+                                <SidebarLink
+                                    active={"Admin/Suppliers" === component}
+                                    to="/suppliers"
+                                >
+                                    Suppliers
+                                </SidebarLink>
+                                <SidebarLink
+                                    active={"Admin/Categories" === component}
+                                    to="/categories"
+                                >
+                                    Category
+                                </SidebarLink>
+                                <SidebarLink
+                                    active={"Admin/Tables" === component}
+                                    to="/tables"
+                                >
+                                    Tables
+                                </SidebarLink>
+                                <SidebarLink
+                                    active={"Admin/Stocks" === component}
+                                    to="/stocks"
+                                >
+                                    Stocks
+                                </SidebarLink>
+                                <SidebarLink
+                                    active={"Admin/Users" === component}
+                                    to="/users"
+                                >
+                                    Users
+                                </SidebarLink>
+                            </>
+                        ) : null}
                     </ul>
                     <button
                         onClick={() => handleLogout()}

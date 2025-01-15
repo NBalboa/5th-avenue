@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
-import { Category } from "@/Types/types";
+import { Category, UserRole } from "@/Types/types";
 import Error from "./Error";
 import { router, usePage } from "@inertiajs/react";
 import Spinner from "./Spinner";
@@ -15,7 +15,7 @@ function CategoryTargetModal({
     setShow: Function;
     category: Category;
 }) {
-    const { errors } = usePage().props;
+    const { errors, auth } = usePage().props;
     const [data, setData] = useState<Category>(category);
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -103,15 +103,18 @@ function CategoryTargetModal({
                 showModal={show}
             >
                 <form className="space-y-4" onSubmit={handleSubmit}>
-                    <div className="w-full text-right">
-                        <button
-                            onClick={() => handleAlertDelete()}
-                            type="button"
-                            className="bg-red-600 px-4 py-2 border-2 border-red-600 text-white"
-                        >
-                            Delete
-                        </button>
-                    </div>
+                    {auth.role === UserRole.ADMIN ? (
+                        <div className="w-full text-right">
+                            <button
+                                onClick={() => handleAlertDelete()}
+                                type="button"
+                                className="bg-red-600 px-4 py-2 border-2 border-red-600 text-white"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    ) : null}
+
                     <div className="space-y-2">
                         <label className="text-md text-white text-medium">
                             Name
