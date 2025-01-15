@@ -6,13 +6,12 @@ import TableHead from "@/components/TableHead";
 import TableHeadData from "@/components/TableHeadData";
 import getBookingColorStatus from "@/helpers/getBookingColorStatus";
 import getBookingStringStatus from "@/helpers/getBookingStringStatus";
-import getOrderStatusString from "@/helpers/getOrderStatusString";
-import AdminLayout from "@/Layouts/AdminLayout";
-import { Booking, BookingStatus, OrderStatus } from "@/Types/types";
-import { Link, router } from "@inertiajs/react";
+import UserLayout from "@/Layouts/UserLayout";
+import { Booking, BookingStatus } from "@/Types/types";
+import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
 
-type BookingsProps = {
+type MyBookingsProps = {
     bookings: Booking[];
     filters: FilterSearch;
 };
@@ -23,24 +22,12 @@ type FilterSearch = {
     dateTimeLocalValue: string;
 };
 
-const Bookings = ({ bookings, filters }: BookingsProps) => {
+const MyBookings = ({ bookings, filters }: MyBookingsProps) => {
     const [dateTime, setDateTime] = useState<string>(
         filters.dateTimeLocalValue ?? ""
     );
     const [booking, setBooking] = useState<string>(filters.booking ?? "");
     const [search, setSearch] = useState<string>(filters.search ?? "");
-
-    const handleChangeStatus = (
-        e: React.ChangeEvent<HTMLSelectElement>,
-        booking: Booking
-    ) => {
-        const data = {
-            status: e.target.value,
-        };
-        router.post(`/bookings/${booking.id}`, data, {
-            preserveScroll: true,
-        });
-    };
 
     const handleSearch = () => {
         console.log(dateTime);
@@ -57,15 +44,16 @@ const Bookings = ({ bookings, filters }: BookingsProps) => {
             booking: booking,
         };
 
-        router.get("/bookings", data, {
+        router.get("/my/booking", data, {
             preserveScroll: true,
             replace: true,
         });
     };
 
     return (
-        <AdminLayout>
-            <h1 className="text-white text-2xl">Bookings</h1>
+        <UserLayout>
+            <Head title="Booking" />
+
             <div>
                 <div className="flex flex-col my-5 gap-5">
                     <div className="text-white relative w-full  mx-auto border-2 border-orange rounded-full">
@@ -105,17 +93,24 @@ const Bookings = ({ bookings, filters }: BookingsProps) => {
                     </div>
                 </div>
             </div>
+
+            <div className="w-full text-right">
+                <Link
+                    href="/create/booking"
+                    className="px-4 py-2 text-white border-2 border-white hover:bg-orange w-full"
+                >
+                    Create Booking
+                </Link>
+            </div>
             <Table>
                 <TableHead>
                     <TableHeadData>Booking ID</TableHeadData>
                     <TableHeadData>Order ID</TableHeadData>
-                    <TableHeadData>Customer Name</TableHeadData>
-                    <TableHeadData>No. of People</TableHeadData>
+                    <TableHeadData>Table No.</TableHeadData>
+                    <TableHeadData>Booking Date</TableHeadData>
                     <TableHeadData>Booking Status</TableHeadData>
-                    <TableHeadData>Date and Time</TableHeadData>
-                    <TableHeadData>Proof of Partial Payment</TableHeadData>
-                    <TableHeadData>GCash Reference ID</TableHeadData>
-                    <TableHeadData>Oders</TableHeadData>
+                    <TableHeadData>Gcash Reference ID</TableHeadData>
+                    <TableHeadData>Orders</TableHeadData>
                 </TableHead>
                 <TableBody>
                     {bookings.map((booking) => (
@@ -125,47 +120,21 @@ const Bookings = ({ bookings, filters }: BookingsProps) => {
                                 {booking.order_id}
                             </TableBodyRowData>
                             <TableBodyRowData>
-                                {booking.user.first_name}{" "}
-                                {booking.user.last_name}
+                                {booking.table.no}
                             </TableBodyRowData>
                             <TableBodyRowData>
-                                {booking.no_people}
+                                {booking.date} {booking.time}
                             </TableBodyRowData>
                             <TableBodyRowData>
-                                <select
-                                    onChange={(e) =>
-                                        handleChangeStatus(e, booking)
-                                    }
-                                    value={booking.booking_status}
+                                <p
                                     className={`${getBookingColorStatus(
                                         booking.booking_status
-                                    )}`}
+                                    )} text-center`}
                                 >
-                                    <option value={BookingStatus.PENDING}>
-                                        {getBookingStringStatus(
-                                            BookingStatus.PENDING
-                                        )}
-                                    </option>
-                                    <option
-                                        value={BookingStatus.CONFIRM}
-                                        className="bg-green-500"
-                                    >
-                                        {getBookingStringStatus(
-                                            BookingStatus.CONFIRM
-                                        )}
-                                    </option>
-                                </select>
-                            </TableBodyRowData>
-                            <TableBodyRowData>
-                                {booking.date} {""} {booking.time}
-                            </TableBodyRowData>
-                            <TableBodyRowData>
-                                {booking.image ? (
-                                    <img
-                                        src={booking.image}
-                                        className="object-fit w-[200px] h-[200px]  mx-auto"
-                                    />
-                                ) : null}
+                                    {getBookingStringStatus(
+                                        booking.booking_status
+                                    )}
+                                </p>
                             </TableBodyRowData>
                             <TableBodyRowData>
                                 {booking.gcash_reference_id}
@@ -173,7 +142,7 @@ const Bookings = ({ bookings, filters }: BookingsProps) => {
                             <TableBodyRowData>
                                 {booking.order_id ? (
                                     <Link
-                                        href={`/orders/items/${booking.order_id}`}
+                                        href={`/my/orders/items/${booking.order_id}`}
                                         className="px-4 py-2 text-white border-2 border-white hover:bg-orange w-full"
                                     >
                                         View
@@ -184,8 +153,8 @@ const Bookings = ({ bookings, filters }: BookingsProps) => {
                     ))}
                 </TableBody>
             </Table>
-        </AdminLayout>
+        </UserLayout>
     );
 };
 
-export default Bookings;
+export default MyBookings;

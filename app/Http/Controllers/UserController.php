@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BookingStatus;
 use App\Enums\OrderType;
 use App\Enums\UserRole;
 use App\Http\Requests\SigninRequest;
@@ -49,7 +50,10 @@ class UserController extends Controller
     public function orders(Request $request){
         $user_id = Auth::user()->id;
         $user = User::where('id', '=', $user_id)->first();
-        $orders = $user->orders()->where('order_type', '=', OrderType::ORDER->value)->with('table');
+        $orders = $user->orders()->where('order_type', '=', OrderType::ORDER->value)->with('table')
+            ->orWhereHas('booking', function($query) {
+                $query->where('booking_status', '=', BookingStatus::CONFIRM->value);
+            });
 
         $order = $request->input('order');
         $search = $request->input('search');
@@ -81,7 +85,7 @@ class UserController extends Controller
 
 
     public function items(Order $order) {
-        $order = $order->load( 'cashier', 'table');
+        $order = $order->load( 'cashier', 'table', 'booking');
         $items = $order->items()->with('product')->get();
 
         return Inertia::render('MyItems', props: [

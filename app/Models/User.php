@@ -31,8 +31,18 @@ class User extends Authenticatable
         return $this->hasMany(Cart::class, 'user_id');
     }
 
+    public function bookings() {
+        return $this->hasMany(Booking::class, 'user_id');
+    }
+
     public function orders() {
         return $this->hasMany(Order::class, 'customer_id');
+    }
+
+
+    public function scopeGetUserById($query, $id){
+
+        return $query->where('id', '=', "$id");
     }
 
     public function scopeSearchByName($query, $search){

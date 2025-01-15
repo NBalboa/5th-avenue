@@ -92,11 +92,13 @@ function Categories({
                     ))}
                 </TableBody>
             </Table>
-            <div className="w-full text-center mt-5">
-                {categories.links.map((link, index) => (
-                    <PaginatedLinks key={index} link={link} />
-                ))}
-            </div>
+            {categories.total > categories.per_page ? (
+                <div className="w-full text-center mt-5 flex justify-center">
+                    {categories.links.map((link, index) => (
+                        <PaginatedLinks key={index} link={link} />
+                    ))}
+                </div>
+            ) : null}
 
             <div className="w-full text-right mt-5 pe-1">
                 <CategoryModal />

@@ -95,8 +95,6 @@ function Products({
         }
     }
 
-    console.log(products);
-
     return (
         <AdminLayout>
             <Head title="Products" />

@@ -113,11 +113,13 @@ function Tables({ tables }: { tables: PaginatedData<TTable> }) {
                 </TableBody>
             </Table>
 
-            <div className="w-full text-center mt-5">
-                {tables.links.map((link, index) => (
-                    <PaginatedLinks key={index} link={link} />
-                ))}
-            </div>
+            {tables.total > tables.per_page ? (
+                <div className="w-full text-center mt-5 flex justify-center">
+                    {tables.links.map((link, index) => (
+                        <PaginatedLinks key={index} link={link} />
+                    ))}
+                </div>
+            ) : null}
 
             <div className="mt-5 w-full text-right">
                 <TableModal />

@@ -29,7 +29,7 @@ class Booking extends Model
             'order_id',
             'gcash_reference_id',
             'no_people',
-        ], 'like', "$search");
+        ], 'like', "%$search%");
     }
 
     public function date(): Attribute

@@ -47,13 +47,14 @@ function ProductModal({
                 reset();
             },
             onError: () => {
-                console.log(errors);
                 toast.error("Something went wrong", {
                     position: "top-right",
                 });
             },
         });
     }
+
+    console.log(errors);
 
     return (
         <div>

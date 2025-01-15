@@ -4,6 +4,8 @@ import TableBodyRow from "@/components/TableBodyRow";
 import TableBodyRowData from "@/components/TableBodyRowData";
 import TableHead from "@/components/TableHead";
 import TableHeadData from "@/components/TableHeadData";
+import getBookingColorStatus from "@/helpers/getBookingColorStatus";
+import getBookingStringStatus from "@/helpers/getBookingStringStatus";
 import getOrderColorStatus from "@/helpers/getOrderColorStatus";
 import getOrderStatusString from "@/helpers/getOrderStatusString";
 import getPaymentColorStatus from "@/helpers/getPaymentColorStatus";
@@ -26,7 +28,7 @@ const MyItems = ({ order, items }: MyItemsProps) => {
             </h1>
             <div className="flex flex-col gap-2">
                 <h2 className="text-lg font-medium text-white">
-                    Price: P{order.total.toFixed(2)}
+                    Price: P{order.total}
                 </h2>
                 <h2 className="text-lg font-medium text-white">
                     No. of Items: {items.length}
@@ -56,6 +58,7 @@ const MyItems = ({ order, items }: MyItemsProps) => {
                         {getOrderStatusString(order.order_status)}
                     </p>
                 </div>
+
                 <div className="flex gap-2">
                     <h1 className="text-lg font-medium text-white">
                         Payment Status:
@@ -68,7 +71,25 @@ const MyItems = ({ order, items }: MyItemsProps) => {
                         {getPaymentStatusString(order.payment_status)}
                     </p>
                 </div>
+
+                {order.booking ? (
+                    <div className="flex gap-2">
+                        <h1 className="text-lg font-medium text-white">
+                            Booking Status:
+                        </h1>
+                        <p
+                            className={`text-center px-2 text-md font-medium ${getBookingColorStatus(
+                                order.booking.booking_status
+                            )}`}
+                        >
+                            {getBookingStringStatus(
+                                order.booking.booking_status
+                            )}
+                        </p>
+                    </div>
+                ) : null}
             </div>
+
             <Table>
                 <TableHead>
                     <TableHeadData>Image</TableHeadData>
@@ -90,11 +111,9 @@ const MyItems = ({ order, items }: MyItemsProps) => {
                                 {item.product.name}
                             </TableBodyRowData>
                             <TableBodyRowData>{item.quantity}</TableBodyRowData>
+                            <TableBodyRowData>{item.price}</TableBodyRowData>
                             <TableBodyRowData>
-                                {item.price.toFixed(2)}
-                            </TableBodyRowData>
-                            <TableBodyRowData>
-                                {getTotalPrice(item).toFixed(2)}
+                                {getTotalPrice(item)}
                             </TableBodyRowData>
                         </TableBodyRow>
                     ))}

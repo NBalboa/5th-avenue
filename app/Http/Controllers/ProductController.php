@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Enums\IsAvailable;
 use App\Enums\IsDeleted;
+use App\Http\Requests\ProductAddQuantityRequest;
+use App\Http\Requests\ProductDeleteQuantityRequest;
 use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Category;
@@ -47,7 +49,8 @@ class ProductController extends Controller
                 Stock::create([
                     'product_id' => $product->id,
                     'supplier_id' => $validated['supplier'],
-                    'quantity' => $validated['quantity']
+                    'quantity' => $validated['quantity'],
+                    'description' => 'New Products',
                 ]);
             }
 
@@ -128,5 +131,40 @@ class ProductController extends Controller
             'category' => $category,
             'search' => $search,
         ]);
+    }
+
+
+    public function addQuantity(ProductAddQuantityRequest $request, Product $product){
+        $data = $request->validated();
+        $product->quantity += $data['quantity'];
+
+        Stock::create([
+            'product_id'=>  $product->id,
+            'supplier_id'=>  $data['supplier'],
+            'quantity' => $data['quantity'],
+            'description'=>  "Add"
+        ]);
+
+        $product->save();
+
+        return back();
+    }
+    public function deleteQuantity(ProductDeleteQuantityRequest $request, Product $product){
+        $data = $request->validated();
+
+        if($product->quantity >= $data['quantity']){
+            $product->quantity -= $data['quantity'];
+
+            Stock::create([
+                'product_id'=>  $product->id,
+                'supplier_id'=>  $data['supplier'],
+                'quantity' => $data['quantity'],
+                'description'=>  "Delete"
+            ]);
+
+            $product->save();
+        }
+
+        return back();
     }
 }

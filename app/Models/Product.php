@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\ByQuantityType;
 use App\Enums\IsAvailable;
 use App\Enums\IsDeleted;
+use App\Enums\OrderType;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +28,14 @@ class Product extends Model
         );
     }
 
+    public function scopeHasQuantity($query){
+        return $query->where('quantity', '!=', null);
+    }
+
+    public function scopeGetProductById($query, $id){
+        return $query->where('id', '=', "$id");
+    }
+
     public function scopeIsNotDeleted($query)
     {
         return $query->where('is_deleted', '=', IsDeleted::NO->value);
@@ -34,6 +44,17 @@ class Product extends Model
     public function scopeIsAvailable($query)
     {
         return $query->where('is_available', '=', IsAvailable::YES->value);
+    }
+
+    public function scopeOrderByQuantity($query, $type){
+        $type_string = "desc";
+
+        if($type === ByQuantityType::LOWEST_TO_HIGHEST->value){
+            $type_string = 'asc';
+        }
+
+        return $query->orderBy('quantity', $type_string);
+
     }
 
     public function scopeSearch($query, $search)
@@ -57,4 +78,10 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    public function scopeSearchByName($query, $search){
+        return $query->where('name', 'like', "%$search%");
+    }
+
+
 }

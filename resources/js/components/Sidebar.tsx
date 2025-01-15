@@ -107,6 +107,12 @@ function Sidebar() {
                         >
                             Tables
                         </SidebarLink>
+                        <SidebarLink
+                            active={"Admin/Stocks" === component}
+                            to="/stocks"
+                        >
+                            Stocks
+                        </SidebarLink>
                     </ul>
                     <button
                         onClick={() => handleLogout()}

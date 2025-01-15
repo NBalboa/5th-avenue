@@ -240,11 +240,13 @@ const OnlineOrder = ({ orders, filters }: OnlineOrderProps) => {
                 </TableBody>
             </Table>
 
-            <div className="w-full text-center mt-5 flex justify-center">
-                {orders.links.map((link, index) => (
-                    <PaginatedLinks key={index} link={link} />
-                ))}
-            </div>
+            {orders.total > orders.per_page ? (
+                <div className="w-full text-center mt-5 flex justify-center">
+                    {orders.links.map((link, index) => (
+                        <PaginatedLinks key={index} link={link} />
+                    ))}
+                </div>
+            ) : null}
         </AdminLayout>
     );
 };

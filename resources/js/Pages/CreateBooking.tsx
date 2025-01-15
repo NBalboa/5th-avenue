@@ -20,7 +20,7 @@ import getOverAllCartPrice from "@/helpers/getOverAllCartPrice";
 import getTotalCartPrice from "@/helpers/getTotalCartPrice";
 import UserLayout from "@/Layouts/UserLayout";
 import { Cart, Category, PaginatedData, Product, TTable } from "@/Types/types";
-import { Link, router, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -37,7 +37,7 @@ type BookingProps = {
     carts: Cart[];
 };
 
-const MyBooking = ({
+const CreateBooking = ({
     products,
     categories,
     tables,
@@ -68,7 +68,7 @@ const MyBooking = ({
             category: filters.category ?? "",
         };
 
-        router.get("/my/booking", data, {
+        router.get("/create/booking", data, {
             replace: true,
             preserveScroll: true,
         });
@@ -79,7 +79,7 @@ const MyBooking = ({
             table: table,
             product: product.id,
         };
-        router.post("/my/booking", data, {
+        router.post("/create/booking", data, {
             preserveScroll: true,
             preserveState: true,
             onSuccess: () => {
@@ -180,6 +180,7 @@ const MyBooking = ({
 
     return (
         <UserLayout>
+            <Head title="Create Booking" />
             <div className="max-w-lg mx-auto px-14 py-12 border-2 border-white rounded">
                 <div className="space-y-3">
                     <h2 className="text-white text-xl font-medium">
@@ -464,4 +465,4 @@ const MyBooking = ({
     );
 };
 
-export default MyBooking;
+export default CreateBooking;

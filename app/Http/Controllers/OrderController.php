@@ -13,6 +13,7 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Stock;
 use App\Models\Table;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -124,7 +125,7 @@ class OrderController extends Controller
         $items = $data['orders'];
 
         $order = Order::create([
-            'tendered_by' => 1,
+            'tendered_by' => Auth::user()->id,
             'table_id' => $data['table'],
             'total' => $data['total'],
             'amount_render' => $data['amountRender'],
@@ -134,12 +135,24 @@ class OrderController extends Controller
 
         foreach($items as $item){
             $product = $item['product'];
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $product['id'],
-                'price' => $product['price'],
-                'quantity' => $item['order_quantity']
-            ]);
+
+
+            if($product['quantity'] !== null && $product['quantity']  >= $item['order_quantity']){
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $product['id'],
+                    'price' => $product['price'],
+                    'quantity' => $item['order_quantity']
+                ]);
+
+                Product::getProductById($product['id'])->decrement('quantity', $item['order_quantity']);
+                Stock::create([
+                    'product_id' => $product['id'],
+                    'quantity' =>  $item['order_quantity'],
+                    'description' => "Sale"
+                ]);
+            }
+
         }
 
         return redirect()->route('orders.index');
@@ -150,11 +163,27 @@ class OrderController extends Controller
         $data = $request->validated();
         $status = (int) $data['status'];
         $order->order_status = $status;
+
         if($status === OrderStatus::CONFIRMED->value && !$order->tendered_by){
             $order->tendered_by = Auth::user()->id;
+            $items = $order->items()->get();
+
+            foreach ($items as $item){
+                $item->load('product');
+                if($item->product->quantity !== null && $item->product->quantity >= $item->quantity  && !$order->tendered_by){
+                    Product::getProductById($item->product_id)->decrement('quantity', $item->quantity);
+                    Stock::create([
+                        'product_id' => $item->product_id,
+                        'quantity' =>  $item->quantity,
+                        'description' => "Sale"
+                    ]);
+                }
+                else{
+                    $item->delete();
+                }
+            }
         }
         $order->save();
-
 
         return back();
     }

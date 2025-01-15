@@ -14,7 +14,9 @@ class Supplier extends Model
         'email',
     ];
 
-
+    public function scopeSearchByName($query, $search){
+        return $query->where('name', 'like', "%$search%");
+    }
     public function scopeIsNotDeleted($query)
     {
         return $query->where('is_deleted', '=', IsDeleted::NO->value);

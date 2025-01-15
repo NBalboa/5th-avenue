@@ -95,6 +95,11 @@ export enum PaymentStatus {
     PAID = 2,
 }
 
+export enum ByQuantityType {
+    HIGHEST_TO_LOWEST = 1,
+    LOWEST_TO_HIGHEST = 2,
+}
+
 export enum OrderStatus {
     PENDING = 1,
     CONFIRMED = 2,
@@ -190,6 +195,18 @@ export type Booking = {
     date: string;
     booking_status: BookingStatus;
     gcash_reference_id: string;
+    created_at: string;
+    updated_at: string;
+};
+
+export type Stock = {
+    id: number;
+    product_id: number;
+    supplier_id: number;
+    description: string;
+    quantity: number;
+    supplier: Supplier | null;
+    product: Product;
     created_at: string;
     updated_at: string;
 };

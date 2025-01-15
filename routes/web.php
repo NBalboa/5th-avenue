@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StocksController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
@@ -40,9 +41,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my/orders', [UserController::class, 'orders'])->name('users.orders');
     Route::get('/my/orders/items/{order}', [UserController::class, 'items'])->name('users.items');
 
-    Route::get('/my/booking', [BookingController::class, 'create'])->name('booking.create');
-    Route::post('/my/booking', [CartController::class, 'booking'])->name('carts.booking');
+    Route::get('/create/booking', [BookingController::class, 'create'])->name('booking.create');
+    Route::post('/create/booking', [CartController::class, 'booking'])->name('carts.booking');
     Route::post('/booking', [BookingController::class, 'store'])->name('booking.stores');
+
+    Route::get('/my/booking', [CustomerController::class, 'bookings'])->name('booking.customer');
 });
 
 Route::middleware(['auth', AdminOnly::class])->group(function () {
@@ -53,6 +56,8 @@ Route::middleware(['auth', AdminOnly::class])->group(function () {
     Route::put('/products/available/{product}', [ProductController::class, 'updateAvailable'])->name('products.updateAvailable');
     Route::post('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'delete'])->name('products.delete');
+    Route::post('/product/add/quantity/{product}', [ProductController::class, 'addQuantity'])->name('products.addQuantity');
+    Route::post('/product/delete/quantity/{product}', [ProductController::class, 'deleteQuantity'])->name('products.deleteQuantity');
 
     Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
     Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
@@ -79,5 +84,8 @@ Route::middleware(['auth', AdminOnly::class])->group(function () {
 
     Route::get('/bookings', [BookingController::class, 'index'])->name('booking.index');
     Route::post('/bookings/{booking}', [BookingController::class, 'updateStatus'])->name('booking.updateStatus');
+
+    Route::get('/stocks', [StocksController::class, 'index'])->name('stocks.index');
+    Route::get('/stocks/history', [StocksController::class, 'history'])->name('stocks.history');
 });
 

@@ -1,3 +1,4 @@
+import PaginatedLinks from "@/components/PaginatedLinks";
 import Table from "@/components/Table";
 import TableBody from "@/components/TableBody";
 import TableBodyRow from "@/components/TableBodyRow";
@@ -155,6 +156,14 @@ const MyOrders = ({ orders, filters }: MyOrdersProps) => {
                     ))}
                 </TableBody>
             </Table>
+
+            {orders.total > orders.per_page ? (
+                <div className="w-full text-center mt-5 flex justify-center">
+                    {orders.links.map((link, index) => (
+                        <PaginatedLinks key={index} link={link} />
+                    ))}
+                </div>
+            ) : null}
         </UserLayout>
     );
 };

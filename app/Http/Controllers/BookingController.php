@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BookingStatus;
 use App\Enums\CartType;
 use App\Enums\OrderStatus;
 use App\Enums\OrderType;
@@ -14,6 +15,7 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Stock;
 use App\Models\Table;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -84,7 +86,7 @@ class BookingController extends Controller
 
         $products = $products->isNotDeleted()->isAvailable()->latest()->paginate(10)->withQueryString();
 
-        return Inertia::render('MyBooking', [
+        return Inertia::render('CreateBooking', [
             'products' => $products,
             'categories' => $categories,
             'tables' => $tables,
@@ -98,7 +100,36 @@ class BookingController extends Controller
 
     public function updateStatus(BookingUpdateStatusRequest $request,Booking $booking){
         $data = $request->validated();
+
+        if((int) $data['status'] === BookingStatus::CONFIRM->value && $booking->order_id){
+            $order = $booking->order()->first();
+
+            if(!$order->tendered_by){
+                $order->tendered_by = Auth::user()->id;
+            }
+
+            $items = $order->items()->get();
+
+            foreach ($items as $item){
+                $item->load('product');
+
+                if($item->product->quantity !== null && $item->product->quantity >= $item->quantity  && !$order->tendered_by){
+                    Product::getProductById($item->product_id)->decrement('quantity', $item->quantity);
+                    Stock::create([
+                        'product_id' => $item->product_id,
+                        'quantity' =>  $item->quantity,
+                        'description' => "Sale"
+                    ]);
+                }
+                else{
+                    $item->delete();
+                }
+            }
+
+            $order->save();
+        }
         $booking->booking_status = $data['status'];
+
         $booking->save();
 
         return back();

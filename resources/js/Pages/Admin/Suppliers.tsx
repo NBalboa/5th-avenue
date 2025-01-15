@@ -108,11 +108,13 @@ function Suppliers({
                 </TableBody>
             </Table>
 
-            <div className="w-full text-center mt-5">
-                {suppliers.links.map((link, index) => (
-                    <PaginatedLinks key={index} link={link} />
-                ))}
-            </div>
+            {suppliers.total > suppliers.per_page ? (
+                <div className="w-full text-center mt-5 flex justify-center">
+                    {suppliers.links.map((link, index) => (
+                        <PaginatedLinks key={index} link={link} />
+                    ))}
+                </div>
+            ) : null}
 
             {suppliers.total > suppliers.per_page ? (
                 <div className="my-5 text-white w-full text-center space-x-3">

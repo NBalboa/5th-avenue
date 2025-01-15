@@ -117,16 +117,20 @@ function OrdersCreate({
             table: table,
         };
 
-        router.post("/orders/create", data, {
-            preserveScroll: true,
-            preserveState: true,
-            onError: (err) => {
-                console.log(err);
-                if (err?.amountRender) {
-                    toast.error(err.amountRender);
-                }
-            },
-        });
+        if (parseFloat(amountRender) >= overAllTotalPrice(orders)) {
+            router.post("/orders/create", data, {
+                preserveScroll: true,
+                preserveState: true,
+                onError: (err) => {
+                    console.log(err);
+                    if (err?.amountRender) {
+                        toast.error(err.amountRender);
+                    }
+                },
+            });
+        } else {
+            toast.error("Not enough amount rendered");
+        }
     }
 
     function handleProductSearch() {

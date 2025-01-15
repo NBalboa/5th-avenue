@@ -13,6 +13,7 @@ function NavLink({
     return (
         <li className="hidden md:block">
             <Link
+                preserveScroll={true}
                 href={path}
                 className={`p-2 ${
                     isActive
