@@ -166,6 +166,8 @@ export type Item = {
 
 export type User = {
     id: number;
+    image: string | null;
+    profile: string | null;
     first_name: string;
     last_name: string;
     middle_name: string | null;

@@ -2,13 +2,13 @@ import { UserRole } from "@/Types/types";
 
 const getUserRoleString = (role: UserRole): string => {
     if (UserRole.ADMIN === role) {
-        return "ADMIN";
+        return "Admin";
     } else if (UserRole.MANAGER === role) {
-        return "MANAGER";
+        return "Manager";
     } else if (UserRole.CASHIER === role) {
-        return "CASHIER";
+        return "Cashier";
     } else {
-        return "CUSTOMER";
+        return "Customer";
     }
 };
 

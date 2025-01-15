@@ -33,8 +33,6 @@ class UserController extends Controller
             $products = $products->byCategory($category);
         }
 
-
-
         $products = $products->latest()->take(10)->get();
 
         return Inertia::render("Welcome", [
@@ -93,6 +91,17 @@ class UserController extends Controller
             "items" => $items
         ]);
     }
+
+    public function users(){
+        $users = User::get();
+
+
+        return Inertia::render('Admin/Users', [
+            "users" => $users,
+        ]);
+    }
+
+
 
     public function login()
     {

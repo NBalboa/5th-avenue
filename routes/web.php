@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StocksController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TableController;
@@ -50,6 +51,8 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', AdminOnly::class])->group(function () {
 
+    Route::get('/users', [UserController::class, 'users'])->name('users.all');
+
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
@@ -87,5 +90,8 @@ Route::middleware(['auth', AdminOnly::class])->group(function () {
 
     Route::get('/stocks', [StocksController::class, 'index'])->name('stocks.index');
     Route::get('/stocks/history', [StocksController::class, 'history'])->name('stocks.history');
+
+
+    Route::post('/staffs', [StaffController::class, 'store'])->name('staffs.store');
 });
 

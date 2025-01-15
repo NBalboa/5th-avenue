@@ -6,7 +6,7 @@ function TableBodyRowData({
     to = "#",
     click,
 }: {
-    children: ReactNode;
+    children?: ReactNode;
     isLink?: boolean;
     to?: string;
     click?: Function;

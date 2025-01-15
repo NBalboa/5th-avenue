@@ -202,11 +202,13 @@ function Products({
                 </TableBody>
             </Table>
 
-            <div className="w-full text-center mt-5 flex justify-center">
-                {products.links.map((link, index) => (
-                    <PaginatedLinks key={index} link={link} />
-                ))}
-            </div>
+            {products.total > products.per_page ? (
+                <div className="w-full text-center mt-5 flex justify-center">
+                    {products.links.map((link, index) => (
+                        <PaginatedLinks key={index} link={link} />
+                    ))}
+                </div>
+            ) : null}
 
             <div className="w-full text-right mt-5 pe-1">
                 <ProductModal suppliers={suppliers} categories={categories} />
