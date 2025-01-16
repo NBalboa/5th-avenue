@@ -34,7 +34,7 @@ function Login() {
                     <h2 className="text-white text-3xl font-semibold">Login</h2>
                     <form className="space-y-3" onSubmit={handleSubmit}>
                         <div className="space-y-2">
-                            <label className="text-white text-md">Email</label>
+                            <label className="text-white text-md">Email/Phone</label>
                             <input
                                 type="text"
                                 value={data.email}

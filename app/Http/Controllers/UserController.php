@@ -110,7 +110,9 @@ class UserController extends Controller
     public function signin(SigninRequest $request) {
         $data = $request->validated();
 
-        $user = User::where('email', $data['email'])->first();
+        $user = User::where('email', $data['email'])
+            ->orWhere('phone', $data['email'])
+            ->first();
 
         if($user && Hash::check($data['password'], $user->password)){
             Auth::login($user);
