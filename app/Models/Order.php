@@ -45,6 +45,10 @@ class Order extends Model
         ], "like", "%$search%");
     }
 
+    public function scopeSearchByDate($query, $date){
+        return $query->whereDate('created_at', $date);
+    }
+
     public function scopeOrderStatus($query, $status){
         return $query->where('order_status', '=', $status);
     }

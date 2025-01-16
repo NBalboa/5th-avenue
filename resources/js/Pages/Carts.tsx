@@ -43,7 +43,7 @@ const Carts = ({ carts }: CartsProps) => {
                             </TableBodyRowData>
                             <TableBodyRowData>
                                 <Link
-                                    href="#"
+                                    href={`/menus/order/tables/${data.table}`}
                                     className="border-2 text-white px-4 py-2 hover:bg-orange rounded-lg"
                                 >
                                     Continue to Order

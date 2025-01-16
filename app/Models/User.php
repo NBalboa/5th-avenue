@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -59,6 +60,15 @@ class User extends Authenticatable
     public function scopeGetUserById($query, $id){
 
         return $query->where('id', '=', "$id");
+    }
+
+    public function scopeUserType($query, $type){
+        return $query->where('role', '=', $type);
+    }
+
+    public function scopeGetStaffs($query){
+        return $query->where('role', '=', UserRole::CASHIER->value)
+            ->orWhere('role', '=', UserRole::MANAGER->value);
     }
 
     public function scopeSearchByName($query, $search){

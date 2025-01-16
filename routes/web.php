@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/create/booking', [CartController::class, 'booking'])->name('carts.booking');
     Route::post('/booking', [BookingController::class, 'store'])->name('booking.stores');
     Route::get('/my/booking', [CustomerController::class, 'bookings'])->name('booking.customer');
+    Route::post('/orders/buy/{product}', [OrderController::class, 'buy'])->name('orders.buy');
 });
 
 Route::middleware(['auth'])->group(function () {

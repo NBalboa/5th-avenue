@@ -8,7 +8,6 @@ use App\Enums\OrderStatus;
 use App\Enums\OrderType;
 use App\Enums\PaymentStatus;
 use App\Http\Requests\BookingStoreRequest;
-use App\Http\Requests\BookingUpdateStatus;
 use App\Http\Requests\BookingUpdateStatusRequest;
 use App\Models\Booking;
 use App\Models\Category;
@@ -112,8 +111,7 @@ class BookingController extends Controller
 
             foreach ($items as $item){
                 $item->load('product');
-
-                if($item->product->quantity !== null && $item->product->quantity >= $item->quantity  && !$order->tendered_by){
+                if($item->product->quantity !== null && $item->product->quantity >= $item->quantity){
                     Product::getProductById($item->product_id)->decrement('quantity', $item->quantity);
                     Stock::create([
                         'product_id' => $item->product_id,
@@ -121,11 +119,7 @@ class BookingController extends Controller
                         'description' => "Sale"
                     ]);
                 }
-                else{
-                    $item->delete();
-                }
             }
-
             $order->save();
         }
         $booking->booking_status = $data['status'];

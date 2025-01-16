@@ -108,7 +108,7 @@ const Bookings = ({ bookings, filters }: BookingsProps) => {
             <Table>
                 <TableHead>
                     <TableHeadData>Booking ID</TableHeadData>
-                    <TableHeadData>Order ID</TableHeadData>
+                    <TableHeadData>Order Id</TableHeadData>
                     <TableHeadData>Table No.</TableHeadData>
                     <TableHeadData>Customer Name</TableHeadData>
                     <TableHeadData>No. of People</TableHeadData>

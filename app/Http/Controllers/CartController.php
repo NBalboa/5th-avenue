@@ -53,7 +53,7 @@ class CartController extends Controller
                 'product_id' => $data['product'],
                 'user_id' => $user->id,
                 'cart_type' => CartType::ORDER,
-                'quantity' => 1
+                'quantity' => $data['quantity']
             ]);
 
             return back();

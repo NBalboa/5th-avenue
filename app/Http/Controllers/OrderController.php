@@ -6,6 +6,7 @@ use App\Enums\BookingStatus;
 use App\Enums\OrderStatus;
 use App\Enums\OrderType;
 use App\Enums\PaymentStatus;
+use App\Http\Requests\OrderBuyNowRequest;
 use App\Http\Requests\OrderPaymentStatusRequest;
 use App\Http\Requests\OrderStatusUpdateRequest;
 use App\Http\Requests\OrderStoreRequest;
@@ -52,6 +53,8 @@ class OrderController extends Controller
             ]
         ]);
     }
+
+
 
     public function online(Request $request){
         $orders = Order::with('customer', 'table', 'booking')
@@ -163,13 +166,13 @@ class OrderController extends Controller
         $status = (int) $data['status'];
         $order->order_status = $status;
 
-        if($status === OrderStatus::CONFIRMED->value && !$order->tendered_by){
+        if($status === OrderStatus::CONFIRMED->value){
             $order->tendered_by = Auth::user()->id;
             $items = $order->items()->get();
 
             foreach ($items as $item){
                 $item->load('product');
-                if($item->product->quantity !== null && $item->product->quantity >= $item->quantity  && !$order->tendered_by){
+                if($item->product->quantity !== null && $item->product->quantity >= $item->quantity){
                     Product::getProductById($item->product_id)->decrement('quantity', $item->quantity);
                     Stock::create([
                         'product_id' => $item->product_id,
@@ -177,14 +180,32 @@ class OrderController extends Controller
                         'description' => "Sale"
                     ]);
                 }
-                else{
-                    $item->delete();
-                }
             }
         }
         $order->save();
 
         return back();
+    }
+
+    public function buy(OrderBuyNowRequest $request, Product $product){
+
+        $data = $request->validated();
+        $order = Order::create([
+            'customer_id' => Auth::user()->id,
+            'table_id' => $data['table'],
+            'total' => $data['quantity'] * $product->price,
+            'order_status' => OrderStatus::PENDING->value,
+            'payment_status' => PaymentStatus::PENDING->value
+        ]);
+
+        OrderItem::create([
+            'order_id' => $order->id,
+            'product_id' => $product->id,
+            'price' => $product->price,
+            'quantity' => $data['quantity']
+        ]);
+
+        return redirect()->route('users.orders');
     }
 
     public function updatePaymentStatus(OrderPaymentStatusRequest $request, Order $order){

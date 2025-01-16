@@ -1,13 +1,19 @@
+import React from "react";
+
 type OrderQuantityProps = {
     value: number;
-    onHandleAdd: () => void;
-    onHandleMinus: () => void;
+    onHandleAdd?: () => void;
+    onHandleMinus?: () => void;
+    onHandleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    isDisable?: boolean;
 };
 
 function OrderQuantity({
     value,
     onHandleAdd,
     onHandleMinus,
+    onHandleChange,
+    isDisable = true,
 }: OrderQuantityProps) {
     return (
         <div className="flex items-center">
@@ -37,7 +43,8 @@ function OrderQuantity({
                 <input
                     type="text"
                     value={value}
-                    disabled
+                    onChange={onHandleChange}
+                    disabled={isDisable}
                     min="0"
                     className="text-center text-black bg-white w-14 border border-orange text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1"
                 />

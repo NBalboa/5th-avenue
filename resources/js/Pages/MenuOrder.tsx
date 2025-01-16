@@ -1,9 +1,10 @@
 import FoodCard from "@/components/FoodCard";
+import FoodCards from "@/components/FoodCards";
 import PaginatedLinks from "@/components/PaginatedLinks";
 import UserLayout from "@/Layouts/UserLayout";
 import { Category, PaginatedData, Product, TTable } from "@/Types/types";
 import { Head, Link, router } from "@inertiajs/react";
-import { useState } from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 
 type MenuOrderFilters = {
@@ -18,6 +19,11 @@ type MenuOrderProps = {
     filters: MenuOrderFilters;
 };
 
+type SetOrders = {
+    product: Product;
+    order_quantity: number;
+};
+
 const MenuOrder = ({
     table,
     products,
@@ -26,7 +32,16 @@ const MenuOrder = ({
 }: MenuOrderProps) => {
     const [search, setSearch] = useState<string>(filters.search ?? "");
     const [loading, setLoading] = useState<boolean>(false);
-
+    const [availableProducts, setAvailableProducts] = useState<
+        SetOrders[] | []
+    >(
+        products
+            ? products.data.map((product) => ({
+                  product: product,
+                  order_quantity: 1,
+              }))
+            : []
+    );
     const handleSearch = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const data = {
@@ -40,12 +55,13 @@ const MenuOrder = ({
         });
     };
 
-    const handleAddToCart = (table_id: number, product_id: number): void => {
+    const handleAddToCart = (table_id: number, order: SetOrders): void => {
         setLoading(true);
 
         const data = {
             table: table_id,
-            product: product_id,
+            product: order.product.id,
+            quantity: order.order_quantity,
         };
         if (!loading) {
             toast("Adding to cart...", {
@@ -69,6 +85,77 @@ const MenuOrder = ({
                 },
             });
         }
+    };
+    const handleAddQuantity = (product: SetOrders) => {
+        setAvailableProducts((prev) => {
+            return prev.map((order) => {
+                if (order.product.id === product.product.id) {
+                    if (
+                        product.product.quantity &&
+                        order.order_quantity >= product.product.quantity
+                    ) {
+                        order.order_quantity = product.product.quantity;
+                        return order;
+                    }
+                    order.order_quantity += 1;
+                    return order;
+                }
+                return order;
+            });
+        });
+    };
+
+    const handleMinusQuantity = (product: SetOrders) => {
+        setAvailableProducts((prev) => {
+            return prev.map((order) => {
+                if (order.product.id === product.product.id) {
+                    if (product.product.quantity && order.order_quantity > 1) {
+                        order.order_quantity -= 1;
+                        return order;
+                    }
+                    order.order_quantity = 1;
+                    return order;
+                }
+                return order;
+            });
+        });
+    };
+    const handleQuantity = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        product: SetOrders
+    ) => {
+        setAvailableProducts((prev) => {
+            return prev.map((order) => {
+                if (order.product.id === product.product.id) {
+                    if (parseInt(e.target.value) > 0) {
+                        if (
+                            product.product.quantity &&
+                            parseInt(e.target.value) >= product.product.quantity
+                        ) {
+                            order.order_quantity = product.product.quantity;
+                            return order;
+                        }
+                        order.order_quantity = parseInt(e.target.value);
+                        return order;
+                    } else {
+                        order.order_quantity = 1;
+                        return order;
+                    }
+                }
+                return order;
+            });
+        });
+    };
+
+    const handleBuyNow = (order: SetOrders) => {
+        const data = {
+            table: table.id,
+            quantity: order.order_quantity,
+        };
+
+        router.post(`/orders/buy/${order.product.id}`, data, {
+            preserveScroll: true,
+        });
     };
     return (
         <UserLayout>
@@ -128,18 +215,28 @@ const MenuOrder = ({
                 </div>
 
                 <div className="m-5">
-                    <div className="grid sm:grid-cols-3 md:grid-cols-4 gap-4">
-                        {products.data.map((product) => (
+                    <FoodCards>
+                        {availableProducts.map((product) => (
                             <FoodCard
-                                key={product.id}
-                                product={product}
-                                label="Add to Cart"
-                                onHandleClick={() =>
-                                    handleAddToCart(table.id, product.id)
+                                showQuantity={true}
+                                key={product.product.id}
+                                product={product.product}
+                                value={product.order_quantity}
+                                onHandleMinus={() =>
+                                    handleMinusQuantity(product)
                                 }
+                                onHandleQuantity={(e) =>
+                                    handleQuantity(e, product)
+                                }
+                                label="Add to Cart"
+                                onHandleAdd={() => handleAddQuantity(product)}
+                                onHandleClick={() =>
+                                    handleAddToCart(table.id, product)
+                                }
+                                onHandleBuyNow={() => handleBuyNow(product)}
                             />
                         ))}
-                    </div>
+                    </FoodCards>
                 </div>
             </div>
             {products.total > products.per_page ? (

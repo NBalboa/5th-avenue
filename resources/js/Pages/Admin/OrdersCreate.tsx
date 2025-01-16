@@ -1,4 +1,5 @@
 import FoodCard from "@/components/FoodCard";
+import FoodCards from "@/components/FoodCards";
 import InputNumber from "@/components/InputNumber";
 import Label from "@/components/Label";
 import OrderQuantity from "@/components/OrderQuantity";
@@ -122,7 +123,6 @@ function OrdersCreate({
                 preserveScroll: true,
                 preserveState: true,
                 onError: (err) => {
-                    console.log(err);
                     if (err?.amountRender) {
                         toast.error(err.amountRender);
                     }
@@ -183,16 +183,17 @@ function OrdersCreate({
                 </div>
             </div>
 
-            <div className="grid sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <FoodCards>
                 {products.data.map((product) => (
                     <FoodCard
                         key={product.id}
                         onHandleClick={() => addProduct(product)}
                         product={product}
                         label="Add Order"
+                        showBuyButton={false}
                     />
                 ))}
-            </div>
+            </FoodCards>
             {products.total > products.per_page ? (
                 <div className="w-full text-center mt-5 flex justify-center">
                     {products.links.map((link, index) => (

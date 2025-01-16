@@ -20,7 +20,6 @@ type MyItemsProps = {
 };
 
 const MyItems = ({ order, items }: MyItemsProps) => {
-    console.log(order, items);
     return (
         <UserLayout>
             <h1 className="text-white text-2xl font-semibold my-2">

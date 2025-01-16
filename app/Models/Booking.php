@@ -65,6 +65,10 @@ class Booking extends Model
         return $query->whereDate('date', '>=', $date);
     }
 
+    public function scopeSearchByDate($query, $date){
+        return $query->whereDate('created_at', $date);
+    }
+
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }

@@ -1,4 +1,5 @@
 import FoodCard from "@/components/FoodCard";
+import FoodCards from "@/components/FoodCards";
 import PaginatedLinks from "@/components/PaginatedLinks";
 import UserLayout from "@/Layouts/UserLayout";
 import { Category, PaginatedData, Product } from "@/Types/types";
@@ -37,28 +38,29 @@ function Menus({ categories, filters, products }: MenusProps) {
         toast.error("Scan QR Code to make an Order");
     };
 
+    function handleBuyNow() {
+        toast.error("Scan QR Code to buy now");
+    }
+
     return (
         <UserLayout>
             <Head title="Menus" />
             <div>
-                <div className="m-5">
+                <div className="m-5 space-y-5">
                     {/* <Title>Menu</Title> */}
-                    <div>
-                        <form
-                            onSubmit={handleSearch}
-                            className="text-white relative w-full md:w-[500px] mx-auto my-4 border-4 border-orange rounded-full"
-                        >
+                    <div className="relative">
+                        <form onSubmit={handleSearch}>
                             <input
                                 type="text"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="w-full ps-4 py-3 text-black pe-14 rounded-full"
+                                className="w-full border-2 border-orange ps-4 py-3 text-black pe-14 rounded-full"
                             />
                             <button
                                 type="submit"
                                 className="absolute top-0 right-0 bottom-0 text-2xl bg-orange px-3 hover:opacity-90 rounded-r-full"
                             >
-                                <i className="fa-solid fa-magnifying-glass"></i>
+                                <i className="fa-solid fa-magnifying-glass text-white"></i>
                             </button>
                         </form>
                     </div>
@@ -95,16 +97,17 @@ function Menus({ categories, filters, products }: MenusProps) {
                 </div>
 
                 <div className="m-5">
-                    <div className="grid sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    <FoodCards>
                         {products.data.map((product) => (
                             <FoodCard
                                 key={product.id}
                                 product={product}
                                 label="Add to Cart"
                                 onHandleClick={() => handleAddToCart()}
+                                onHandleBuyNow={() => handleBuyNow()}
                             />
                         ))}
-                    </div>
+                    </FoodCards>
                 </div>
             </div>
             {products.total > products.per_page ? (

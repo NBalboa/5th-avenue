@@ -59,8 +59,6 @@ const CreateBooking = ({
     const imageRef = useRef<HTMLInputElement | null>(null);
     const { errors } = usePage().props;
 
-    console.log(errors);
-
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const data = {
@@ -151,8 +149,6 @@ const CreateBooking = ({
             total: getOverAllCartPrice(carts),
             carts: carts,
         };
-
-        console.log(data);
 
         router.post("/booking", data, {
             preserveScroll: true,

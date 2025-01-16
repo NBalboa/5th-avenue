@@ -1,12 +1,6 @@
 import ImageOne from "@images/1.jpg";
 import ImageTwo from "@images/2.jpg";
-import ImageThree from "@images/3.jpg";
-import ImageFour from "@images/4.jpg";
-import ImageFive from "@images/5.jpg";
-import ImageSix from "@images/6.jpg";
-import ImageEight from "@images/8.jpg";
-import ImageNine from "@images/9.jpg";
-import ImageTen from "@images/10.jpg";
+import ImageThree from "@images/2.jpg";
 import React, { useState } from "react";
 import Title from "@/components/Title";
 import FoodCard from "@/components/FoodCard";
@@ -15,6 +9,9 @@ import UserLayout from "@/Layouts/UserLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import { Category, Product } from "@/Types/types";
 import toast from "react-hot-toast";
+import ImageCarousel from "@/components/ImageCarousel";
+import LOGO from "@images/5th_avenue_logo.png";
+import FoodCards from "@/components/FoodCards";
 
 type WelcomeProductSearch = {
     search: string;
@@ -28,6 +25,7 @@ type WelcomeProps = {
 function Welcome({ products, categories, filters }: WelcomeProps) {
     const [showImage, setShowImage] = useState<number>(1);
     const [search, setSearch] = useState<string>(filters.search ?? "");
+    const [quantity, setQuantity] = useState<string>("");
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
         e.preventDefault();
@@ -43,14 +41,14 @@ function Welcome({ products, categories, filters }: WelcomeProps) {
 
     function handlePreviousImage(): void {
         if (showImage == 1) {
-            setShowImage(10);
+            setShowImage(3);
         } else {
             setShowImage(showImage - 1);
         }
     }
 
     function handleNextImage(): void {
-        if (showImage == 10) {
+        if (showImage == 3) {
             setShowImage(1);
         } else {
             setShowImage(showImage + 1);
@@ -61,88 +59,55 @@ function Welcome({ products, categories, filters }: WelcomeProps) {
         toast.error("Scan QR Code to make an Order");
     }
 
+    function handleBuyNow() {
+        toast.error("Scan QR Code to buy now");
+    }
+
     return (
         <UserLayout>
             <Head title="Home" />
-            <div className="m-5 relative">
-                <div className="grid sm:grid-cols-3 md:grid-cols-6 gap-5">
-                    <img
-                        src={ImageOne}
-                        className={`w-full ${
-                            showImage === 1 ? "block" : "hidden"
-                        } h-[400px] sm:block md:h-full sm:h-[200px] sm:col-span-2 md:row-span-2 md:col-span-2 rounded-lg`}
-                    />
-                    <img
-                        src={ImageTwo}
-                        className={`w-full  ${
-                            showImage === 2 ? "block" : "hidden"
-                        } h-[400px] sm:block sm:h-[200px] md:col-span-2 rounded-lg`}
-                    />
-                    <img
-                        src={ImageThree}
-                        className={`w-full ${
-                            showImage === 3 ? "block" : "hidden"
-                        } h-[400px] sm:block sm:h-[200px] md:col-span-2 rounded-lg`}
-                    />
-                    <img
-                        src={ImageFour}
-                        className={`w-full ${
-                            showImage === 4 ? "block" : "hidden"
-                        } h-[400px] sm:block sm:h-[200px] sm:col-span-2 md:col-span-2 rounded-lg`}
-                    />
-                    <img
-                        src={ImageFive}
-                        className={`w-full ${
-                            showImage === 5 ? "block" : "hidden"
-                        } h-[400px] sm:block sm:h-[200px] sm:col-span-2 md:col-span-2 rounded-lg`}
-                    />
-                    <img
-                        src={ImageSix}
-                        className={`w-full ${
-                            showImage === 6 ? "block" : "hidden"
-                        } h-[400px] sm:block sm:h-[200px] md:col-span-2 rounded-lg`}
-                    />
-                    <img
-                        src={ImageEight}
-                        className={`w-full ${
-                            showImage === 7 ? "block" : "hidden"
-                        } h-[400px] sm:block sm:h-[200px] md:col-span-2 rounded-lg`}
-                    />
-                    <img
-                        src={ImageTen}
-                        className={`w-full ${
-                            showImage === 8 ? "block" : "hidden"
-                        } h-[400px] sm:block md:h-full sm:h-[200px] sm:col-span-2 md:col-span-2 md:row-span-2 rounded-lg`}
-                    />
-                    <img
-                        src={ImageNine}
-                        className={`w-full ${
-                            showImage === 9 ? "block" : "hidden"
-                        } h-[400px] sm:block sm:h-[200px] sm:col-span-2  md:col-span-2  rounded-lg`}
-                    />
-                    <img
-                        src={ImageEight}
-                        className={`w-full ${
-                            showImage === 10 ? "block" : "hidden"
-                        } h-[400px] sm:block sm:h-[200px]  md:col-span-2 rounded-lg`}
-                    />
+            <div className="flex items-center flex-col md:flex-row justify-evenly gap-5">
+                <div>
+                    <img src={LOGO} className="h-[300px] w-[300px]" />
+                    <h1 className="text-white text-center text-2xl">
+                        5th Avenue Grill and Restobar
+                    </h1>
                 </div>
-                <button
-                    onClick={() => handlePreviousImage()}
-                    className="absolute left-2 top-[185px] sm:hidden left-0 px-4 py-2 text-white bg-orange rounded-lg opacity-40 hover:opacity-100"
-                >
-                    <i className="fa-solid fa-arrow-left"></i>
-                </button>
-                <button
-                    onClick={() => handleNextImage()}
-                    className="absolute right-2 top-[185px] sm:hidden px-4 py-2 text-white bg-orange rounded-lg opacity-20 hover:opacity-100"
-                >
-                    <i className="fa-solid fa-arrow-right"></i>
-                </button>
+                <div className="m-5 relative">
+                    <ImageCarousel
+                        src={ImageOne}
+                        currentId={showImage}
+                        id={1}
+                    />
+                    <ImageCarousel
+                        src={ImageTwo}
+                        currentId={showImage}
+                        id={2}
+                    />
+                    <ImageCarousel
+                        src={ImageTwo}
+                        currentId={showImage}
+                        id={3}
+                    />
+                    <div className="absolute top-0 left-0 bottom-0  flex justify-between w-full">
+                        <button
+                            onClick={() => handlePreviousImage()}
+                            className="text-white"
+                        >
+                            <i className="ms-2 fa-solid fa-arrow-left px-8 py-4  bg-orange rounded-lg opacity-40 hover:opacity-100"></i>
+                        </button>
+                        <button
+                            onClick={() => handleNextImage()}
+                            className="text-white"
+                        >
+                            <i className="me-2 fa-solid fa-arrow-right  px-8 py-4 bg-orange rounded-lg opacity-20 hover:opacity-100"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div className="m-5">
                 <Title>About</Title>
-                <p className="text-2xl font-medium text-white text-center tracking-wide">
+                <p className="text-xl font-medium text-white text-center tracking-wide">
                     <span className="text-gray  italic">
                         5th Avenue Grill and Restobar
                     </span>{" "}
@@ -190,7 +155,7 @@ function Welcome({ products, categories, filters }: WelcomeProps) {
                             type="text"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full ps-4 py-3 text-black pe-14 rounded-full"
+                            className="w-full ps-2 py-1 text-black pe-14 rounded-full"
                         />
                         <button
                             type="submit"
@@ -201,7 +166,7 @@ function Welcome({ products, categories, filters }: WelcomeProps) {
                     </form>
                 </div>
                 <div>
-                    <div className="w-full mx-auto text-white flex flex-col md:flex-row justify-center border-4 border-gray rounded sm:text-xl md:text-xl font-semibold">
+                    <div className="w-full mx-auto text-white flex flex-col md:flex-row justify-center border-4 border-gray rounded text-lg font-semibold">
                         <Link
                             preserveScroll={true}
                             href="/"
@@ -231,16 +196,17 @@ function Welcome({ products, categories, filters }: WelcomeProps) {
                 </div>
             </div>
             <div className="m-5">
-                <div className="grid sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <FoodCards>
                     {products.map((product) => (
                         <FoodCard
                             key={product.id}
                             product={product}
                             label="Add to Cart"
                             onHandleClick={() => handleAddToCart()}
+                            onHandleBuyNow={() => handleBuyNow()}
                         />
                     ))}
-                </div>
+                </FoodCards>
             </div>
             <div className="m-5">
                 <Title>Location</Title>

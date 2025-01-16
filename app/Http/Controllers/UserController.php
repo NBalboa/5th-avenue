@@ -85,7 +85,6 @@ class UserController extends Controller
     public function items(Order $order) {
         $order = $order->load( 'cashier', 'table', 'booking');
         $items = $order->items()->with('product')->get();
-
         return Inertia::render('MyItems', props: [
             "order" => $order,
             "items" => $items

@@ -10,7 +10,7 @@ function PaginatedLinks({ link }: PaginatedLinksProps) {
     return (
         <div>
             <Link
-                preserveState={true}
+                preserveState={false}
                 preserveScroll={true}
                 href={link.url ? link.url : "#"}
                 className={`px-4 py-2 text-white  ${

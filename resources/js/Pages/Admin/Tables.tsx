@@ -44,12 +44,6 @@ function Tables({ tables }: { tables: PaginatedData<TTable> }) {
     const [table, setTable] = useState<TTable>(tables.data[0]);
     const { base_url } = usePage().props;
 
-    console.log(base_url);
-
-    tables.data.map((table) => {
-        console.log(table.name);
-        console.log(`${base_url}/menus/order/tables/${table.id}`);
-    });
     function handleEdit(table: TTable) {
         setTable(table);
         setEditModal(true);

@@ -12,7 +12,6 @@ type UserProps = {
     users: User[];
 };
 const Users = ({ users }: UserProps) => {
-    console.log(users);
     return (
         <AdminLayout>
             <h1 className="text-white text-2xl font-semibold my-2">Users</h1>
