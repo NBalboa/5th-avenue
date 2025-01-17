@@ -34,7 +34,7 @@ class UserController extends Controller
             $products = $products->byCategory($category);
         }
 
-        $products = $products->latest()->take(10)->get();
+        $products = $products->isAvailable()->isNotDeleted()->latest()->take(10)->get();
 
         return Inertia::render("Welcome", [
             'products' => $products,
