@@ -115,7 +115,7 @@ function DeleteQuantityModal({
                         ) : null}
                     </InputWrapper>
                     <InputWrapper>
-                        {product ? <FormButton label="Add Stocks" /> : null}
+                        {product ? <FormButton label="Delete Stocks" /> : null}
                     </InputWrapper>
                 </Form>
             </Modal>

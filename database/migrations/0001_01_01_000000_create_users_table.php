@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\IsDeleted;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->tinyInteger('role');
             $table->string('password');
+            $table->tinyInteger('is_deleted')->default(IsDeleted::NO->value);
             $table->rememberToken();
             $table->timestamps();
         });

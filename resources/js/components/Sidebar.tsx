@@ -125,7 +125,7 @@ function Sidebar() {
                                 </SidebarLink>
                                 <SidebarLink
                                     active={"Admin/Users" === component}
-                                    to="/users"
+                                    to="/staffs"
                                 >
                                     Users
                                 </SidebarLink>

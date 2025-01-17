@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\IsDeleted;
 use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -77,6 +78,27 @@ class User extends Authenticatable
             'last_name',
             'middle_name',
         ], 'like', "%$search%");
+    }
+
+
+    public function scopeSearch($query, $search){
+        return $query->whereAny([
+            'first_name',
+            'last_name',
+            'middle_name',
+            'phone',
+            'email'
+        ], 'like', "%$search%");
+    }
+
+
+    public function scopeByRole($query, $role){
+        return $query->where('role', '=', $role);
+    }
+
+
+    public function scopeIsNotDeleted($query) {
+        return $query->where('is_deleted', '=', IsDeleted::NO->value);
     }
 
     /**

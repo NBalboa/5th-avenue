@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\BookingStatus;
+use App\Enums\IsDeleted;
 use App\Enums\OrderType;
 use App\Enums\UserRole;
 use App\Http\Requests\SigninRequest;
@@ -91,16 +92,38 @@ class UserController extends Controller
         ]);
     }
 
-    public function users(){
-        $users = User::get();
+    public function staffs(Request $request){
 
+        $users = User::isNotDeleted();
+        $role = $request->input('role');
+        $search = $request->input('search');
+
+
+        if($role){
+            $users = $users->byRole((int) $role);
+        }
+
+        if($search){
+            $search = $users->search($search);
+        }
+
+        $users = $users->get();
 
         return Inertia::render('Admin/Users', [
             "users" => $users,
+            "filters" => [
+                'role' => $role,
+                'search' => $search
+            ],
         ]);
     }
 
+    public function delete(User $user){
+        $user->is_deleted = IsDeleted::YES->value;
+        $user->save();
 
+        return back();
+    }
 
     public function login()
     {

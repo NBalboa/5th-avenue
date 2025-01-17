@@ -1,7 +1,7 @@
 import ImageOne from "@images/1.jpg";
 import ImageTwo from "@images/2.jpg";
 import ImageThree from "@images/2.jpg";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Title from "@/components/Title";
 import FoodCard from "@/components/FoodCard";
 import MAP from "@images/map.jpg";
@@ -49,6 +49,7 @@ function Welcome({ products, categories, filters }: WelcomeProps) {
     }
 
     function handleNextImage(): void {
+        console.log("Handle Next Image");
         if (showImage == 3) {
             setShowImage(1);
         } else {
@@ -63,6 +64,14 @@ function Welcome({ products, categories, filters }: WelcomeProps) {
     function handleBuyNow() {
         toast.error("Scan QR Code to buy now");
     }
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setShowImage((prev) => (prev === 3 ? 1 : prev + 1));
+        }, 3000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <UserLayout>

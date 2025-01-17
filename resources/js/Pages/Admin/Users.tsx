@@ -7,14 +7,114 @@ import TableHead from "@/components/TableHead";
 import TableHeadData from "@/components/TableHeadData";
 import getUserRoleString from "@/helpers/getUserRoleString";
 import AdminLayout from "@/Layouts/AdminLayout";
-import { User } from "@/Types/types";
+import { User, UserRole } from "@/Types/types";
+import { router, usePage } from "@inertiajs/react";
+import React, { useState } from "react";
+import toast, { Toast } from "react-hot-toast";
 type UserProps = {
     users: User[];
+    filters: FilterSearch;
 };
-const Users = ({ users }: UserProps) => {
+
+type FilterSearch = {
+    search: string;
+    role: string;
+};
+const Users = ({ users, filters }: UserProps) => {
+    const [search, setSearch] = useState<string>(filters.search ?? "");
+    const [role, setRole] = useState<string>(filters.role ?? "");
+
+    const { auth } = usePage().props;
+
+    const handleSearch = (e: React.FormEvent<HTMLElement>) => {
+        e.preventDefault();
+
+        const data = {
+            search: search,
+            role: role,
+        };
+
+        router.get("/staffs", data, {
+            preserveScroll: true,
+            preserveState: true,
+            replace: true,
+        });
+    };
+    function handleAlertDelete(user: User) {
+        toast(
+            (t) => (
+                <div>
+                    <span className="mb-2">Are you sure to delete this?</span>
+                    <div className="flex justify-center gap-2">
+                        <button
+                            onClick={() => handleDelete(user, t)}
+                            className="px-4 py-2 bg-red-600 text-white hover:bg-opacity-80 rounded"
+                        >
+                            Yes
+                        </button>
+                        <button
+                            className="px-4 py-2 bg-blue-600 text-white hover:bg-opacity-80 rounded"
+                            onClick={() => toast.dismiss(t.id)}
+                        >
+                            No
+                        </button>
+                    </div>
+                </div>
+            ),
+            {
+                position: "top-center",
+            }
+        );
+    }
+
+    const handleDelete = (user: User, t: Toast) => {
+        router.delete(`/users/${user.id}`, {
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.dismiss(t.id);
+                toast.success("User account deleted successfully");
+                toast.remove();
+            },
+        });
+    };
+
     return (
         <AdminLayout>
             <h1 className="text-white text-2xl font-semibold my-2">Users</h1>
+            <div>
+                <div className="flex  my-5 gap-5 flex-col  md:flex-row items-center">
+                    <form
+                        onSubmit={handleSearch}
+                        className="text-white relative w-full  mx-auto border-2 border-orange rounded-full"
+                    >
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="text-sm w-full ps-4 py-1 text-black pe-14 rounded-full"
+                        />
+                        <button
+                            type="submit"
+                            className="absolute top-0 right-0 bottom-0 text-md bg-orange px-3 hover:opacity-90 rounded-r-full"
+                        >
+                            <i className="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+                    <div>
+                        <select
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
+                            className="px-4 py-2 text-sm rounded-lg border-2 border-orange"
+                        >
+                            <option value="">Choose Role</option>
+                            <option value={UserRole.ADMIN}>Admin</option>
+                            <option value={UserRole.MANAGER}>Manager</option>
+                            <option value={UserRole.CASHIER}>Cashier</option>
+                            <option value={UserRole.CUSTOMER}>Customer</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div className="w-full text-right">
                 <RegisterModalStaff />
             </div>
@@ -26,6 +126,9 @@ const Users = ({ users }: UserProps) => {
                     <TableHeadData>Phone</TableHeadData>
                     <TableHeadData>Email</TableHeadData>
                     <TableHeadData>Role</TableHeadData>
+                    {auth.role === UserRole.ADMIN ? (
+                        <TableHeadData></TableHeadData>
+                    ) : null}
                 </TableHead>
                 <TableBody>
                     {users.map((user) => (
@@ -54,6 +157,21 @@ const Users = ({ users }: UserProps) => {
                             <TableBodyRowData>
                                 {getUserRoleString(user.role)}{" "}
                             </TableBodyRowData>
+                            {auth.role === UserRole.ADMIN ? (
+                                <TableBodyRowData>
+                                    {user.role !== UserRole.ADMIN ? (
+                                        <button
+                                            onClick={() =>
+                                                handleAlertDelete(user)
+                                            }
+                                            type="button"
+                                            className="bg-red-600 px-4 py-2 border-2 border-red-600 text-white"
+                                        >
+                                            Delete
+                                        </button>
+                                    ) : null}
+                                </TableBodyRowData>
+                            ) : null}
                         </TableBodyRow>
                     ))}
                 </TableBody>
