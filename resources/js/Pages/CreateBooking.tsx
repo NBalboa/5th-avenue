@@ -1,5 +1,7 @@
+import Categories from "@/components/Categories";
 import Error from "@/components/Error";
 import FoodCard from "@/components/FoodCard";
+import FoodCards from "@/components/FoodCards";
 import Form from "@/components/Form";
 import FormButton from "@/components/FormButton";
 import Input from "@/components/Input";
@@ -393,7 +395,7 @@ const CreateBooking = ({
                                 </form>
                             </div>
                             <div>
-                                <div className="w-full mx-auto text-white flex flex-col md:flex-row justify-center border-4 border-gray rounded sm:text-xl md:text-xl font-semibold">
+                                <Categories>
                                     <Link
                                         preserveState={true}
                                         preserveScroll={true}
@@ -428,14 +430,15 @@ const CreateBooking = ({
                                             {category.name}
                                         </Link>
                                     ))}
-                                </div>
+                                </Categories>
                             </div>
                         </div>
 
                         <div className="m-5">
-                            <div className="grid sm:grid-cols-3 md:grid-cols-4 gap-4">
+                            <FoodCards>
                                 {products.data.map((product) => (
                                     <FoodCard
+                                        showBuyButton={false}
                                         key={product.id}
                                         product={product}
                                         label="Add to Cart"
@@ -444,7 +447,7 @@ const CreateBooking = ({
                                         }
                                     />
                                 ))}
-                            </div>
+                            </FoodCards>
                         </div>
                     </div>
 

@@ -166,7 +166,7 @@ class OrderController extends Controller
         $status = (int) $data['status'];
         $order->order_status = $status;
 
-        if($status === OrderStatus::CONFIRMED->value){
+        if($status === OrderStatus::CONFIRMED->value && !$order->tendered_by){
             $order->tendered_by = Auth::user()->id;
             $items = $order->items()->get();
 

@@ -121,7 +121,7 @@ class ProductController extends Controller
             $products = $products->byCategory($category);
         }
 
-        $products =  $products->latest()->paginate(10)->withQueryString();
+        $products =  $products->isNotDeleted()->latest()->paginate(10)->withQueryString();
 
 
         return Inertia::render("Admin/Products", [

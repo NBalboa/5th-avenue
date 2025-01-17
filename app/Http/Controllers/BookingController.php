@@ -100,13 +100,14 @@ class BookingController extends Controller
     public function updateStatus(BookingUpdateStatusRequest $request,Booking $booking){
         $data = $request->validated();
 
-        if((int) $data['status'] === BookingStatus::CONFIRM->value && $booking->order_id){
+        $booking->load('order');
+
+        if((int) $data['status'] === BookingStatus::CONFIRM->value && $booking->order_id && !$booking->order->tendered_by){
             $order = $booking->order()->first();
 
             if(!$order->tendered_by){
                 $order->tendered_by = Auth::user()->id;
             }
-
             $items = $order->items()->get();
 
             foreach ($items as $item){
@@ -120,6 +121,7 @@ class BookingController extends Controller
                     ]);
                 }
             }
+
             $order->save();
         }
         $booking->booking_status = $data['status'];
