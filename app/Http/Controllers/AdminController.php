@@ -23,8 +23,8 @@ class AdminController extends Controller
         $end_wek = Carbon::now()->endOfWeek();
         $today = Carbon::today();
 
-        $total_customers = User::userType(UserRole::CUSTOMER->value)->get()->count();
-        $total_staffs = User::getStaffs()->count();
+        $total_customers = User::isNotDeleted()->userType(UserRole::CUSTOMER->value)->get()->count();
+        $total_staffs = User::isNotDeleted()->getStaffs()->count();
 
 
         $name_date = "today";
