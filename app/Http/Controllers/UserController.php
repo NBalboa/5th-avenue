@@ -21,7 +21,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $products = Product::with('category');
-        $categories = Category::get();
+        $categories = Category::isNotDeleted()->get();
 
         $category = $request->input('category');
         $search = $request->input('search');

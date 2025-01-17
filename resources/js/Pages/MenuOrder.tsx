@@ -1,3 +1,4 @@
+import Categories from "@/components/Categories";
 import FoodCard from "@/components/FoodCard";
 import FoodCards from "@/components/FoodCards";
 import PaginatedLinks from "@/components/PaginatedLinks";
@@ -183,7 +184,7 @@ const MenuOrder = ({
                         </form>
                     </div>
                     <div>
-                        <div className="w-full mx-auto text-white flex flex-col md:flex-row justify-center border-4 border-gray rounded sm:text-xl md:text-xl font-semibold">
+                        <Categories>
                             <Link
                                 preserveScroll={true}
                                 href={`/menus/order/tables/${table.id}`}
@@ -210,7 +211,7 @@ const MenuOrder = ({
                                     {category.name}
                                 </Link>
                             ))}
-                        </div>
+                        </Categories>
                     </div>
                 </div>
 

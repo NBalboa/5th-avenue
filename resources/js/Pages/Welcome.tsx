@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import ImageCarousel from "@/components/ImageCarousel";
 import LOGO from "@images/5th_avenue_logo.png";
 import FoodCards from "@/components/FoodCards";
+import Categories from "@/components/Categories";
 
 type WelcomeProductSearch = {
     search: string;
@@ -166,7 +167,7 @@ function Welcome({ products, categories, filters }: WelcomeProps) {
                     </form>
                 </div>
                 <div>
-                    <div className="w-full mx-auto text-white flex flex-col md:flex-row justify-center border-4 border-gray rounded text-lg font-semibold">
+                    <Categories>
                         <Link
                             preserveScroll={true}
                             href="/"
@@ -192,7 +193,7 @@ function Welcome({ products, categories, filters }: WelcomeProps) {
                                 {category.name}
                             </Link>
                         ))}
-                    </div>
+                    </Categories>
                 </div>
             </div>
             <div className="m-5">
