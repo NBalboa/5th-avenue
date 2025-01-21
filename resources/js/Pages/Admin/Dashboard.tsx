@@ -107,12 +107,13 @@ function Dashboard({
                 </DashboardCards>
             </div>
             <div className="text-right mt-5">
-                <Link
+                <a
                     href={`/reports?name_date=${filters.name_date}`}
+                    target="_black"
                     className="rounded-md px-4 py-2 border-2 border-white text-white font-medium hover:bg-orange mt-2"
                 >
                     Generate Report
-                </Link>
+                </a>
             </div>
         </AdminLayout>
     );
