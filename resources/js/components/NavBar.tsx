@@ -14,11 +14,8 @@ function NavBar() {
         router.post("/logout", {});
     };
     return (
-        <nav className="relative flex justify-end items-center text-white py-5 mx-5 gap-5">
-            <div className="invisible">
-                <a href="#">5th Avenue Grill and Restobar </a>
-            </div>
-            <div className="flex flex-col items-center hap-2">
+        <nav className="relative flex justify-between items-center text-white py-5 mx-5 gap-5 max-w-4xl mx-auto">
+            <div className="flex flex-col items-center p-2">
                 <a
                     href="#"
                     className="rounded-full m-5 hidden sm:hidden md:inline-block"
@@ -28,7 +25,7 @@ function NavBar() {
                         className="w-[75px] h-[75px] rounded-full hover:border-4 border-orange"
                     />
                 </a>
-                <h1 className="text-md sm:text-sm md:text-2xl font-semibold hover:text-orange">
+                <h1 className="text-md text-center sm:text-sm md:text-2xl font-semibold hover:text-orange">
                     <a href="#">5th Avenue Grill and Restobar </a>
                 </h1>
             </div>
