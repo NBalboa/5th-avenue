@@ -138,7 +138,6 @@ class OrderController extends Controller
         foreach($items as $item){
             $product = $item['product'];
 
-
             if($product['quantity'] !== null && $product['quantity']  >= $item['order_quantity']){
                 OrderItem::create([
                     'order_id' => $order->id,
@@ -147,7 +146,7 @@ class OrderController extends Controller
                     'quantity' => $item['order_quantity']
                 ]);
 
-                Product::getProductById($product['id'])->decrement('quantity', $item['order_quantity']);
+                Product::getProductById((int)$product['id'])->decrement('quantity', $item['order_quantity']);
                 Stock::create([
                     'product_id' => $product['id'],
                     'quantity' =>  $item['order_quantity'],
@@ -156,7 +155,6 @@ class OrderController extends Controller
             }
 
         }
-
         return redirect()->route('orders.index');
     }
 

@@ -14,19 +14,24 @@ function NavBar() {
         router.post("/logout", {});
     };
     return (
-        <nav className="relative flex justify-between items-center text-white py-5 mx-5 gap-5">
-            <h1 className="text-md sm:text-sm md:text-2xl font-semibold hover:text-orange">
+        <nav className="relative flex justify-end items-center text-white py-5 mx-5 gap-5">
+            <div className="invisible">
                 <a href="#">5th Avenue Grill and Restobar </a>
-            </h1>
-            <a
-                href="#"
-                className="rounded-full m-5 hidden sm:hidden md:inline-block"
-            >
-                <img
-                    src={Logo}
-                    className="w-[75px] h-[75px] rounded-full hover:border-4 border-orange"
-                />
-            </a>
+            </div>
+            <div className="flex flex-col items-center hap-2">
+                <a
+                    href="#"
+                    className="rounded-full m-5 hidden sm:hidden md:inline-block"
+                >
+                    <img
+                        src={Logo}
+                        className="w-[75px] h-[75px] rounded-full hover:border-4 border-orange"
+                    />
+                </a>
+                <h1 className="text-md sm:text-sm md:text-2xl font-semibold hover:text-orange">
+                    <a href="#">5th Avenue Grill and Restobar </a>
+                </h1>
+            </div>
             <ul className="flex items-center text-lg gap-3 me-4">
                 <NavLink path="/" isActive={"Welcome" === component}>
                     Home

@@ -49,13 +49,13 @@ function Menus({ categories, filters, products }: MenusProps) {
             <div>
                 <div className="m-5 space-y-5">
                     {/* <Title>Menu</Title> */}
-                    <div className="relative">
+                    <div className="relative max-w-xl mx-auto">
                         <form onSubmit={handleSearch}>
                             <input
                                 type="text"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="w-full border-2 border-orange ps-4 py-3 text-black pe-14 rounded-full"
+                                className="w-full border-2 border-orange ps-4 py-2 text-black pe-14 rounded-full"
                             />
                             <button
                                 type="submit"

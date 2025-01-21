@@ -114,8 +114,8 @@ function Orders({ orders, filters }: OrderProps) {
             <h1 className="text-white text-2xl font-semibold my-2">Orders</h1>
 
             <div>
-                <div className="flex md:flex-row flex-col my-5 gap-5 items-center">
-                    <div className="text-white relative w-full  mx-auto border-2 border-orange rounded-full">
+                <div>
+                    <div className="text-white relative max-w-lg  mx-auto border-2 border-orange rounded-full">
                         <input
                             type="text"
                             value={search}
@@ -130,11 +130,11 @@ function Orders({ orders, filters }: OrderProps) {
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
-                    <div>
+                    <div className="mb-2 max-w-md mx-auto flex gap-2 mt-2 flex-col md:flex-row">
                         <select
                             value={orderStatus}
                             onChange={(e) => setOrderStatus(e.target.value)}
-                            className="px-4 py-2 text-sm rounded-lg border-2 border-orange"
+                            className="px-4 w-full py-2 text-sm rounded-lg border-2 border-orange"
                         >
                             <option value="">Order Status</option>
                             <option value={OrderStatus.PENDING}>Pending</option>
@@ -146,12 +146,10 @@ function Orders({ orders, filters }: OrderProps) {
                                 Completed
                             </option>
                         </select>
-                    </div>
-                    <div>
                         <select
                             value={paymentStatus}
                             onChange={(e) => setPaymentStatus(e.target.value)}
-                            className="px-4 py-2 text-sm rounded-lg border-2 border-orange"
+                            className="px-4 w-full py-2 text-sm rounded-lg border-2 border-orange"
                         >
                             <option value="">Payment Status</option>
                             <option value={PaymentStatus.PENDING}>

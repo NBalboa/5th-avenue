@@ -53,7 +53,7 @@ function Categories({
                 <div>
                     <form
                         onSubmit={handleSearch}
-                        className="text-white relative w-full md:w-[500px] mx-auto my-2 border-4 border-orange rounded-full"
+                        className="text-white relative max-w-md ms-auto my-2 border-4 border-orange rounded-full"
                     >
                         <input
                             type="text"

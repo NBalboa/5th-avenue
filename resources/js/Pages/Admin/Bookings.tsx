@@ -9,7 +9,7 @@ import getBookingStringStatus from "@/helpers/getBookingStringStatus";
 import getOrderStatusString from "@/helpers/getOrderStatusString";
 import AdminLayout from "@/Layouts/AdminLayout";
 import { Booking, BookingStatus, OrderStatus } from "@/Types/types";
-import { Link, router } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
 
 type BookingsProps = {
@@ -65,10 +65,11 @@ const Bookings = ({ bookings, filters }: BookingsProps) => {
 
     return (
         <AdminLayout>
+            <Head title="Bookings" />
             <h1 className="text-white text-2xl">Bookings</h1>
             <div>
-                <div className="flex flex-col my-5 gap-5">
-                    <div className="text-white relative w-full  mx-auto border-2 border-orange rounded-full">
+                <div>
+                    <div className="text-white relative max-w-lg  mx-auto border-2 border-orange rounded-full">
                         <input
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
@@ -82,11 +83,11 @@ const Bookings = ({ bookings, filters }: BookingsProps) => {
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
-                    <div className="flex flex-row gap-5 justify-center items-center">
+                    <div className="flex flex-col md:flex-row gap-2 justify-center items-center mt-2 max-w-md mx-auto">
                         <select
                             value={booking}
                             onChange={(e) => setBooking(e.target.value)}
-                            className="px-4 py-2 text-sm rounded-lg border-2 border-orange"
+                            className="px-4 w-full py-2 text-sm rounded-lg border-2 border-orange"
                         >
                             <option value="">Booking Status</option>
                             <option value={BookingStatus.PENDING}>
@@ -100,7 +101,7 @@ const Bookings = ({ bookings, filters }: BookingsProps) => {
                             value={dateTime}
                             onChange={(e) => setDateTime(e.target.value)}
                             type="datetime-local"
-                            className="px-4 py-2 text-sm rounded-lg border-2 border-orange"
+                            className="w-full px-4 py-2 text-sm rounded-lg border-2 border-orange"
                         />
                     </div>
                 </div>

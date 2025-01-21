@@ -1,6 +1,7 @@
 import Error from "@/components/Error";
 import InputImage from "@/components/InputImage";
 import InputSeparator from "@/components/InputSeparator";
+import InputWrapper from "@/components/InputWrapper";
 import Label from "@/components/Label";
 import Phone from "@/components/Phone";
 import TwoInputsLayout from "@/Layouts/TwoInputsLayout";
@@ -64,7 +65,7 @@ function Register() {
     return (
         <UserLayout>
             <Head title="Register" />
-            <div className="max-w-3xl mx-auto px-14 py-12 border-2 border-white rounded-lg">
+            <div className="max-w-xl mx-auto px-14 py-12 border-2 border-white rounded-lg">
                 <div className="space-y-3">
                     <h2 className="text-white text-2xl font-semibold">
                         Create an Account
@@ -73,178 +74,129 @@ function Register() {
                         className="w-full space-y-3 p-4 rounded-lg"
                         onSubmit={handleSubmit}
                     >
-                        <div>
-                            <TwoInputsLayout>
-                                <InputSeparator>
-                                    <label className="text-white text-md font-medium">
-                                        First Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={data.first_name}
-                                        onChange={(e) =>
-                                            setData(
-                                                "first_name",
-                                                e.target.value
-                                            )
-                                        }
-                                        className="w-full rounded-lg px-4 py-2"
-                                    />
-                                    {errors.first_name ? (
-                                        <Error>{errors.first_name}</Error>
-                                    ) : null}
-                                </InputSeparator>
-                                <InputSeparator>
-                                    <label className="text-white text-md font-medium">
-                                        Middle Name (Optional)
-                                    </label>
-                                    <input
-                                        value={data.middle_name}
-                                        onChange={(e) =>
-                                            setData(
-                                                "middle_name",
-                                                e.target.value
-                                            )
-                                        }
-                                        type="text"
-                                        className="w-full rounded-lg px-4 py-2"
-                                    />
-                                </InputSeparator>
-                                <InputSeparator>
-                                    <label className="text-white text-md font-medium">
-                                        Last Name
-                                    </label>
-                                    <input
-                                        value={data.last_name}
-                                        onChange={(e) =>
-                                            setData("last_name", e.target.value)
-                                        }
-                                        type="text"
-                                        className="w-full rounded-lg px-4 py-2"
-                                    />
-                                    {errors.last_name ? (
-                                        <Error>{errors.last_name}</Error>
-                                    ) : null}
-                                </InputSeparator>
-                            </TwoInputsLayout>
-                        </div>
-                        <div>
-                            <TwoInputsLayout>
-                                <InputSeparator>
-                                    <label className="text-white text-md font-medium">
-                                        Email
-                                    </label>
-                                    <input
-                                        value={data.email}
-                                        onChange={(e) =>
-                                            setData("email", e.target.value)
-                                        }
-                                        type="text"
-                                        className="w-full rounded-lg px-4 py-2"
-                                    />
-                                    {errors.email ? (
-                                        <Error>{errors.email}</Error>
-                                    ) : null}
-                                </InputSeparator>
-                                <InputSeparator>
-                                    <label className="text-white text-md font-medium">
-                                        Phone
-                                    </label>
-                                    <Phone
-                                        isValid={isValid}
-                                        setIsValid={(valid) =>
-                                            setIsValid(valid)
-                                        }
-                                        phone={data.phone}
-                                        setPhone={(phone) =>
-                                            setData("phone", phone)
-                                        }
-                                    />
-                                    {errors.phone ? (
-                                        <Error>{errors.phone}</Error>
-                                    ) : null}
-                                </InputSeparator>
-                            </TwoInputsLayout>
-                        </div>
-                        <div>
-                            <TwoInputsLayout>
-                                <InputSeparator>
-                                    <label className="text-white text-md font-medium">
-                                        Password
-                                    </label>
-                                    <div className="relative">
-                                        <input
-                                            type={
-                                                showPassword
-                                                    ? "text"
-                                                    : "password"
-                                            }
-                                            value={data.password}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "password",
-                                                    e.target.value
-                                                )
-                                            }
-                                            className="w-full rounded-lg px-4 py-2"
-                                        />
-                                        <button
-                                            tabIndex={-1}
-                                            type="button"
-                                            onClick={() => handleShowPassword()}
-                                            className="absolute text-black top-0 bottom-0 right-2 text-xl"
-                                        >
-                                            {showPassword ? (
-                                                <i className="fa-solid fa-eye-slash"></i>
-                                            ) : (
-                                                <i className="fa-solid fa-eye"></i>
-                                            )}
-                                        </button>
-                                    </div>
-                                    {errors.password ? (
-                                        <Error>{errors.password}</Error>
-                                    ) : null}
-                                </InputSeparator>
-                                <InputSeparator>
-                                    <label className="text-white text-md font-medium">
-                                        Confirm Password
-                                    </label>
-                                    <div className="relative">
-                                        <input
-                                            value={data.conf_password}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "conf_password",
-                                                    e.target.value
-                                                )
-                                            }
-                                            type={
-                                                showPassword
-                                                    ? "text"
-                                                    : "password"
-                                            }
-                                            className="w-full rounded-lg px-4 py-2"
-                                        />
-                                        <button
-                                            type="button"
-                                            tabIndex={-1}
-                                            onClick={() => handleShowPassword()}
-                                            className="absolute text-black top-0 bottom-0 right-2 text-xl"
-                                        >
-                                            {showPassword ? (
-                                                <i className="fa-solid fa-eye-slash"></i>
-                                            ) : (
-                                                <i className="fa-solid fa-eye"></i>
-                                            )}
-                                        </button>
-                                    </div>
-                                    {errors.conf_password ? (
-                                        <Error>{errors.conf_password}</Error>
-                                    ) : null}
-                                </InputSeparator>
-                            </TwoInputsLayout>
-                        </div>
-                        <div className="mt-5 space-y-2">
+                        <InputWrapper>
+                            <label className="text-white text-md font-medium">
+                                First Name
+                            </label>
+                            <input
+                                type="text"
+                                value={data.first_name}
+                                onChange={(e) =>
+                                    setData("first_name", e.target.value)
+                                }
+                                className="w-full rounded-lg px-4 py-2"
+                            />
+                            {errors.first_name ? (
+                                <Error>{errors.first_name}</Error>
+                            ) : null}
+                        </InputWrapper>
+                        <InputWrapper>
+                            <label className="text-white text-md font-medium">
+                                Last Name
+                            </label>
+                            <input
+                                value={data.last_name}
+                                onChange={(e) =>
+                                    setData("last_name", e.target.value)
+                                }
+                                type="text"
+                                className="w-full rounded-lg px-4 py-2"
+                            />
+                            {errors.last_name ? (
+                                <Error>{errors.last_name}</Error>
+                            ) : null}
+                        </InputWrapper>
+                        <InputWrapper>
+                            <label className="text-white text-md font-medium">
+                                Email
+                            </label>
+                            <input
+                                value={data.email}
+                                onChange={(e) =>
+                                    setData("email", e.target.value)
+                                }
+                                type="text"
+                                className="w-full rounded-lg px-4 py-2"
+                            />
+                            {errors.email ? (
+                                <Error>{errors.email}</Error>
+                            ) : null}
+                        </InputWrapper>
+                        <InputWrapper>
+                            <label className="text-white text-md font-medium">
+                                Phone
+                            </label>
+                            <Phone
+                                isValid={isValid}
+                                setIsValid={(valid) => setIsValid(valid)}
+                                phone={data.phone}
+                                setPhone={(phone) => setData("phone", phone)}
+                            />
+                            {errors.phone ? (
+                                <Error>{errors.phone}</Error>
+                            ) : null}
+                        </InputWrapper>
+                        <InputWrapper>
+                            <label className="text-white text-md font-medium">
+                                Password
+                            </label>
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    value={data.password}
+                                    onChange={(e) =>
+                                        setData("password", e.target.value)
+                                    }
+                                    className="w-full rounded-lg px-4 py-2"
+                                />
+                                <button
+                                    tabIndex={-1}
+                                    type="button"
+                                    onClick={() => handleShowPassword()}
+                                    className="absolute text-black top-0 bottom-0 right-2 text-xl"
+                                >
+                                    {showPassword ? (
+                                        <i className="fa-solid fa-eye-slash"></i>
+                                    ) : (
+                                        <i className="fa-solid fa-eye"></i>
+                                    )}
+                                </button>
+                            </div>
+                            {errors.password ? (
+                                <Error>{errors.password}</Error>
+                            ) : null}
+                        </InputWrapper>
+                        <InputWrapper>
+                            <label className="text-white text-md font-medium">
+                                Confirm Password
+                            </label>
+                            <div className="relative">
+                                <input
+                                    value={data.conf_password}
+                                    onChange={(e) =>
+                                        setData("conf_password", e.target.value)
+                                    }
+                                    type={showPassword ? "text" : "password"}
+                                    className="w-full rounded-lg px-4 py-2"
+                                />
+                                <button
+                                    type="button"
+                                    tabIndex={-1}
+                                    onClick={() => handleShowPassword()}
+                                    className="absolute text-black top-0 bottom-0 right-2 text-xl"
+                                >
+                                    {showPassword ? (
+                                        <i className="fa-solid fa-eye-slash"></i>
+                                    ) : (
+                                        <i className="fa-solid fa-eye"></i>
+                                    )}
+                                </button>
+                            </div>
+                            {errors.conf_password ? (
+                                <Error>{errors.conf_password}</Error>
+                            ) : null}
+                        </InputWrapper>
+                        <InputWrapper>
                             <Label label="ID Picture" />
                             <InputImage
                                 imageRef={idPictureRef}
@@ -254,7 +206,7 @@ function Register() {
                             {errors.image ? (
                                 <Error>{errors.image}</Error>
                             ) : null}
-                        </div>
+                        </InputWrapper>
                         <div className="pt-3">
                             <button
                                 type="submit"

@@ -64,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(UserExist::class)->group(function (){
         Route::middleware(StaffOnly::class)->group(function() {
             Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+            Route::get('/reports', [AdminController::class, 'report'])->name('report');
         });
         Route::middleware(ProductPermission::class)->group(function () {
             Route::get('/products', [ProductController::class, 'index'])->name('products.index');

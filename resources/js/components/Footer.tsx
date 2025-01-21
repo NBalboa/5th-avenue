@@ -4,12 +4,6 @@ import LOGO from "@images/5th_avenue_logo.png";
 function Footer() {
     return (
         <footer className="m-5">
-            <div>
-                <img
-                    src={LOGO}
-                    className="object-contain h-[100px] mx-auto rounded-full"
-                />
-            </div>
             <div className="mt-5 grid sm:grid-cols-2 md:grid-cols-5 gap-5 border-b-4 border-orange pb-3">
                 <h1 className="text-white col-span-2 text-3xl hover:text-orange">
                     <a href="#">5th Avenue Grill and Restobar</a>

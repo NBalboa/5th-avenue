@@ -23,6 +23,7 @@
     "dependencies": {
         "@aivangogh/ph-address": "^1.4.2",
         "@inertiajs/react": "^1.2.0",
+        "@react-pdf/renderer": "^4.1.6",
         "flowbite-react": "^0.10.2",
         "google-libphonenumber": "^3.2.40",
         "qrcode.react": "^4.2.0",

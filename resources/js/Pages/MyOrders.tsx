@@ -58,8 +58,8 @@ const MyOrders = ({ orders, filters }: MyOrdersProps) => {
             <Head title="My Orders" />
 
             <div>
-                <div className="flex md:flex-row flex-col my-5 gap-5 items-center">
-                    <div className="text-white relative w-full  mx-auto border-2 border-orange rounded-full">
+                <div className="">
+                    <div className="text-white relative max-w-xl  mx-auto border-2 border-orange rounded-full">
                         <input
                             type="text"
                             value={search}
@@ -74,35 +74,39 @@ const MyOrders = ({ orders, filters }: MyOrdersProps) => {
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
-                    <div>
-                        <select
-                            value={order}
-                            onChange={(e) => setOrder(e.target.value)}
-                            className="px-4 py-2 text-sm rounded-lg border-2 border-orange"
-                        >
-                            <option value="">Order Status</option>
-                            <option value={OrderStatus.PENDING}>Pending</option>
-                            <option value={OrderStatus.CONFIRMED}>
-                                Confirmed
-                            </option>
-                            <option value={OrderStatus.READY}>Ready</option>
-                            <option value={OrderStatus.COMPLETED}>
-                                Completed
-                            </option>
-                        </select>
-                    </div>
-                    <div>
-                        <select
-                            value={payment}
-                            onChange={(e) => setPayment(e.target.value)}
-                            className="px-4 py-2 text-sm rounded-lg border-2 border-orange"
-                        >
-                            <option value="">Payment Status</option>
-                            <option value={PaymentStatus.PENDING}>
-                                Pending
-                            </option>
-                            <option value={PaymentStatus.PAID}>Paid</option>
-                        </select>
+                    <div className="flex flex-col md:flex-row gap-2 mt-2 item-center justify-center">
+                        <div>
+                            <select
+                                value={order}
+                                onChange={(e) => setOrder(e.target.value)}
+                                className="px-4 w-full  py-2 text-sm rounded-lg border-2 border-orange"
+                            >
+                                <option value="">Order Status</option>
+                                <option value={OrderStatus.PENDING}>
+                                    Pending
+                                </option>
+                                <option value={OrderStatus.CONFIRMED}>
+                                    Confirmed
+                                </option>
+                                <option value={OrderStatus.READY}>Ready</option>
+                                <option value={OrderStatus.COMPLETED}>
+                                    Completed
+                                </option>
+                            </select>
+                        </div>
+                        <div>
+                            <select
+                                value={payment}
+                                onChange={(e) => setPayment(e.target.value)}
+                                className="px-4 w-full py-2 text-sm rounded-lg border-2 border-orange"
+                            >
+                                <option value="">Payment Status</option>
+                                <option value={PaymentStatus.PENDING}>
+                                    Pending
+                                </option>
+                                <option value={PaymentStatus.PAID}>Paid</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>

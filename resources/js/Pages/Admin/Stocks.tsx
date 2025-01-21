@@ -15,7 +15,7 @@ import {
     Product,
     Supplier,
 } from "@/Types/types";
-import { Link, router } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import React, { useState } from "react";
 
 type StocksProps = {
@@ -53,11 +53,12 @@ const Stocks = ({ products, categories, filters, suppliers }: StocksProps) => {
 
     return (
         <AdminLayout>
+            <Head title="Stocks" />
             <h1 className="text-white text-2xl font-semibold my-2">Products</h1>
 
             <div>
-                <div className="flex md:flex-row flex-col my-5 gap-5 items-center">
-                    <div className="text-white relative w-full  mx-auto border-2 border-orange rounded-full">
+                <div>
+                    <div className="text-white relative max-w-lg  mx-auto border-2 border-orange rounded-full">
                         <input
                             type="text"
                             value={search}
@@ -72,11 +73,11 @@ const Stocks = ({ products, categories, filters, suppliers }: StocksProps) => {
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
-                    <div>
+                    <div className="max-w-md mx-auto flex gap-2 mt-2 flex-col md:flex-row">
                         <select
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
-                            className="px-4 py-2 text-sm rounded-lg border-2 border-orange"
+                            className="w-full px-4 py-2 text-sm rounded-lg border-2 border-orange"
                         >
                             <option value="">Category</option>
                             {categories.map((category) => (
@@ -85,12 +86,10 @@ const Stocks = ({ products, categories, filters, suppliers }: StocksProps) => {
                                 </option>
                             ))}
                         </select>
-                    </div>
-                    <div>
                         <select
                             value={byQuantityType}
                             onChange={(e) => setByQuantityType(e.target.value)}
-                            className="px-4 py-2 text-sm rounded-lg border-2 border-orange"
+                            className="w-full px-4 py-2 text-sm rounded-lg border-2 border-orange"
                         >
                             <option value={ByQuantityType.HIGHEST_TO_LOWEST}>
                                 HIGHEST TO LOWEST
@@ -102,7 +101,7 @@ const Stocks = ({ products, categories, filters, suppliers }: StocksProps) => {
                     </div>
                 </div>
             </div>
-            <div className="w-full flex gap-2 justify-end">
+            <div className="w-full flex gap-2 justify-end mt-2">
                 <Link
                     href="/stocks/history"
                     className="px-4 py-2 text-white border-2 border-white hover:bg-orange"

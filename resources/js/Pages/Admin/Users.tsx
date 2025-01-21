@@ -8,7 +8,7 @@ import TableHeadData from "@/components/TableHeadData";
 import getUserRoleString from "@/helpers/getUserRoleString";
 import AdminLayout from "@/Layouts/AdminLayout";
 import { User, UserRole } from "@/Types/types";
-import { router, usePage } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import React, { useState } from "react";
 import toast, { Toast } from "react-hot-toast";
 type UserProps = {
@@ -80,12 +80,13 @@ const Users = ({ users, filters }: UserProps) => {
 
     return (
         <AdminLayout>
+            <Head title="Users" />
             <h1 className="text-white text-2xl font-semibold my-2">Users</h1>
             <div>
-                <div className="flex  my-5 gap-5 flex-col  md:flex-row items-center">
+                <div>
                     <form
                         onSubmit={handleSearch}
-                        className="text-white relative w-full  mx-auto border-2 border-orange rounded-full"
+                        className="text-white relative max-w-lg  mx-auto border-2 border-orange rounded-full"
                     >
                         <input
                             type="text"
@@ -100,11 +101,11 @@ const Users = ({ users, filters }: UserProps) => {
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </form>
-                    <div>
+                    <div className="max-w-xs mx-auto mt-2">
                         <select
                             value={role}
                             onChange={(e) => setRole(e.target.value)}
-                            className="px-4 py-2 text-sm rounded-lg border-2 border-orange"
+                            className="w-full px-4 py-2 text-sm rounded-lg border-2 border-orange"
                         >
                             <option value="">Choose Role</option>
                             <option value={UserRole.ADMIN}>Admin</option>
@@ -115,7 +116,7 @@ const Users = ({ users, filters }: UserProps) => {
                     </div>
                 </div>
             </div>
-            <div className="w-full text-right">
+            <div className="w-full text-right mt-2">
                 <RegisterModalStaff />
             </div>
             <Table>

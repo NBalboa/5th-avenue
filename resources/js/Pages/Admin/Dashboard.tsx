@@ -1,6 +1,6 @@
 import DashboardCard from "@/components/DashboardCard";
 import AdminLayout from "@/Layouts/AdminLayout";
-import { Head, router } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import DashboardCards from "./DashboardCards";
 import Select from "@/components/Select";
 import Label from "@/components/Label";
@@ -64,12 +64,12 @@ function Dashboard({
                     <DashboardCard
                         total={total_orders}
                         label="Orders"
-                        icon={<i className="fa-solid fa-cart-shopping"></i>}
+                        icon={<i className="fa-brands fa-bitbucket"></i>}
                     />
                     <DashboardCard
                         total={total_reservations}
                         label="Reservations"
-                        icon={<i className="fa-solid fa-person-shelter"></i>}
+                        icon={<i className="fa-solid fa-book"></i>}
                     />
                     <DashboardCard
                         total={total_customers}
@@ -79,7 +79,7 @@ function Dashboard({
                     <DashboardCard
                         total={total_staffs}
                         label="Staffs"
-                        icon={<i className="fa-solid fa-person-walking"></i>}
+                        icon={<i className="fa-solid fa-person"></i>}
                     />
                 </DashboardCards>
                 <h1 className="text-white text-2xl">Sales</h1>
@@ -87,7 +87,7 @@ function Dashboard({
                     <DashboardCard
                         total={sales.today}
                         label="Today"
-                        icon={<i className="fa-solid fa-calendar-day"></i>}
+                        icon={<i className="fa-solid fa-calendar-week"></i>}
                     />
                     <DashboardCard
                         total={sales.week}
@@ -97,14 +97,22 @@ function Dashboard({
                     <DashboardCard
                         total={sales.month}
                         label="This Month"
-                        icon={<i className="fa-solid fa-calendar-plus"></i>}
+                        icon={<i className="fa-solid fa-calendar-week"></i>}
                     />
                     <DashboardCard
                         total={sales.year}
                         label="This Year"
-                        icon={<i className="fa-solid fa-calendar"></i>}
+                        icon={<i className="fa-solid fa-calendar-week"></i>}
                     />
                 </DashboardCards>
+            </div>
+            <div className="text-right mt-5">
+                <Link
+                    href={`/reports?name_date=${filters.name_date}`}
+                    className="rounded-md px-4 py-2 border-2 border-white text-white font-medium hover:bg-orange mt-2"
+                >
+                    Generate Report
+                </Link>
             </div>
         </AdminLayout>
     );

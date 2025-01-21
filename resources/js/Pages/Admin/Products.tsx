@@ -99,12 +99,11 @@ function Products({
         <AdminLayout>
             <Head title="Products" />
             <h1 className="text-white text-2xl font-semibold my-2">Products</h1>
-
             <div>
-                <div className="flex my-5 gap-5 items-center">
+                <div>
                     <form
                         onSubmit={handleSearch}
-                        className="text-white relative w-full  mx-auto border-2 border-orange rounded-full"
+                        className="text-white relative max-w-lg  mx-auto border-2 border-orange rounded-full"
                     >
                         <input
                             type="text"
@@ -123,13 +122,13 @@ function Products({
                             )}
                         </button>
                     </form>
-                    <div>
+                    <div className="max-w-xs mx-auto mt-2">
                         <select
                             value={data.category ?? ""}
                             onChange={(e) =>
                                 setData("category", Number(e.target.value))
                             }
-                            className="px-4 py-2 text-sm rounded-lg border-2 border-orange"
+                            className="px-4 w-full py-2 text-sm rounded-lg border-2 border-orange"
                         >
                             <option value="">Choose Category</option>
                             {categories.map((category) => (
@@ -142,7 +141,7 @@ function Products({
                 </div>
             </div>
 
-            <div className="w-full flex justify-end gap-2">
+            <div className="w-full flex justify-end gap-2 mt-2">
                 <SupplierModal />
                 <CategoryModal />
             </div>

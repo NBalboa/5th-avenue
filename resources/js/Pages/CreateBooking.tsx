@@ -384,7 +384,7 @@ const CreateBooking = ({
                                         onChange={(e) =>
                                             setSearch(e.target.value)
                                         }
-                                        className="w-full ps-4 py-3 text-black pe-14 rounded-full"
+                                        className="w-full ps-4 py-1 text-black pe-14 rounded-full"
                                     />
                                     <button
                                         type="submit"
