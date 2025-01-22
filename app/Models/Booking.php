@@ -14,6 +14,7 @@ class Booking extends Model
         'table_id',
         'order_id',
         'gcash_reference_id',
+        'confirmed_by',
         'image',
         'date',
         'time',
@@ -79,5 +80,9 @@ class Booking extends Model
 
     public function order(){
         return $this->belongsTo(Order::class, 'order_id');
+    }
+
+    public function confirmed() {
+        return $this->belongsTo(User::class, 'confirmed_by');
     }
 }

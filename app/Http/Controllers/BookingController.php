@@ -25,7 +25,7 @@ use Inertia\Inertia;
 class BookingController extends Controller
 {
     public function index(Request $request){
-        $bookings = Booking::with('user','table','order');
+        $bookings = Booking::with('user','table','order', 'confirmed');
         $booking = $request->input('booking');
         $date = $request->input('date');
         $search = $request->input('search');
@@ -52,6 +52,8 @@ class BookingController extends Controller
         $datetimeLocalValue = $date . 'T' . substr($time, 0, 5); // "2025-01-15T14:10"
 
         $bookings = $bookings->get();
+
+
         return Inertia::render('Admin/Bookings', [
             'bookings' => $bookings,
             'filters' => [
@@ -103,12 +105,18 @@ class BookingController extends Controller
 
         $booking->load('order');
 
+        if(!$booking->confirmed_by){
+            $booking->confirmed_by = Auth::user()->id;
+            $booking->save();
+        }
         if((int) $data['status'] === BookingStatus::CONFIRM->value && $booking->order_id && !$booking->order->tendered_by){
             $order = $booking->order()->first();
 
             if(!$order->tendered_by){
                 $order->tendered_by = Auth::user()->id;
             }
+
+
             $items = $order->items()->get();
 
             foreach ($items as $item){

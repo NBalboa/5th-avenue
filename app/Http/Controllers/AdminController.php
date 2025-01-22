@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BookingStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\UserRole;
 use App\Models\Booking;
@@ -161,23 +162,33 @@ class AdminController extends Controller
 
 
         $orders = Order::with('cashier','customer');
+        $bookings = Booking::with('confirmed', 'table', 'user')
+            ->where('booking_status', '=', BookingStatus::CONFIRM->value);
 
         if(!$name_date || $name_date === 'today'){
             $orders = $orders->whereDate("created_at",$today);
+            $bookings = $bookings->whereDate('created_at', $today);
         }else if($name_date === "month"){
             $orders = $orders->whereMonth("created_at", $month);
+            $bookings = $bookings->whereMonth('created_at', $month);
         }else if($name_date === "week"){
             $orders = $orders->whereBetween('created_at',
+            [
+                $start_week,
+                $end_wek]);
+                $bookings = $bookings->whereBetween('created_at',
             [
                 $start_week,
                 $end_wek]);
         }
         else{
             $orders = $orders->whereYear('created_at', $year);
+            $bookings = $bookings->whereYear('created_at', $year);
         }
 
 
         $orders = $orders->get();
+        $bookings = $bookings->get();
 
         return Inertia::render('Admin/Reports', [
             "total_orders" => $total_orders,
@@ -193,7 +204,8 @@ class AdminController extends Controller
             "filters" => [
                 "name_date" => $name_date
             ],
-            "orders" => $orders
+            "orders" => $orders,
+            "bookings" => $bookings,
         ]);
     }
 }

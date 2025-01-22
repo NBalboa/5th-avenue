@@ -188,6 +188,8 @@ export type Booking = {
     table_id: number;
     order_id: number;
     user_id: number;
+    confirmed_by: number | null;
+    confirmed: User | null;
     table: TTable;
     order: TOrder;
     user: User;

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('table_id');
+            $table->foreignId('confirmed_by')->nullable();
             $table->foreignId('order_id')->nullable();
             $table->string('gcash_reference_id')->nullable();
             $table->string('image')->nullable();

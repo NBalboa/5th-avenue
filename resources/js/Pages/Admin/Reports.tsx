@@ -1,5 +1,5 @@
 import MyDocument from "@/components/MyDocument";
-import { TOrder } from "@/Types/types";
+import { Booking, TOrder } from "@/Types/types";
 import { Head } from "@inertiajs/react";
 import { PDFViewer } from "@react-pdf/renderer";
 
@@ -11,6 +11,7 @@ type ReportProps = {
     filters: FiltersDashboard;
     sales: Sales;
     orders: TOrder[];
+    bookings: Booking[];
 };
 
 type FiltersDashboard = {
@@ -32,6 +33,7 @@ const Reports = ({
     sales,
     filters,
     orders,
+    bookings,
 }: ReportProps) => {
     return (
         <div>
@@ -45,6 +47,7 @@ const Reports = ({
                     sales={sales}
                     filters={filters}
                     orders={orders}
+                    bookings={bookings}
                 />
             </PDFViewer>
         </div>

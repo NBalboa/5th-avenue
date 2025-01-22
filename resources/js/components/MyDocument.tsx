@@ -1,4 +1,4 @@
-import { TOrder } from "@/Types/types";
+import { Booking, TOrder } from "@/Types/types";
 import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 
 type MyDocumentProps = {
@@ -9,6 +9,7 @@ type MyDocumentProps = {
     filters: FiltersDashboard;
     sales: Sales;
     orders: TOrder[];
+    bookings: Booking[];
 };
 
 type FiltersDashboard = {
@@ -30,7 +31,9 @@ const MyDocument = ({
     sales,
     filters,
     orders,
+    bookings,
 }: MyDocumentProps) => {
+    console.log(bookings);
     return (
         <Document>
             <Page style={styles.page}>
@@ -88,6 +91,9 @@ const MyDocument = ({
                         <Text style={styles.cardTotal}>{sales.year}</Text>
                     </View>
                 </View>
+                {/* Orders */}
+
+                <Text style={styles.section}>Orders</Text>
                 <View style={styles.table}>
                     <View style={[styles.tableRow, styles.tableHeader]}>
                         <View style={styles.tableCol}>
@@ -116,6 +122,52 @@ const MyDocument = ({
                                 <Text style={styles.tableCell}>
                                     {order.cashier
                                         ? `${order.cashier.first_name} ${order.cashier.last_name}`
+                                        : null}
+                                </Text>
+                            </View>
+                        </View>
+                    ))}
+                </View>
+
+                <Text style={styles.section}>Bookings</Text>
+                <View style={styles.table}>
+                    <View style={[styles.tableRow, styles.tableHeader]}>
+                        <View style={styles.tableCol}>
+                            <Text style={styles.tableCell}>Booking ID</Text>
+                        </View>
+                        <View style={styles.tableCol}>
+                            <Text style={styles.tableCell}>Table No.</Text>
+                        </View>
+                        <View style={styles.tableCol}>
+                            <Text style={styles.tableCell}>Customer Name</Text>
+                        </View>
+                        <View style={styles.tableCol}>
+                            <Text style={styles.tableCell}>Confirmed</Text>
+                        </View>
+                    </View>
+                    {bookings.map((booking) => (
+                        <View style={styles.tableRow} key={booking.id}>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>
+                                    {booking.id}
+                                </Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>
+                                    {booking.table.no}
+                                </Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>
+                                    {booking.user
+                                        ? `${booking.user.first_name} ${booking.user.last_name}`
+                                        : null}
+                                </Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>
+                                    {booking.confirmed
+                                        ? `${booking.confirmed.first_name} ${booking.confirmed.last_name}`
                                         : null}
                                 </Text>
                             </View>
@@ -152,6 +204,7 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         gap: 10,
         justifyContent: "space-between",
+        marginBottom: 20,
     },
     card: {
         padding: 10,
@@ -174,7 +227,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#ccc",
         marginBottom: 20,
-        marginTop: 20,
     },
     tableRow: {
         flexDirection: "row",
