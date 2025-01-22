@@ -9,6 +9,7 @@ import getOrderColorStatus from "@/helpers/getOrderColorStatus";
 import getOrderStatusString from "@/helpers/getOrderStatusString";
 import getPaymentColorStatus from "@/helpers/getPaymentColorStatus";
 import getPaymentStatusString from "@/helpers/getPaymentStatusString";
+import priceFormatter from "@/helpers/priceFormatter";
 import UserLayout from "@/Layouts/UserLayout";
 import {
     OrderStatus,
@@ -127,7 +128,9 @@ const MyOrders = ({ orders, filters }: MyOrdersProps) => {
                                 {order.table.no}
                             </TableBodyRowData>
 
-                            <TableBodyRowData>P{order.total}</TableBodyRowData>
+                            <TableBodyRowData>
+                                P{priceFormatter(order.total)}
+                            </TableBodyRowData>
                             <TableBodyRowData>
                                 <p
                                     className={`text-center ${getOrderColorStatus(

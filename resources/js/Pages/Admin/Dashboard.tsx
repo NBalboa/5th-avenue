@@ -87,21 +87,25 @@ function Dashboard({
                     <DashboardCard
                         total={sales.today}
                         label="Today"
+                        isPrice={true}
                         icon={<i className="fa-solid fa-calendar-week"></i>}
                     />
                     <DashboardCard
                         total={sales.week}
                         label="This Week"
+                        isPrice={true}
                         icon={<i className="fa-solid fa-calendar-week"></i>}
                     />
                     <DashboardCard
                         total={sales.month}
                         label="This Month"
+                        isPrice={true}
                         icon={<i className="fa-solid fa-calendar-week"></i>}
                     />
                     <DashboardCard
                         total={sales.year}
                         label="This Year"
+                        isPrice={true}
                         icon={<i className="fa-solid fa-calendar-week"></i>}
                     />
                 </DashboardCards>

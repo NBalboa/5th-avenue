@@ -24,6 +24,7 @@ import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
 import ProductTargetModal from "@/components/ProductTargetModal";
 import PaginatedLinks from "@/components/PaginatedLinks";
+import priceFormatter from "@/helpers/priceFormatter";
 
 function Products({
     categories,
@@ -176,7 +177,9 @@ function Products({
                             <TableBodyRowData>
                                 {product.quantity ?? ""}
                             </TableBodyRowData>
-                            <TableBodyRowData>{product.price}</TableBodyRowData>
+                            <TableBodyRowData>
+                                {priceFormatter(product.price)}
+                            </TableBodyRowData>
                             <TableBodyRowData>
                                 <div className="relative">
                                     <div className="absolute -top-[33px] -right-[5px]">

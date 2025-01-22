@@ -11,6 +11,7 @@ import getOrderStatusString from "@/helpers/getOrderStatusString";
 import getPaymentColorStatus from "@/helpers/getPaymentColorStatus";
 import getPaymentStatusString from "@/helpers/getPaymentStatusString";
 import getTotalPrice from "@/helpers/getTotalPrice";
+import priceFormatter from "@/helpers/priceFormatter";
 import UserLayout from "@/Layouts/UserLayout";
 import { Item, TOrder } from "@/Types/types";
 
@@ -27,7 +28,7 @@ const MyItems = ({ order, items }: MyItemsProps) => {
             </h1>
             <div className="flex flex-col gap-2">
                 <h2 className="text-lg font-medium text-white">
-                    Price: P{order.total}
+                    Price: P{priceFormatter(order.total)}
                 </h2>
                 <h2 className="text-lg font-medium text-white">
                     No. of Items: {items.length}
@@ -110,9 +111,11 @@ const MyItems = ({ order, items }: MyItemsProps) => {
                                 {item.product.name}
                             </TableBodyRowData>
                             <TableBodyRowData>{item.quantity}</TableBodyRowData>
-                            <TableBodyRowData>{item.price}</TableBodyRowData>
                             <TableBodyRowData>
-                                {getTotalPrice(item)}
+                                P{priceFormatter(item.price)}
+                            </TableBodyRowData>
+                            <TableBodyRowData>
+                                P{priceFormatter(getTotalPrice(item))}
                             </TableBodyRowData>
                         </TableBodyRow>
                     ))}

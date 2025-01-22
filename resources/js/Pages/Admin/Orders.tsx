@@ -5,6 +5,7 @@ import TableBodyRow from "@/components/TableBodyRow";
 import TableBodyRowData from "@/components/TableBodyRowData";
 import TableHead from "@/components/TableHead";
 import TableHeadData from "@/components/TableHeadData";
+import priceFormatter from "@/helpers/priceFormatter";
 import AdminLayout from "@/Layouts/AdminLayout";
 import {
     OrderStatus,
@@ -177,7 +178,9 @@ function Orders({ orders, filters }: OrderProps) {
                             <TableBodyRowData>
                                 {order.table?.no}
                             </TableBodyRowData>
-                            <TableBodyRowData>P{order.total}</TableBodyRowData>
+                            <TableBodyRowData>
+                                P{priceFormatter(order.total)}
+                            </TableBodyRowData>
                             <TableBodyRowData>
                                 <select
                                     value={order.order_status}

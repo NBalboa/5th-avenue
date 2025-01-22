@@ -7,6 +7,7 @@ import TableHead from "@/components/TableHead";
 import TableHeadData from "@/components/TableHeadData";
 import getOrderColorStatus from "@/helpers/getOrderColorStatus";
 import getPaymentColorStatus from "@/helpers/getPaymentColorStatus";
+import priceFormatter from "@/helpers/priceFormatter";
 import AdminLayout from "@/Layouts/AdminLayout";
 import {
     OrderStatus,
@@ -164,7 +165,9 @@ const OnlineOrder = ({ orders, filters }: OnlineOrderProps) => {
                             <TableBodyRowData>
                                 {order.table.no}
                             </TableBodyRowData>
-                            <TableBodyRowData>P{order.total}</TableBodyRowData>
+                            <TableBodyRowData>
+                                P{priceFormatter(order.total)}
+                            </TableBodyRowData>
                             <TableBodyRowData>
                                 <select
                                     value={order.order_status}

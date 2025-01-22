@@ -8,9 +8,10 @@ import TableHeadData from "@/components/TableHeadData";
 import Title from "@/components/Title";
 import getOverAllCartPrice from "@/helpers/getOverAllCartPrice";
 import getTotalCartPrice from "@/helpers/getTotalCartPrice";
+import priceFormatter from "@/helpers/priceFormatter";
 import UserLayout from "@/Layouts/UserLayout";
 import { Cart, TTable } from "@/Types/types";
-import { router } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -79,13 +80,14 @@ const Checkout = ({ carts, table }: CheckoutProps) => {
 
     return (
         <UserLayout>
+            <Head title="Checkout" />
             <h1 className="text-white text-2xl font-semibold my-2">Checkout</h1>
 
             <div className="mt-5 text-right space-y-3">
                 <div className="flex flex-row gap-2 items-center justify-end">
                     <div className="text-white text-2xl">Total:</div>
                     <div className="text-white text-2xl">
-                        P{getOverAllCartPrice(carts).toFixed(2)}
+                        P{priceFormatter(getOverAllCartPrice(carts))}
                     </div>
                 </div>
                 <div className="text-right">
@@ -130,10 +132,10 @@ const Checkout = ({ carts, table }: CheckoutProps) => {
                                 />
                             </TableBodyRowData>
                             <TableBodyRowData>
-                                P{cart.product.price}
+                                P{priceFormatter(cart.product.price)}
                             </TableBodyRowData>
                             <TableBodyRowData>
-                                P{getTotalCartPrice(cart).toFixed(2)}
+                                P{priceFormatter(getTotalCartPrice(cart))}
                             </TableBodyRowData>
                             <TableBodyRowData>
                                 <button

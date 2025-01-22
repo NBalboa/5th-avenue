@@ -2,6 +2,7 @@ import { Product } from "@/Types/types";
 import ImageEight from "@images/8.jpg";
 import OrderQuantity from "./OrderQuantity";
 import React from "react";
+import priceFormatter from "@/helpers/priceFormatter";
 
 type FoodCardProps = {
     product: Product;
@@ -60,7 +61,9 @@ function FoodCard({
                         )}
                     </div>
                     <div className="flex flex-col justify-between space-y-1">
-                        <p className="text-lg font-medium">P{product.price}</p>
+                        <p className="text-lg font-medium">
+                            P{priceFormatter(product.price)}
+                        </p>
                         {showQuantity ? (
                             <div className="w-full flex justify-center md:justify-start">
                                 <OrderQuantity
