@@ -30,11 +30,13 @@ function FoodCard({
     return (
         <div className="border-2 border-white rounded-xl text-white">
             <div className="grid grid-cols-1 md:grid-cols-3 w-full">
-                <img
-                    src={product.image}
-                    className="object-fit h-[200px] w-[200px] rounded-xl border-l-2x border-l-4xl put md:rounded-tl-lg md:rounded-bl-lg" // Adjusted here
-                />
-                <div className="p-5 text-white col-span-2 w-full flex flex-col justify-between">
+                <div className="col-span-1 h-[200px]">
+                    <img
+                        src={product.image}
+                        className="object-fit h-full w-full rounded-xl border-l-2x border-l-4xl md:rounded-tl-lg md:rounded-bl-lg"
+                    />
+                </div>
+                <div className="col-span-1 md:col-span-2 p-5 text-white col-span-2 w-full flex flex-col justify-between">
                     <div className="flex items-center justify-between gap-2">
                         <a href="#">
                             <div className="flex justify-between gap-2">
@@ -72,19 +74,46 @@ function FoodCard({
                         ) : null}
 
                         <div className="flex flex-col md:flex-row gap-5">
-                            <button
-                                onClick={onHandleClick}
-                                className="px-4 py-2 border-2 w-full mt-2 hover:bg-orange"
-                            >
-                                {label}
-                            </button>
-                            {showBuyButton ? (
-                                <button
-                                    onClick={onHandleBuyNow}
-                                    className="px-4 py-2 border-2 w-full mt-2 hover:bg-orange"
-                                >
-                                    Buy Now
-                                </button>
+                            {product.quantity && product.quantity > 0 ? (
+                                <>
+                                    <button
+                                        onClick={onHandleClick}
+                                        className={
+                                            "px-4 py-2 border-2 w-full mt-2 hover:bg-orange"
+                                        }
+                                    >
+                                        {label}
+                                    </button>
+                                    {showBuyButton ? (
+                                        <button
+                                            onClick={onHandleBuyNow}
+                                            className="px-4 py-2 border-2 w-full mt-2 hover:bg-orange"
+                                        >
+                                            Buy Now
+                                        </button>
+                                    ) : null}
+                                </>
+                            ) : null}
+
+                            {product.quantity === null ? (
+                                <>
+                                    <button
+                                        onClick={onHandleClick}
+                                        className={
+                                            "px-4 py-2 border-2 w-full mt-2 hover:bg-orange"
+                                        }
+                                    >
+                                        {label}
+                                    </button>
+                                    {showBuyButton ? (
+                                        <button
+                                            onClick={onHandleBuyNow}
+                                            className="px-4 py-2 border-2 w-full mt-2 hover:bg-orange"
+                                        >
+                                            Buy Now
+                                        </button>
+                                    ) : null}
+                                </>
                             ) : null}
                         </div>
                     </div>

@@ -74,7 +74,7 @@ function Welcome({ products, categories, filters }: WelcomeProps) {
     }, []);
 
     return (
-        <UserLayout isHideLogo={false}>
+        <UserLayout isHideLogo={true}>
             <Head title="Home" />
             <div className="flex items-center flex-col md:flex-row justify-evenly gap-5">
                 <div>

@@ -167,8 +167,11 @@ const CreateBooking = ({
                 }
             },
             onError: () => {
+                console.log(errors);
                 if (errors.carts) {
                     toast.error(errors.carts);
+                } else if (errors.taken) {
+                    toast.error(errors.taken);
                 } else {
                     toast.error("Something went wrong");
                 }

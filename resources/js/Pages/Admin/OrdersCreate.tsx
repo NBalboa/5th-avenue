@@ -61,6 +61,16 @@ function OrdersCreate({
         setOrders((prev) => {
             return prev.map((order) => {
                 if (order.product.id === id) {
+                    if (order.product.quantity) {
+                        if (order.order_quantity < order.product.quantity) {
+                            return {
+                                ...order,
+                                order_quantity: order.order_quantity + 1,
+                            };
+                        } else {
+                            return order;
+                        }
+                    }
                     return {
                         ...order,
                         order_quantity: order.order_quantity + 1,

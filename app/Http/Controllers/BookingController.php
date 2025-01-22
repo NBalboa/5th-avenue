@@ -17,6 +17,7 @@ use App\Models\Product;
 use App\Models\Stock;
 use App\Models\Table;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -133,51 +134,70 @@ class BookingController extends Controller
 
     public function store(BookingStoreRequest $request){
         $data = $request->validated();
+        $time = Carbon::parse($data['time'])->format('H:i:s');
+        $date = $data['date'];
+
+        $dateTime = Carbon::createFromFormat('Y-m-d H:i:s', "$date $time");
+
+        $newBookingEnd = $dateTime->format('H:i:s');
+        $newBookingStart = $dateTime->subHours(3)->format('H:i:s');
+
         $user_id = Auth::user()->id;
         $user = User::where('id', '=', $user_id)->first();
         $carts = $user->carts()->with('product')->where('cart_type', '=', CartType::BOOKING->value)->get();
 
+        $isTableTaken = Booking::where('table_id','=',$data['table'] )
+            ->where('booking_status', '=', BookingStatus::CONFIRM->value)
+            ->whereDate('date', $data['date'])
+            ->whereBetween('time', [$newBookingStart,$newBookingEnd]
+            )->exists();
 
-        $hasOrder = (bool) $data['has_order'];
 
-        if($hasOrder === true){
-            $order = Order::create([
-                'customer_id' => $user->id,
-                'table_id' => $data['table'],
-                'total' => $data['total'],
-                'order_status' => OrderStatus::PENDING->value,
-                'payment_status' => PaymentStatus::PENDING->value,
-                'order_type' => OrderType::BOOKING->value,
-            ]);
+        if(!$isTableTaken){
+            $hasOrder = (bool) $data['has_order'];
 
-            foreach($carts as $cart){
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_id' => $cart->product->id,
-                    'price' => $cart->product->price,
-                    'quantity' => $cart->quantity
+            if($hasOrder === true){
+                $order = Order::create([
+                    'customer_id' => $user->id,
+                    'table_id' => $data['table'],
+                    'total' => $data['total'],
+                    'order_status' => OrderStatus::PENDING->value,
+                    'payment_status' => PaymentStatus::PENDING->value,
+                    'order_type' => OrderType::BOOKING->value,
                 ]);
+
+                foreach($carts as $cart){
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => $cart->product->id,
+                        'price' => $cart->product->price,
+                        'quantity' => $cart->quantity
+                    ]);
+                }
             }
+
+            if ($request->hasFile('image')) {
+                $path = $request->file('image')->store('gcash/images', 'public');
+            }
+
+            Booking::create([
+                'user_id' => $user->id,
+                'table_id' => $data['table'],
+                'order_id' => $order->id ?? null,
+                'gcash_reference_id' => $hasOrder ? $data['gcash_reference_id'] : null,
+                'image' => $hasOrder ? $path  : null,
+                'date' => $data['date'],
+                'time' => $data['time'],
+                'no_people' => $data['no_people'],
+
+            ]);
+            $user->carts()->with('product')->where('cart_type', '=', CartType::BOOKING->value)->delete();
+
+            return redirect()->route('home');
         }
-
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('gcash/images', 'public');
+        else{
+            return back()->withErrors(['taken' => 'Table is already taken']);
         }
-
-        Booking::create([
-            'user_id' => $user->id,
-            'table_id' => $data['table'],
-            'order_id' => $order->id ?? null,
-            'gcash_reference_id' => $hasOrder ? $data['gcash_reference_id'] : null,
-            'image' => $hasOrder ? $path  : null,
-            'date' => $data['date'],
-            'time' => $data['time'],
-            'no_people' => $data['no_people'],
-
-        ]);
-        $user->carts()->with('product')->where('cart_type', '=', CartType::BOOKING->value)->delete();
-
-        return redirect()->route('home');
     }
 
 }
