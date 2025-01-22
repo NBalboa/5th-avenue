@@ -152,7 +152,6 @@ class BookingController extends Controller
             ->whereBetween('time', [$newBookingStart,$newBookingEnd]
             )->exists();
 
-
         if(!$isTableTaken){
             $hasOrder = (bool) $data['has_order'];
 
