@@ -74,9 +74,15 @@ function Welcome({ products, categories, filters }: WelcomeProps) {
     }, []);
 
     return (
-        <UserLayout>
+        <UserLayout isHideLogo={false}>
             <Head title="Home" />
             <div className="flex items-center flex-col md:flex-row justify-evenly gap-5">
+                <div>
+                    <img src={LOGO} className="h-[300px] w-[300px]" />
+                    <h1 className="text-white text-center text-2xl">
+                        5th Avenue Grill and Restobar
+                    </h1>
+                </div>
                 <div className="m-5 relative">
                     <ImageCarousel
                         src={ImageOne}

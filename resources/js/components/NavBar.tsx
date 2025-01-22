@@ -5,7 +5,11 @@ import { Link, router, usePage } from "@inertiajs/react";
 import toast from "react-hot-toast";
 import MenuLink from "./MenuLink";
 
-function NavBar() {
+type NavBarProps = {
+    isHideLogo?: boolean;
+};
+
+function NavBar({ isHideLogo = false }: NavBarProps) {
     const [showMenu, setShowMenu] = useState<boolean>(false);
     const { component } = usePage();
     const { auth } = usePage().props;
@@ -13,9 +17,14 @@ function NavBar() {
     const handleLogout = () => {
         router.post("/logout", {});
     };
+
     return (
         <nav className="relative flex justify-between items-center text-white py-5 mx-5 gap-5 max-w-4xl mx-auto">
-            <div className="flex flex-col items-center p-2">
+            <div
+                className={`${
+                    isHideLogo ? "invisible" : "flex flex-col items-center p-2"
+                }`}
+            >
                 <a
                     href="#"
                     className="rounded-full m-5 hidden sm:hidden md:inline-block"

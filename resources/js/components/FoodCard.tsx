@@ -51,6 +51,11 @@ function FoodCard({
                                 </span>
                             </p>
                         ) : null}
+                        {product.quantity === 0 ? (
+                            <span className="text-orange">Sold Out</span>
+                        ) : (
+                            ""
+                        )}
                     </div>
                     <div className="flex flex-col justify-between space-y-1">
                         <p className="text-lg font-medium">P{product.price}</p>
