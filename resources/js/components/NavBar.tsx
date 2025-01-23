@@ -19,7 +19,7 @@ function NavBar({ isHideLogo = false }: NavBarProps) {
     };
 
     return (
-        <div className="max-w-7xl">
+        <div className="max-w-7xl mx-auto">
             <nav className="relative flex justify-between items-center text-white py-5 mx-5 gap-5">
                 <div
                     className={`${
