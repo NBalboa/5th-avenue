@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Enums\IsAvailable;
 use App\Enums\IsDeleted;
+use App\Enums\OrderStatus;
 use App\Http\Requests\ProductAddQuantityRequest;
 use App\Http\Requests\ProductDeleteQuantityRequest;
 use App\Http\Requests\ProductStoreRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Stock;
 use App\Models\Supplier;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -166,5 +169,39 @@ class ProductController extends Controller
         }
 
         return back();
+    }
+
+
+    public function reports() {
+
+        $today = now()->toDateString();
+
+        $orders = Order::whereDate('created_at', $today)
+            ->where('order_status', '>=', OrderStatus::CONFIRMED->value)
+            ->with('items.product')
+            ->get();
+
+        $product_sales = $orders->flatMap->items->groupBy('product.id')->map(function($items) {
+            $product = $items[0]->product;
+
+            $quantity = $items->sum('quantity');
+            $items->quantity = $quantity;
+            $items->product = $product;
+            return $items;
+        });
+
+        $product_sales = $product_sales->sortByDesc('quantity')->map(function ($item) {
+            return [
+                "quantity" => $item->quantity,
+                "product" => $item->product
+            ];
+        })
+        ->values()
+        ->toArray();
+
+        return Inertia::render('Admin/ProductReports', [
+            'product_sales' => $product_sales,
+            'date_generated' => Carbon::now()->format('F d, Y')
+        ]);
     }
 }

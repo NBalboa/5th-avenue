@@ -73,6 +73,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/products/{product}', [ProductController::class, 'update'])->name('products.update');
             Route::post('/product/add/quantity/{product}', [ProductController::class, 'addQuantity'])->name('products.addQuantity');
             Route::post('/product/delete/quantity/{product}', [ProductController::class, 'deleteQuantity'])->name('products.deleteQuantity');
+            Route::get('/products/reports',  [ProductController::class, 'reports'])->name('products.reports');
         });
 
         Route::middleware(OrderPermission::class)->group(function () {
