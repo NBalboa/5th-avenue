@@ -87,7 +87,7 @@ function AddQuantityModal({ products, suppliers }: AddQuantityModalProps) {
                             ))}
                         </select>
                     </InputWrapper>
-                    <InputWrapper>
+                    {/* <InputWrapper>
                         <Label label="Choose Supplier" />
                         <select
                             value={supplier}
@@ -101,7 +101,7 @@ function AddQuantityModal({ products, suppliers }: AddQuantityModalProps) {
                                 </option>
                             ))}
                         </select>
-                    </InputWrapper>
+                    </InputWrapper> */}
                     <InputWrapper>
                         <Label label="Quantity" />
                         <InputNumber

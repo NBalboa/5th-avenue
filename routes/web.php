@@ -86,15 +86,15 @@ Route::middleware(['auth'])->group(function () {
         });
         Route::middleware(AdminOnly::class)->group(function (){
             Route::delete('/products/{product}', [ProductController::class, 'delete'])->name('products.delete');
-            Route::delete('/suppliers/{supplier}', [SupplierController::class, 'delete'])->name('suppliers.delete');
+            // Route::delete('/suppliers/{supplier}', [SupplierController::class, 'delete'])->name('suppliers.delete');
             Route::delete('/categories/{category}', [CategoryController::class, 'delete'])->name('categories.delete');
             Route::delete('/users/{user}', [UserController::class, 'delete'])->name('users.delete');
         });
-        Route::middleware(SupplierPermission::class)->group(function (){
-            Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
-            Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
-            Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
-        });
+        // Route::middleware(SupplierPermission::class)->group(function (){
+        //     Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
+        //     Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
+        //     Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
+        // });
         Route::middleware(CategoriesPermission::class)->group(function (){
             Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
             Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');

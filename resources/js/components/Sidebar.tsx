@@ -99,12 +99,12 @@ function Sidebar() {
                                 >
                                     Products
                                 </SidebarLink>
-                                <SidebarLink
+                                {/* <SidebarLink
                                     active={"Admin/Suppliers" === component}
                                     to="/suppliers"
                                 >
                                     Suppliers
-                                </SidebarLink>
+                                </SidebarLink> */}
                                 <SidebarLink
                                     active={"Admin/Categories" === component}
                                     to="/categories"

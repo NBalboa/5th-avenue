@@ -143,7 +143,7 @@ function Products({
             </div>
 
             <div className="w-full flex justify-end gap-2 mt-2">
-                <SupplierModal />
+                {/* <SupplierModal /> */}
                 <CategoryModal />
             </div>
 

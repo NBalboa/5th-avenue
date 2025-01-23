@@ -139,7 +139,7 @@ function ProductModal({
                             <Error>{errors.quantity}</Error>
                         ) : null}
                     </div>
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                         <label className="text-md text-white">Supplier</label>
                         <select
                             value={!data.by_quantity ? "" : data.supplier}
@@ -163,7 +163,7 @@ function ProductModal({
                         {errors.supplier ? (
                             <Error>{errors.supplier}</Error>
                         ) : null}
-                    </div>
+                    </div> */}
                     <div className="space-y-2">
                         <label className="text-md text-white">Image</label>
                         <input

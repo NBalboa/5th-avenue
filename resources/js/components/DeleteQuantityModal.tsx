@@ -89,7 +89,7 @@ function DeleteQuantityModal({
                             ))}
                         </select>
                     </InputWrapper>
-                    <InputWrapper>
+                    {/* <InputWrapper>
                         <Label label="Choose Supplier" />
                         <select
                             value={supplier}
@@ -103,7 +103,7 @@ function DeleteQuantityModal({
                                 </option>
                             ))}
                         </select>
-                    </InputWrapper>
+                    </InputWrapper> */}
                     <InputWrapper>
                         <Label label="Quantity" />
                         <InputNumber

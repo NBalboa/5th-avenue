@@ -60,7 +60,7 @@ const StocksHistory = ({ stocks, filters }: StocksHistoryProps) => {
                 <TableHead>
                     <TableHeadData>Image</TableHeadData>
                     <TableHeadData>Product Name</TableHeadData>
-                    <TableHeadData>Supplier Name</TableHeadData>
+                    {/* <TableHeadData>Supplier Name</TableHeadData> */}
                     <TableHeadData>Quantity</TableHeadData>
                     <TableHeadData>Description</TableHeadData>
                 </TableHead>
@@ -76,9 +76,9 @@ const StocksHistory = ({ stocks, filters }: StocksHistoryProps) => {
                             <TableBodyRowData>
                                 {stock.product.name}
                             </TableBodyRowData>
-                            <TableBodyRowData>
+                            {/* <TableBodyRowData>
                                 {stock.supplier?.name}
-                            </TableBodyRowData>
+                            </TableBodyRowData> */}
                             <TableBodyRowData>
                                 {stock.quantity}
                             </TableBodyRowData>
