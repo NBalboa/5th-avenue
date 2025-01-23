@@ -46,7 +46,7 @@ class CustomerController extends Controller
         if($time){
             $bookings = $bookings->byTime($time);
         }
-        $bookings = $bookings->get();
+        $bookings = $bookings->latest()->get();
         $datetimeLocalValue = $date . 'T' . substr($time, 0, 5); // "2025-01-15T14:10"
 
         return Inertia::render('MyBookings', [

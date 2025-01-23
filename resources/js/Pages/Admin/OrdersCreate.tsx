@@ -248,10 +248,10 @@ function OrdersCreate({
                                 />
                             </TableBodyRowData>
                             <TableBodyRowData>
-                                P{order.product.price}
+                                ₱{order.product.price}
                             </TableBodyRowData>
                             <TableBodyRowData>
-                                P{totalPrice(order).toFixed(2)}
+                                ₱{totalPrice(order).toFixed(2)}
                             </TableBodyRowData>
                             <TableBodyRowData>
                                 <button
@@ -289,13 +289,13 @@ function OrdersCreate({
                     <div className="flex flex-row gap-2 items-center justify-between">
                         <div className="text-white text-xl">Total:</div>
                         <div className="text-white text-xl">
-                            P{overAllTotalPrice(orders).toFixed(2)}
+                            ₱{overAllTotalPrice(orders).toFixed(2)}
                         </div>
                     </div>
                     <div className="flex flex-row gap-2 items-center justify-between">
                         <div className="text-white text-xl">Change:</div>
                         <div className="text-white text-xl">
-                            P
+                            ₱
                             {amountChange(
                                 parseFloat(amountRender),
                                 orders

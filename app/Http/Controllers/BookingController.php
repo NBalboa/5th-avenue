@@ -51,7 +51,7 @@ class BookingController extends Controller
 
         $datetimeLocalValue = $date . 'T' . substr($time, 0, 5); // "2025-01-15T14:10"
 
-        $bookings = $bookings->get();
+        $bookings = $bookings->latest()->get();
 
 
         return Inertia::render('Admin/Bookings', [
