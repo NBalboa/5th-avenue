@@ -160,8 +160,8 @@ function OrdersCreate({
             <h1 className="text-white text-2xl font-semibold my-2">Products</h1>
 
             <div>
-                <div className="flex md:flex-row flex-col my-5 gap-5 items-center">
-                    <div className="text-white relative w-full  mx-auto border-2 border-orange rounded-full">
+                <div>
+                    <div className="text-white relative max-w-lg  mx-auto border-2 border-orange rounded-full">
                         <input
                             type="text"
                             value={search}
@@ -176,11 +176,11 @@ function OrdersCreate({
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
-                    <div>
+                    <div className="max-w-xs mx-auto mt-2 mb-2">
                         <select
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
-                            className="px-4 py-2 text-sm rounded-lg border-2 border-orange"
+                            className="px-4 py-2 text-sm w-full rounded-lg border-2 border-orange"
                         >
                             <option value="">Choose Category</option>
                             {categories.map((category) => (

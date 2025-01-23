@@ -25,6 +25,7 @@ import { Cart, Category, PaginatedData, Product, TTable } from "@/Types/types";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
+import GCASH from "../../images/gcash.jpg";
 
 type BookingSearch = {
     search: string;
@@ -34,25 +35,31 @@ type BookingSearch = {
 type BookingProps = {
     categories: Category[];
     products: PaginatedData<Product>;
-    tables: TTable[];
     filters: BookingSearch;
     carts: Cart[];
+    tables: TTable[];
+    datetime: DateTime;
 };
 
+type DateTime = {
+    date: string;
+    time: string;
+};
 const CreateBooking = ({
     products,
     categories,
-    tables,
     filters,
     carts,
+    tables,
+    datetime,
 }: BookingProps) => {
     const [search, setSearch] = useState<string>(filters.search ?? "");
     const [hasOrder, setHasOrder] = useState<boolean>(
         carts.length > 0 ? true : false
     );
     const [table, setTable] = useState<string>("");
-    const [date, setDate] = useState<string>("");
-    const [time, setTime] = useState<string>("");
+    const [date, setDate] = useState<string>(datetime.date ?? "");
+    const [time, setTime] = useState<string>(datetime.time ?? "");
     const [noPeople, setNoPeople] = useState<string>("");
     const [image, setImage] = useState<File | null>(null);
     const [preview, setPreview] = useState<string>("");
@@ -60,17 +67,22 @@ const CreateBooking = ({
     const [loading, setLoading] = useState<boolean>(false);
     const imageRef = useRef<HTMLInputElement | null>(null);
     const { errors } = usePage().props;
-
+    const [availableTables, setAvailableTables] = useState<TTable[]>(
+        tables ?? []
+    );
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const data = {
             search: search,
             category: filters.category ?? "",
+            date: date,
+            time: time,
         };
 
         router.get("/create/booking", data, {
             replace: true,
             preserveScroll: true,
+            preserveState: true,
         });
     };
 
@@ -179,6 +191,26 @@ const CreateBooking = ({
         });
     };
 
+    const searchAvailableTable = () => {
+        const data = {
+            date: date,
+            time: time,
+            search: search,
+            category: filters.category ?? "",
+        };
+
+        router.get("/create/booking", data, {
+            preserveScroll: true,
+            replace: true,
+            preserveState: true,
+            onSuccess: () => {
+                toast.success(
+                    `${availableTables.length} Table/s is/are vacant`
+                );
+            },
+        });
+    };
+
     return (
         <UserLayout>
             <Head title="Create Booking" />
@@ -188,24 +220,6 @@ const CreateBooking = ({
                         Create Booking
                     </h2>
                     <Form onHandleSubmit={handleAddBooking}>
-                        <InputWrapper>
-                            <Label label="Table No." />
-                            <select
-                                value={table}
-                                onChange={(e) => setTable(e.target.value)}
-                                className="px-4 py-2 text-md w-full rounded"
-                            >
-                                <option value="">Select Table</option>
-                                {tables.map((table) => (
-                                    <option key={table.id} value={table.id}>
-                                        {table.no}
-                                    </option>
-                                ))}
-                            </select>
-                            {errors.table ? (
-                                <Error>{errors.table}</Error>
-                            ) : null}
-                        </InputWrapper>
                         <InputWrapper>
                             <Label label="Date" />
                             <input
@@ -226,6 +240,33 @@ const CreateBooking = ({
                             />
                             {errors.time ? <Error>{errors.time}</Error> : null}
                         </InputWrapper>
+                        <button
+                            type="button"
+                            onClick={() => searchAvailableTable()}
+                            className="border-2 border-white px-4 py-2 text-white text-md w-full hover:bg-orange"
+                        >
+                            Search for Available Table
+                        </button>
+                        <InputWrapper>
+                            <Label label="Table No." />
+                            <select
+                                value={table}
+                                onChange={(e) => setTable(e.target.value)}
+                                className="px-4 py-2 text-md w-full rounded"
+                                disabled={!date || !time}
+                            >
+                                <option value="">Select Table</option>
+                                {availableTables.map((table) => (
+                                    <option key={table.id} value={table.id}>
+                                        {table.no}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.table ? (
+                                <Error>{errors.table}</Error>
+                            ) : null}
+                        </InputWrapper>
+
                         <InputWrapper>
                             <Label label="No. of People" />
                             <InputNumber
@@ -238,6 +279,7 @@ const CreateBooking = ({
                                 <Error>{errors.no_people}</Error>
                             ) : null}
                         </InputWrapper>
+
                         <InputWrapper>
                             <div className="flex gap-2">
                                 <input
@@ -253,6 +295,16 @@ const CreateBooking = ({
                         </InputWrapper>
                         {hasOrder ? (
                             <>
+                                <InputWrapper>
+                                    <Label label="Pay Here" />
+                                    <p className="w-full text-md font-bold text-white">
+                                        GCASH No: 09753919743
+                                    </p>
+                                    <img
+                                        src={GCASH}
+                                        className="h-[400x] w-[200px] mx-auto"
+                                    />
+                                </InputWrapper>
                                 <InputWrapper>
                                     <Label label="Gcash Reference ID" />
                                     <Input
@@ -402,7 +454,8 @@ const CreateBooking = ({
                                     <Link
                                         preserveState={true}
                                         preserveScroll={true}
-                                        href="/my/booking"
+                                        replace={true}
+                                        href={`/create/booking?category=&date=&search=&time=`}
                                         className={`w-full px-4 py-2 ${
                                             filters.category
                                                 ? "hover:bg-orange"
@@ -415,13 +468,8 @@ const CreateBooking = ({
                                         <Link
                                             preserveState={true}
                                             preserveScroll={true}
-                                            href={`/my/booking?category=${
-                                                category.id
-                                            }${
-                                                search
-                                                    ? `&search=${search}`
-                                                    : "&search="
-                                            }`}
+                                            replace={true}
+                                            href={`/create/booking?category=${category.id}&date=${date}&search=${search}&time=${time}`}
                                             key={category.id}
                                             className={`w-full px-4 py-2 ${
                                                 filters.category ===

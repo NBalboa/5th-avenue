@@ -71,10 +71,10 @@ class BookingController extends Controller
         $carts = $user->carts()->with('product')->where('cart_type', '=', CartType::BOOKING->value)->get();
         $products = Product::with('category');
         $categories = Category::get();
-        $tables = Table::get();
 
         $category = $request->input('category');
         $search = $request->input('search');
+
 
         if ($search) {
             $products = $products->search($search);
@@ -84,6 +84,37 @@ class BookingController extends Controller
             $products = $products->byCategory($category);
         }
 
+        $date = $request->input('date');
+        $time = $request->input('time');
+        $tables = null;
+
+        if($date && $time){
+            $tables = Table::get();
+
+            $time = Carbon::parse($time)->format('H:i:s');
+
+            $dateTime = Carbon::createFromFormat('Y-m-d H:i:s', "$date $time");
+            $newBookingEnd = $dateTime->format('H:i:s');
+            $newBookingStart = $dateTime->subHours(3)->format('H:i:s');
+
+            $tables = $tables->map(function ($table) use($date,$newBookingEnd, $newBookingStart ) {
+
+                $isTableTaken = Booking::where('table_id','=',$table->id )
+                        ->where('booking_status', '=', BookingStatus::CONFIRM->value)
+                        ->whereDate('date', $date)
+                        ->whereBetween('time', [$newBookingStart,$newBookingEnd])
+                        ->exists();
+
+                if(!$isTableTaken){
+                    return $table;
+                }
+            });
+
+            $tables = $tables->filter()->values()->toArray();
+
+        }
+
+
 
 
         $products = $products->isNotDeleted()->isAvailable()->latest()->paginate(10)->withQueryString();
@@ -91,8 +122,12 @@ class BookingController extends Controller
         return Inertia::render('CreateBooking', [
             'products' => $products,
             'categories' => $categories,
-            'tables' => $tables,
             'carts' => $carts,
+            'tables' => $tables,
+            'datetime' => [
+                'date' => $date,
+                'time' => Carbon::parse($time)->format("H:i"),
+            ],
             'filters' => [
                 'search' => $search,
                 'category' => $category
@@ -142,6 +177,7 @@ class BookingController extends Controller
 
     public function store(BookingStoreRequest $request){
         $data = $request->validated();
+
         $time = Carbon::parse($data['time'])->format('H:i:s');
         $date = $data['date'];
 

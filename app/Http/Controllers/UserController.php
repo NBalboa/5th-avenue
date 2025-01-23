@@ -107,7 +107,7 @@ class UserController extends Controller
             $search = $users->search($search);
         }
 
-        $users = $users->get();
+        $users = $users->latest()->get();
 
         return Inertia::render('Admin/Users', [
             "users" => $users,
