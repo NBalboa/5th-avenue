@@ -1,188 +1,25 @@
+import priceFormatter from "@/helpers/priceFormatter";
 import { Booking, TOrder } from "@/Types/types";
-import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
+import {
+    Document,
+    Font,
+    Page,
+    StyleSheet,
+    Text,
+    View,
+} from "@react-pdf/renderer";
 
-type MyDocumentProps = {
-    total_orders: number;
-    total_customers: number;
-    total_staffs: number;
-    total_reservations: number;
-    filters: FiltersDashboard;
-    sales: Sales;
-    orders: TOrder[];
-    bookings: Booking[];
-};
+import Roboto from "../../fonts/Roboto-Regular.ttf";
 
-type FiltersDashboard = {
-    name_date: string;
-};
-
-type Sales = {
-    today: number;
-    month: number;
-    week: number;
-    year: number;
-};
-
-const MyDocument = ({
-    total_orders,
-    total_customers,
-    total_staffs,
-    total_reservations,
-    sales,
-    filters,
-    orders,
-    bookings,
-}: MyDocumentProps) => {
-    console.log(bookings);
-    return (
-        <Document>
-            <Page style={styles.page}>
-                {/* Filters Section */}
-                <View style={styles.section}>
-                    <Text style={styles.label}>
-                        Orders and Reservations:{" "}
-                        {filters.name_date.toUpperCase()}
-                    </Text>
-                </View>
-
-                {/* Orders and Reservations Cards */}
-                <View style={styles.section}>
-                    <View style={styles.cardContainer}>
-                        <View style={styles.card}>
-                            <Text style={styles.cardLabel}>Orders</Text>
-                            <Text style={styles.cardTotal}>{total_orders}</Text>
-                        </View>
-                        <View style={styles.card}>
-                            <Text style={styles.cardLabel}>Reservations</Text>
-                            <Text style={styles.cardTotal}>
-                                {total_reservations}
-                            </Text>
-                        </View>
-                        <View style={styles.card}>
-                            <Text style={styles.cardLabel}>Customers</Text>
-                            <Text style={styles.cardTotal}>
-                                {total_customers}
-                            </Text>
-                        </View>
-                        <View style={styles.card}>
-                            <Text style={styles.cardLabel}>Staffs</Text>
-                            <Text style={styles.cardTotal}>{total_staffs}</Text>
-                        </View>
-                    </View>
-                </View>
-
-                {/* Sales Section */}
-                <Text style={styles.section}>Sales</Text>
-                <View style={styles.cardContainer}>
-                    <View style={styles.card}>
-                        <Text style={styles.cardLabel}>Today</Text>
-                        <Text style={styles.cardTotal}>{sales.today}</Text>
-                    </View>
-                    <View style={styles.card}>
-                        <Text style={styles.cardLabel}>This Week</Text>
-                        <Text style={styles.cardTotal}>{sales.week}</Text>
-                    </View>
-                    <View style={styles.card}>
-                        <Text style={styles.cardLabel}>This Month</Text>
-                        <Text style={styles.cardTotal}>{sales.month}</Text>
-                    </View>
-                    <View style={styles.card}>
-                        <Text style={styles.cardLabel}>This Year</Text>
-                        <Text style={styles.cardTotal}>{sales.year}</Text>
-                    </View>
-                </View>
-                {/* Orders */}
-
-                <Text style={styles.section}>Orders</Text>
-                <View style={styles.table}>
-                    <View style={[styles.tableRow, styles.tableHeader]}>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Order ID</Text>
-                        </View>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Customer Name</Text>
-                        </View>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Confirmed</Text>
-                        </View>
-                    </View>
-                    {orders.map((order) => (
-                        <View style={styles.tableRow} key={order.id}>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>{order.id}</Text>
-                            </View>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>
-                                    {order.customer
-                                        ? `${order.customer.first_name} ${order.customer.last_name}`
-                                        : null}
-                                </Text>
-                            </View>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>
-                                    {order.cashier
-                                        ? `${order.cashier.first_name} ${order.cashier.last_name}`
-                                        : null}
-                                </Text>
-                            </View>
-                        </View>
-                    ))}
-                </View>
-
-                <Text style={styles.section}>Bookings</Text>
-                <View style={styles.table}>
-                    <View style={[styles.tableRow, styles.tableHeader]}>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Booking ID</Text>
-                        </View>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Table No.</Text>
-                        </View>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Customer Name</Text>
-                        </View>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Confirmed</Text>
-                        </View>
-                    </View>
-                    {bookings.map((booking) => (
-                        <View style={styles.tableRow} key={booking.id}>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>
-                                    {booking.id}
-                                </Text>
-                            </View>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>
-                                    {booking.table.no}
-                                </Text>
-                            </View>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>
-                                    {booking.user
-                                        ? `${booking.user.first_name} ${booking.user.last_name}`
-                                        : null}
-                                </Text>
-                            </View>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>
-                                    {booking.confirmed
-                                        ? `${booking.confirmed.first_name} ${booking.confirmed.last_name}`
-                                        : null}
-                                </Text>
-                            </View>
-                        </View>
-                    ))}
-                </View>
-            </Page>
-        </Document>
-    );
-};
+Font.register({
+    family: "Roboto",
+    src: Roboto,
+});
 
 const styles = StyleSheet.create({
     page: {
         padding: 20,
-        fontFamily: "Helvetica",
+        fontFamily: "Roboto",
     },
     header: {
         fontSize: 20,
@@ -246,5 +83,248 @@ const styles = StyleSheet.create({
         fontSize: 10,
     },
 });
+
+type MyDocumentProps = {
+    total_orders: number;
+    total_customers: number;
+    total_staffs: number;
+    total_reservations: number;
+    filters: FiltersDashboard;
+    sales: Sales;
+    orders: TOrder[];
+    bookings: Booking[];
+    sales_date: SalesDate;
+    date_generated: string;
+};
+
+type FiltersDashboard = {
+    name_date: string;
+};
+
+type Sales = {
+    today: number;
+    month: number;
+    week: number;
+    year: number;
+};
+
+type SalesDate = {
+    today: string;
+    month: string;
+    week: Week;
+    year: string;
+};
+
+type Week = {
+    start: string;
+    end: string;
+};
+
+const MyDocument = ({
+    total_orders,
+    total_customers,
+    total_staffs,
+    total_reservations,
+    sales,
+    filters,
+    orders,
+    bookings,
+    sales_date,
+    date_generated,
+}: MyDocumentProps) => {
+    return (
+        <Document>
+            <Page style={styles.page} size={"A4"}>
+                {/* Filters Section */}
+                <View>
+                    <Text style={styles.label}>
+                        Date Generated: {date_generated}
+                    </Text>
+                </View>
+                <View style={styles.section}>
+                    <Text style={styles.label}>
+                        Orders and Reservations:{" "}
+                        {filters.name_date.toUpperCase()}{" "}
+                        {filters.name_date === "today"
+                            ? `(${sales_date.today})`
+                            : null}
+                        {filters.name_date === "week"
+                            ? `(${sales_date.week.start} - ${sales_date.week.end})`
+                            : null}
+                        {filters.name_date === "month"
+                            ? `(${sales_date.month})`
+                            : null}
+                        {filters.name_date === "year"
+                            ? `(${sales_date.year})`
+                            : null}
+                    </Text>
+                </View>
+
+                {/* Orders and Reservations Cards */}
+                <View style={styles.section}>
+                    <View style={styles.cardContainer}>
+                        <View style={styles.card}>
+                            <Text style={styles.cardLabel}>Orders</Text>
+                            <Text style={styles.cardTotal}>{total_orders}</Text>
+                        </View>
+                        <View style={styles.card}>
+                            <Text style={styles.cardLabel}>Reservations</Text>
+                            <Text style={styles.cardTotal}>
+                                {total_reservations}
+                            </Text>
+                        </View>
+                        <View style={styles.card}>
+                            <Text style={styles.cardLabel}>Customers</Text>
+                            <Text style={styles.cardTotal}>
+                                {total_customers}
+                            </Text>
+                        </View>
+                        <View style={styles.card}>
+                            <Text style={styles.cardLabel}>Staffs</Text>
+                            <Text style={styles.cardTotal}>{total_staffs}</Text>
+                        </View>
+                    </View>
+                </View>
+
+                {/* Sales Section */}
+                <Text style={styles.section}>Sales (in Peso)</Text>
+                <View style={styles.cardContainer}>
+                    <View style={styles.card}>
+                        <Text style={styles.cardLabel}>Today</Text>
+                        <Text style={styles.cardTotal}>
+                            {priceFormatter(sales.today)}
+                        </Text>
+                    </View>
+                    <View style={styles.card}>
+                        <Text style={styles.cardLabel}>This Week</Text>
+                        <Text style={styles.cardTotal}>
+                            {priceFormatter(sales.week)}
+                        </Text>
+                    </View>
+                    <View style={styles.card}>
+                        <Text style={styles.cardLabel}>This Month</Text>
+                        <Text style={styles.cardTotal}>
+                            {priceFormatter(sales.month)}
+                        </Text>
+                    </View>
+                    <View style={styles.card}>
+                        <Text style={styles.cardLabel}>This Year</Text>
+                        <Text style={styles.cardTotal}>
+                            {priceFormatter(sales.year)}
+                        </Text>
+                    </View>
+                </View>
+                {/* Orders */}
+
+                <Text style={styles.section}>Orders</Text>
+                <View style={styles.table}>
+                    <View style={[styles.tableRow, styles.tableHeader]}>
+                        <View style={styles.tableCol}>
+                            <Text style={styles.tableCell}>Order ID</Text>
+                        </View>
+                        <View style={styles.tableCol}>
+                            <Text style={styles.tableCell}>Customer Name</Text>
+                        </View>
+                        <View style={styles.tableCol}>
+                            <Text style={styles.tableCell}>Confirmed</Text>
+                        </View>
+                        <View style={styles.tableCol}>
+                            <Text style={styles.tableCell}>Remarks</Text>
+                        </View>
+                    </View>
+                    {orders.map((order) => (
+                        <View style={styles.tableRow} key={order.id}>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>{order.id}</Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>
+                                    {order.customer
+                                        ? `${order.customer.first_name} ${order.customer.last_name}`
+                                        : null}
+                                </Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>
+                                    {order.cashier
+                                        ? `${order.cashier.first_name} ${order.cashier.last_name}`
+                                        : null}
+                                </Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>
+                                    {order.customer === null &&
+                                    order.cashier !== null
+                                        ? "Walk-in"
+                                        : null}
+                                    {order.customer !== null &&
+                                    order.cashier === null
+                                        ? "Pending"
+                                        : null}
+                                    {order.customer !== null &&
+                                    order.cashier !== null
+                                        ? "Paid"
+                                        : null}
+                                </Text>
+                            </View>
+                        </View>
+                    ))}
+                </View>
+
+                <Text style={styles.section}>Resevations</Text>
+                <View style={styles.table}>
+                    <View style={[styles.tableRow, styles.tableHeader]}>
+                        <View style={styles.tableCol}>
+                            <Text style={styles.tableCell}>Booking ID</Text>
+                        </View>
+                        <View style={styles.tableCol}>
+                            <Text style={styles.tableCell}>Table No.</Text>
+                        </View>
+                        <View style={styles.tableCol}>
+                            <Text style={styles.tableCell}>Customer Name</Text>
+                        </View>
+                        <View style={styles.tableCol}>
+                            <Text style={styles.tableCell}>Confirmed</Text>
+                        </View>
+                        <View style={styles.tableCol}>
+                            <Text style={styles.tableCell}>Remarks</Text>
+                        </View>
+                    </View>
+                    {bookings.map((booking) => (
+                        <View style={styles.tableRow} key={booking.id}>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>
+                                    {booking.id}
+                                </Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>
+                                    {booking.table.no}
+                                </Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>
+                                    {booking.user
+                                        ? `${booking.user.first_name} ${booking.user.last_name}`
+                                        : null}
+                                </Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>
+                                    {booking.confirmed
+                                        ? `${booking.confirmed.first_name} ${booking.confirmed.last_name}`
+                                        : null}
+                                </Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>Approved</Text>
+                            </View>
+                        </View>
+                    ))}
+                </View>
+            </Page>
+        </Document>
+    );
+};
 
 export default MyDocument;

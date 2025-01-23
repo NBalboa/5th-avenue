@@ -12,6 +12,20 @@ type ReportProps = {
     sales: Sales;
     orders: TOrder[];
     bookings: Booking[];
+    sales_date: SalesDate;
+    date_generated: string;
+};
+
+type SalesDate = {
+    today: string;
+    month: string;
+    week: Week;
+    year: string;
+};
+
+type Week = {
+    start: string;
+    end: string;
 };
 
 type FiltersDashboard = {
@@ -34,6 +48,8 @@ const Reports = ({
     filters,
     orders,
     bookings,
+    sales_date,
+    date_generated,
 }: ReportProps) => {
     return (
         <div>
@@ -48,6 +64,8 @@ const Reports = ({
                     filters={filters}
                     orders={orders}
                     bookings={bookings}
+                    sales_date={sales_date}
+                    date_generated={date_generated}
                 />
             </PDFViewer>
         </div>

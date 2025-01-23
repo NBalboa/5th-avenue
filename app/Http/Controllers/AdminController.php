@@ -189,6 +189,10 @@ class AdminController extends Controller
 
         $orders = $orders->get();
         $bookings = $bookings->get();
+        $date_generated = $today->format('F d, Y');
+
+
+
 
         return Inertia::render('Admin/Reports', [
             "total_orders" => $total_orders,
@@ -201,11 +205,21 @@ class AdminController extends Controller
                 "week" => $week_sales,
                 "year" => $year_sales
             ],
+            "sales_date" => [
+                "today" => $today->format('F d, Y'),
+                "month" => Carbon::now()->format('F, Y'),
+                "week" => [
+                    "start" => Carbon::now()->startOfWeek()->format('F d, Y'),
+                    "end" => Carbon::now()->endOfWeek()->format('F d, Y')
+                ],
+                "year" => Carbon::now()->year
+            ],
             "filters" => [
                 "name_date" => $name_date
             ],
             "orders" => $orders,
             "bookings" => $bookings,
+            "date_generated" => $date_generated
         ]);
     }
 }
