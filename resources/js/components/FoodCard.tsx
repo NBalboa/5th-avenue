@@ -62,7 +62,7 @@ function FoodCard({
                     </div>
                     <div className="flex flex-col justify-between space-y-1">
                         <p className="text-lg font-medium">
-                            P{priceFormatter(product.price)}
+                            ₱{priceFormatter(product.price)}
                         </p>
                         {showQuantity ? (
                             <div className="w-full flex justify-center md:justify-start">

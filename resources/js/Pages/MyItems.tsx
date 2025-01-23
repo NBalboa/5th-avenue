@@ -28,7 +28,7 @@ const MyItems = ({ order, items }: MyItemsProps) => {
             </h1>
             <div className="flex flex-col gap-2">
                 <h2 className="text-lg font-medium text-white">
-                    Price: P{priceFormatter(order.total)}
+                    Price: ₱{priceFormatter(order.total)}
                 </h2>
                 <h2 className="text-lg font-medium text-white">
                     No. of Items: {items.length}
@@ -112,10 +112,10 @@ const MyItems = ({ order, items }: MyItemsProps) => {
                             </TableBodyRowData>
                             <TableBodyRowData>{item.quantity}</TableBodyRowData>
                             <TableBodyRowData>
-                                P{priceFormatter(item.price)}
+                                ₱{priceFormatter(item.price)}
                             </TableBodyRowData>
                             <TableBodyRowData>
-                                P{priceFormatter(getTotalPrice(item))}
+                                ₱{priceFormatter(getTotalPrice(item))}
                             </TableBodyRowData>
                         </TableBodyRow>
                     ))}

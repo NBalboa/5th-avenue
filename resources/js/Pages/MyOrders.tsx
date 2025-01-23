@@ -129,7 +129,7 @@ const MyOrders = ({ orders, filters }: MyOrdersProps) => {
                             </TableBodyRowData>
 
                             <TableBodyRowData>
-                                P{priceFormatter(order.total)}
+                                ₱{priceFormatter(order.total)}
                             </TableBodyRowData>
                             <TableBodyRowData>
                                 <p

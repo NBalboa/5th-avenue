@@ -87,7 +87,7 @@ const Checkout = ({ carts, table }: CheckoutProps) => {
                 <div className="flex flex-row gap-2 items-center justify-end">
                     <div className="text-white text-2xl">Total:</div>
                     <div className="text-white text-2xl">
-                        P{priceFormatter(getOverAllCartPrice(carts))}
+                        ₱{priceFormatter(getOverAllCartPrice(carts))}
                     </div>
                 </div>
                 <div className="text-right">
@@ -132,10 +132,10 @@ const Checkout = ({ carts, table }: CheckoutProps) => {
                                 />
                             </TableBodyRowData>
                             <TableBodyRowData>
-                                P{priceFormatter(cart.product.price)}
+                                ₱{priceFormatter(cart.product.price)}
                             </TableBodyRowData>
                             <TableBodyRowData>
-                                P{priceFormatter(getTotalCartPrice(cart))}
+                                ₱{priceFormatter(getTotalCartPrice(cart))}
                             </TableBodyRowData>
                             <TableBodyRowData>
                                 <button

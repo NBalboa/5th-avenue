@@ -178,7 +178,7 @@ function Products({
                                 {product.quantity ?? ""}
                             </TableBodyRowData>
                             <TableBodyRowData>
-                                {priceFormatter(product.price)}
+                                ₱{priceFormatter(product.price)}
                             </TableBodyRowData>
                             <TableBodyRowData>
                                 <div className="relative">

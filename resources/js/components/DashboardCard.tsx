@@ -25,7 +25,7 @@ const DashboardCard = ({
             <div>
                 <p className="text-white text-3xl">
                     {isPrice
-                        ? totalPriceFormatter.format(total)
+                        ? `₱${totalPriceFormatter.format(total)}`
                         : totalFormatter.format(total)}
                 </p>
                 <h3 className="text-white text-xl font-semibold break-all">

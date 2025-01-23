@@ -179,7 +179,7 @@ function Orders({ orders, filters }: OrderProps) {
                                 {order.table?.no}
                             </TableBodyRowData>
                             <TableBodyRowData>
-                                P{priceFormatter(order.total)}
+                                ₱{priceFormatter(order.total)}
                             </TableBodyRowData>
                             <TableBodyRowData>
                                 <select
