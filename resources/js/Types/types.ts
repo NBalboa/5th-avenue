@@ -197,6 +197,7 @@ export type Booking = {
     no_people: string;
     time: string;
     date: string;
+    closing_date: string;
     booking_status: BookingStatus;
     gcash_reference_id: string;
     created_at: string;

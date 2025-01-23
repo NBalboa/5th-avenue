@@ -108,6 +108,7 @@ const MyBookings = ({ bookings, filters }: MyBookingsProps) => {
                     <TableHeadData>Order ID</TableHeadData>
                     <TableHeadData>Table No.</TableHeadData>
                     <TableHeadData>Booking Date</TableHeadData>
+                    <TableHeadData>Closing Date</TableHeadData>
                     <TableHeadData>Booking Status</TableHeadData>
                     <TableHeadData>Gcash Reference ID</TableHeadData>
                     <TableHeadData>Orders</TableHeadData>
@@ -124,6 +125,12 @@ const MyBookings = ({ bookings, filters }: MyBookingsProps) => {
                             </TableBodyRowData>
                             <TableBodyRowData>
                                 {booking.date} {booking.time}
+                            </TableBodyRowData>
+                            <TableBodyRowData>
+                                {booking.booking_status ===
+                                BookingStatus.CONFIRM
+                                    ? booking.closing_date
+                                    : null}
                             </TableBodyRowData>
                             <TableBodyRowData>
                                 <p

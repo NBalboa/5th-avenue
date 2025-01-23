@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\UserRole;
 use App\Http\Requests\CustomerStoreRequest;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -46,7 +47,14 @@ class CustomerController extends Controller
         if($time){
             $bookings = $bookings->byTime($time);
         }
-        $bookings = $bookings->latest()->get();
+        $bookings = $bookings->latest()->get()->map(function ($booking) {
+            $time = Carbon::parse($booking->time)->format('H:i:s');
+            $date = Carbon::parse($booking->date)->format('Y-m-d');
+            $dateTime = Carbon::createFromFormat('Y-m-d H:i:s', "$date $time");
+            $booking->closing_date = $dateTime->addHours(3)->format('F j, Y g:i A');
+            return $booking;
+        });
+
         $datetimeLocalValue = $date . 'T' . substr($time, 0, 5); // "2025-01-15T14:10"
 
         return Inertia::render('MyBookings', [
