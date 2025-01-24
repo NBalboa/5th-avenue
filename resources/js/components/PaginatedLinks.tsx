@@ -4,13 +4,17 @@ import React from "react";
 
 type PaginatedLinksProps = {
     link: TLINK;
+    isPreserveState?: boolean;
 };
 
-function PaginatedLinks({ link }: PaginatedLinksProps) {
+function PaginatedLinks({
+    link,
+    isPreserveState = false,
+}: PaginatedLinksProps) {
     return (
         <div>
             <Link
-                preserveState={false}
+                preserveState={isPreserveState}
                 preserveScroll={true}
                 href={link.url ? link.url : "#"}
                 className={`px-4 py-2 text-white  ${

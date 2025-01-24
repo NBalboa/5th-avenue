@@ -105,7 +105,7 @@ class OrderController extends Controller
 
         if($request->input('category')){
             $category = (int) $request->input('category');
-            $products = $products->with('table')->ByCategory($category);
+            $products = $products->ByCategory($category);
         }
 
 

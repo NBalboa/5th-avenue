@@ -151,6 +151,7 @@ function OrdersCreate({
         router.get("/orders/create", data, {
             replace: true,
             preserveScroll: true,
+            preserveState: true,
         });
     }
 
@@ -207,7 +208,11 @@ function OrdersCreate({
             {products.total > products.per_page ? (
                 <div className="w-full text-center mt-5 flex justify-center">
                     {products.links.map((link, index) => (
-                        <PaginatedLinks key={index} link={link} />
+                        <PaginatedLinks
+                            key={index}
+                            link={link}
+                            isPreserveState={true}
+                        />
                     ))}
                 </div>
             ) : null}
