@@ -199,9 +199,13 @@ class ProductController extends Controller
         ->values()
         ->toArray();
 
+        $logo = asset('images/logo.png');
+
+
         return Inertia::render('Admin/ProductReports', [
             'product_sales' => $product_sales,
-            'date_generated' => Carbon::now()->format('F d, Y')
+            'date_generated' => Carbon::now()->format('F d, Y'),
+            'logo' => $logo
         ]);
     }
 }

@@ -2,6 +2,7 @@ import { Head } from "@inertiajs/react";
 import {
     Document,
     Font,
+    Image,
     Page,
     PDFViewer,
     StyleSheet,
@@ -18,6 +19,14 @@ const styles = StyleSheet.create({
     page: {
         padding: 20,
         fontFamily: "Roboto",
+    },
+    logo: {
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: "auto",
+        marginRight: "auto",
+        height: "100px",
+        width: "100px",
     },
     header: {
         fontSize: 20,
@@ -57,21 +66,33 @@ const styles = StyleSheet.create({
     section: {
         marginBottom: 20,
     },
+    pageNumber: {
+        position: "absolute",
+        fontSize: 12,
+        bottom: 30,
+        left: 0,
+        right: 0,
+        textAlign: "center",
+        color: "grey",
+    },
 });
 
 type ProductReportsProps = {
     product_sales: ProductSale[];
     date_generated: string;
+    logo: string;
 };
 
 type ProductSale = {
     quantity: number;
     product: Product;
+    logo: string;
 };
 
 const ProductReports = ({
     product_sales,
     date_generated,
+    logo,
 }: ProductReportsProps) => {
     return (
         <div>
@@ -79,6 +100,7 @@ const ProductReports = ({
             <PDFViewer style={{ height: "100vh", width: "100%" }}>
                 <Document>
                     <Page style={styles.page}>
+                        <Image style={styles.logo} src={logo} />
                         <View>
                             <Text style={styles.label}>
                                 Date Generated: {date_generated}
@@ -92,7 +114,7 @@ const ProductReports = ({
                                 </View>
                                 <View style={styles.tableCol}>
                                     <Text style={styles.tableCell}>
-                                        Total No. Sales
+                                        Total No. Sales by Volume
                                     </Text>
                                 </View>
                             </View>
@@ -114,6 +136,13 @@ const ProductReports = ({
                                 </View>
                             ))}
                         </View>
+                        <Text
+                            style={styles.pageNumber}
+                            render={({ pageNumber, totalPages }) =>
+                                `${pageNumber} / ${totalPages}`
+                            }
+                            fixed
+                        />
                     </Page>
                 </Document>
             </PDFViewer>

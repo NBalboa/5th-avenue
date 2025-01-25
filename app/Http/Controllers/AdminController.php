@@ -191,9 +191,9 @@ class AdminController extends Controller
         $bookings = $bookings->get();
         $date_generated = $today->format('F d, Y');
 
-
-
-
+        $logo = asset('images/logo.png');
+        // $logo = 'data:image/png;base64'. base64_encode(file_get_contents($logoPath));
+        // dd($logo);
         return Inertia::render('Admin/Reports', [
             "total_orders" => $total_orders,
             "total_customers" =>  $total_customers,
@@ -219,7 +219,8 @@ class AdminController extends Controller
             ],
             "orders" => $orders,
             "bookings" => $bookings,
-            "date_generated" => $date_generated
+            "date_generated" => $date_generated,
+            "logo" => $logo
         ]);
     }
 }

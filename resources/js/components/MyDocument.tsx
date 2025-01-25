@@ -3,8 +3,12 @@ import { Booking, TOrder } from "@/Types/types";
 import {
     Document,
     Font,
+    G,
+    Image,
     Page,
+    Path,
     StyleSheet,
+    Svg,
     Text,
     View,
 } from "@react-pdf/renderer";
@@ -20,6 +24,14 @@ const styles = StyleSheet.create({
     page: {
         padding: 20,
         fontFamily: "Roboto",
+    },
+    logo: {
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: "auto",
+        marginRight: "auto",
+        height: "100px",
+        width: "100px",
     },
     header: {
         fontSize: 20,
@@ -82,6 +94,16 @@ const styles = StyleSheet.create({
     tableCell: {
         fontSize: 10,
     },
+
+    pageNumber: {
+        position: "absolute",
+        fontSize: 12,
+        bottom: 30,
+        left: 0,
+        right: 0,
+        textAlign: "center",
+        color: "grey",
+    },
 });
 
 type MyDocumentProps = {
@@ -95,6 +117,7 @@ type MyDocumentProps = {
     bookings: Booking[];
     sales_date: SalesDate;
     date_generated: string;
+    logo: string;
 };
 
 type FiltersDashboard = {
@@ -131,11 +154,12 @@ const MyDocument = ({
     bookings,
     sales_date,
     date_generated,
+    logo,
 }: MyDocumentProps) => {
     return (
         <Document>
             <Page style={styles.page} size={"A4"}>
-                {/* Filters Section */}
+                <Image style={styles.logo} src={logo} />
                 <View>
                     <Text style={styles.label}>
                         Date Generated: {date_generated}
@@ -215,113 +239,130 @@ const MyDocument = ({
                     </View>
                 </View>
                 {/* Orders */}
-
-                <Text style={styles.section}>Orders</Text>
-                <View style={styles.table}>
-                    <View style={[styles.tableRow, styles.tableHeader]}>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Order ID</Text>
+                <View break>
+                    <Text style={styles.section}>Orders</Text>
+                    <View style={styles.table}>
+                        <View style={[styles.tableRow, styles.tableHeader]}>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>Order ID</Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>
+                                    Customer Name
+                                </Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>Confirmed</Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>Remarks</Text>
+                            </View>
                         </View>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Customer Name</Text>
-                        </View>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Confirmed</Text>
-                        </View>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Remarks</Text>
-                        </View>
+                        {orders.map((order) => (
+                            <View style={styles.tableRow} key={order.id}>
+                                <View style={styles.tableCol}>
+                                    <Text style={styles.tableCell}>
+                                        {order.id}
+                                    </Text>
+                                </View>
+                                <View style={styles.tableCol}>
+                                    <Text style={styles.tableCell}>
+                                        {order.customer
+                                            ? `${order.customer.first_name} ${order.customer.last_name}`
+                                            : null}
+                                    </Text>
+                                </View>
+                                <View style={styles.tableCol}>
+                                    <Text style={styles.tableCell}>
+                                        {order.cashier
+                                            ? `${order.cashier.first_name} ${order.cashier.last_name}`
+                                            : null}
+                                    </Text>
+                                </View>
+                                <View style={styles.tableCol}>
+                                    <Text style={styles.tableCell}>
+                                        {order.customer === null &&
+                                        order.cashier !== null
+                                            ? "Walk-in"
+                                            : null}
+                                        {order.customer !== null &&
+                                        order.cashier === null
+                                            ? "Pending"
+                                            : null}
+                                        {order.customer !== null &&
+                                        order.cashier !== null
+                                            ? "Paid"
+                                            : null}
+                                    </Text>
+                                </View>
+                            </View>
+                        ))}
                     </View>
-                    {orders.map((order) => (
-                        <View style={styles.tableRow} key={order.id}>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>{order.id}</Text>
-                            </View>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>
-                                    {order.customer
-                                        ? `${order.customer.first_name} ${order.customer.last_name}`
-                                        : null}
-                                </Text>
-                            </View>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>
-                                    {order.cashier
-                                        ? `${order.cashier.first_name} ${order.cashier.last_name}`
-                                        : null}
-                                </Text>
-                            </View>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>
-                                    {order.customer === null &&
-                                    order.cashier !== null
-                                        ? "Walk-in"
-                                        : null}
-                                    {order.customer !== null &&
-                                    order.cashier === null
-                                        ? "Pending"
-                                        : null}
-                                    {order.customer !== null &&
-                                    order.cashier !== null
-                                        ? "Paid"
-                                        : null}
-                                </Text>
-                            </View>
-                        </View>
-                    ))}
                 </View>
-
-                <Text style={styles.section}>Resevations</Text>
-                <View style={styles.table}>
-                    <View style={[styles.tableRow, styles.tableHeader]}>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Booking ID</Text>
+                <View break>
+                    <Text style={styles.section}>Reservations</Text>
+                    <View style={styles.table}>
+                        <View style={[styles.tableRow, styles.tableHeader]}>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>Booking ID</Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>Table No.</Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>
+                                    Customer Name
+                                </Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>Confirmed</Text>
+                            </View>
+                            <View style={styles.tableCol}>
+                                <Text style={styles.tableCell}>Remarks</Text>
+                            </View>
                         </View>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Table No.</Text>
-                        </View>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Customer Name</Text>
-                        </View>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Confirmed</Text>
-                        </View>
-                        <View style={styles.tableCol}>
-                            <Text style={styles.tableCell}>Remarks</Text>
-                        </View>
+                        {bookings.map((booking) => (
+                            <View style={styles.tableRow} key={booking.id}>
+                                <View style={styles.tableCol}>
+                                    <Text style={styles.tableCell}>
+                                        {booking.id}
+                                    </Text>
+                                </View>
+                                <View style={styles.tableCol}>
+                                    <Text style={styles.tableCell}>
+                                        {booking.table.no}
+                                    </Text>
+                                </View>
+                                <View style={styles.tableCol}>
+                                    <Text style={styles.tableCell}>
+                                        {booking.user
+                                            ? `${booking.user.first_name} ${booking.user.last_name}`
+                                            : null}
+                                    </Text>
+                                </View>
+                                <View style={styles.tableCol}>
+                                    <Text style={styles.tableCell}>
+                                        {booking.confirmed
+                                            ? `${booking.confirmed.first_name} ${booking.confirmed.last_name}`
+                                            : null}
+                                    </Text>
+                                </View>
+                                <View style={styles.tableCol}>
+                                    <Text style={styles.tableCell}>
+                                        Approved
+                                    </Text>
+                                </View>
+                            </View>
+                        ))}
                     </View>
-                    {bookings.map((booking) => (
-                        <View style={styles.tableRow} key={booking.id}>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>
-                                    {booking.id}
-                                </Text>
-                            </View>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>
-                                    {booking.table.no}
-                                </Text>
-                            </View>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>
-                                    {booking.user
-                                        ? `${booking.user.first_name} ${booking.user.last_name}`
-                                        : null}
-                                </Text>
-                            </View>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>
-                                    {booking.confirmed
-                                        ? `${booking.confirmed.first_name} ${booking.confirmed.last_name}`
-                                        : null}
-                                </Text>
-                            </View>
-                            <View style={styles.tableCol}>
-                                <Text style={styles.tableCell}>Approved</Text>
-                            </View>
-                        </View>
-                    ))}
                 </View>
+                <Text
+                    style={styles.pageNumber}
+                    render={({ pageNumber, totalPages }) =>
+                        `${pageNumber} / ${totalPages}`
+                    }
+                    fixed
+                />
             </Page>
         </Document>
     );

@@ -70,7 +70,7 @@ class BookingController extends Controller
         $user = User::where('id', '=', $user_id)->first();
         $carts = $user->carts()->with('product')->where('cart_type', '=', CartType::BOOKING->value)->get();
         $products = Product::with('category');
-        $categories = Category::get();
+        $categories = Category::isNotDeleted()->get();
 
         $category = $request->input('category');
         $search = $request->input('search');

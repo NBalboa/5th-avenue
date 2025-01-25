@@ -14,6 +14,7 @@ type ReportProps = {
     bookings: Booking[];
     sales_date: SalesDate;
     date_generated: string;
+    logo: string;
 };
 
 type SalesDate = {
@@ -50,10 +51,12 @@ const Reports = ({
     bookings,
     sales_date,
     date_generated,
+    logo,
 }: ReportProps) => {
     return (
         <div>
             <Head title="Reports" />
+
             <PDFViewer style={{ height: "100vh", width: "100%" }}>
                 <MyDocument
                     total_reservations={total_reservations}
@@ -66,6 +69,7 @@ const Reports = ({
                     bookings={bookings}
                     sales_date={sales_date}
                     date_generated={date_generated}
+                    logo={logo}
                 />
             </PDFViewer>
         </div>
