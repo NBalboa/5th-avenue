@@ -28,6 +28,11 @@ const styles = StyleSheet.create({
         height: "100px",
         width: "100px",
     },
+    logoText: {
+        textAlign: "center",
+        marginBottom: 15,
+        fontSize: 16,
+    },
     header: {
         fontSize: 20,
         marginBottom: 10,
@@ -101,6 +106,9 @@ const ProductReports = ({
                 <Document>
                     <Page style={styles.page}>
                         <Image style={styles.logo} src={logo} />
+                        <Text style={styles.logoText}>
+                            5th Avenue Grill and Restobar
+                        </Text>
                         <View>
                             <Text style={styles.label}>
                                 Date Generated: {date_generated}
