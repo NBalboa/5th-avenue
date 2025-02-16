@@ -49,10 +49,7 @@ class UserController extends Controller
     public function orders(Request $request){
         $user_id = Auth::user()->id;
         $user = User::where('id', '=', $user_id)->first();
-        $orders = $user->orders()->where('order_type', '=', OrderType::ORDER->value)->with('table')
-            ->orWhereHas('booking', function($query) {
-                $query->where('booking_status', '=', BookingStatus::CONFIRM->value);
-            });
+        $orders = $user->orders()->where('order_type', '=', OrderType::ORDER->value)->with('table');
 
         $order = $request->input('order');
         $search = $request->input('search');

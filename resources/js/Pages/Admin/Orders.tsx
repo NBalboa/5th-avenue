@@ -176,7 +176,7 @@ function Orders({ orders, filters }: OrderProps) {
                         <TableBodyRow key={order.id}>
                             <TableBodyRowData>{order.id}</TableBodyRowData>
                             <TableBodyRowData>
-                                {order.table?.no}
+                                {order.table?.id}
                             </TableBodyRowData>
                             <TableBodyRowData>
                                 ₱{priceFormatter(order.total)}
