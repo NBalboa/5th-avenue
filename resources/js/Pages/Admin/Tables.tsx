@@ -14,11 +14,13 @@ import { QRCodeCanvas, QRCodeSVG } from "qrcode.react";
 import { useRef, useState } from "react";
 
 function Tables({ tables }: { tables: PaginatedData<TTable> }) {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
     const [search, setSearch] = useState<string>("");
 
-    function handleDownload(table: TTable) {
-        const canvas = canvasRef.current;
+    function handleDownload(canvas: HTMLCanvasElement | null, table: TTable) {
+        if (!canvas) {
+            return;
+        }
+
         const pngUrl = canvas?.toDataURL("image/png");
 
         const link = document.createElement("a");
@@ -80,30 +82,41 @@ function Tables({ tables }: { tables: PaginatedData<TTable> }) {
                     <TableHeadData>QR Code</TableHeadData>
                 </TableHead>
                 <TableBody>
-                    {tables?.data.map((table) => (
-                        <TableBodyRow key={table.id}>
-                            <TableBodyRowData
-                                click={() => handleEdit(table)}
-                                isLink={true}
-                            >
-                                {table.no}
-                            </TableBodyRowData>
-                            <TableBodyRowData>{table.name}</TableBodyRowData>
-                            <TableBodyRowData>
-                                {table.description}
-                            </TableBodyRowData>
-                            <TableBodyRowData>
-                                <QRCodeCanvas
-                                    ref={canvasRef}
-                                    onClick={() => handleDownload(table)}
-                                    className="cursor-pointer mx-auto border-2 border-orange rounded-lg"
-                                    marginSize={2}
-                                    value={`${base_url}/menus/order/tables/${table.id}`}
-                                    size={200}
-                                />
-                            </TableBodyRowData>
-                        </TableBodyRow>
-                    ))}
+                    {tables?.data.map((table) => {
+                        const canvasRef = useRef<HTMLCanvasElement>(null);
+
+                        return (
+                            <TableBodyRow key={table.id}>
+                                <TableBodyRowData
+                                    click={() => handleEdit(table)}
+                                    isLink={true}
+                                >
+                                    {table.no}
+                                </TableBodyRowData>
+                                <TableBodyRowData>
+                                    {table.name}
+                                </TableBodyRowData>
+                                <TableBodyRowData>
+                                    {table.description}
+                                </TableBodyRowData>
+                                <TableBodyRowData>
+                                    <QRCodeCanvas
+                                        ref={canvasRef}
+                                        onClick={() =>
+                                            handleDownload(
+                                                canvasRef.current,
+                                                table
+                                            )
+                                        }
+                                        className="cursor-pointer mx-auto border-2 border-orange rounded-lg"
+                                        marginSize={2}
+                                        value={`${base_url}/menus/order/tables/${table.id}`}
+                                        size={200}
+                                    />
+                                </TableBodyRowData>
+                            </TableBodyRow>
+                        );
+                    })}
                 </TableBody>
             </Table>
 
