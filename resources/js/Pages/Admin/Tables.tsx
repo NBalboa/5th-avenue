@@ -15,6 +15,7 @@ import { useRef, useState } from "react";
 
 function Tables({ tables }: { tables: PaginatedData<TTable> }) {
     const [search, setSearch] = useState<string>("");
+    const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
 
     function handleDownload(canvas: HTMLCanvasElement | null, table: TTable) {
         if (!canvas) {
@@ -82,9 +83,7 @@ function Tables({ tables }: { tables: PaginatedData<TTable> }) {
                     <TableHeadData>QR Code</TableHeadData>
                 </TableHead>
                 <TableBody>
-                    {tables?.data.map((table) => {
-                        const canvasRef = useRef<HTMLCanvasElement>(null);
-
+                    {tables?.data.map((table, index) => {
                         return (
                             <TableBodyRow key={table.id}>
                                 <TableBodyRowData
@@ -101,10 +100,12 @@ function Tables({ tables }: { tables: PaginatedData<TTable> }) {
                                 </TableBodyRowData>
                                 <TableBodyRowData>
                                     <QRCodeCanvas
-                                        ref={canvasRef}
+                                        ref={(el) =>
+                                            (canvasRefs.current[index] = el)
+                                        }
                                         onClick={() =>
                                             handleDownload(
-                                                canvasRef.current,
+                                                canvasRefs.current[index],
                                                 table
                                             )
                                         }

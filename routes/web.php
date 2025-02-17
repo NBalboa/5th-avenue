@@ -40,9 +40,10 @@ Route::post('/logout', [UserController::class, 'logout'])->name('users.logout')-
 Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/menus/order/tables/{table}', [MenuController::class, 'create'])->name('menus.create');
 
     Route::middleware(UserExist::class)->group(function () {
-        Route::get('/menus/order/tables/{table}', [MenuController::class, 'create'])->name('menus.create');
+
         Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
         Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
         Route::get('/cart/checkout/table/{table}', [CartController::class, 'checkout'])->name('cart.checkout');
