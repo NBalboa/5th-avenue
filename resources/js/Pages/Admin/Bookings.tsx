@@ -4,6 +4,7 @@ import TableBodyRow from "@/components/TableBodyRow";
 import TableBodyRowData from "@/components/TableBodyRowData";
 import TableHead from "@/components/TableHead";
 import TableHeadData from "@/components/TableHeadData";
+import ViewImageModal from "@/components/ViewImageModal";
 import getBookingColorStatus from "@/helpers/getBookingColorStatus";
 import getBookingStringStatus from "@/helpers/getBookingStringStatus";
 import getOrderStatusString from "@/helpers/getOrderStatusString";
@@ -29,6 +30,8 @@ const Bookings = ({ bookings, filters }: BookingsProps) => {
     );
     const [booking, setBooking] = useState<string>(filters.booking ?? "");
     const [search, setSearch] = useState<string>(filters.search ?? "");
+    const [viewImage, setViewImage] = useState<string | null>(null);
+    const [show, setShow] = useState<boolean>(false);
 
     const handleChangeStatus = (
         e: React.ChangeEvent<HTMLSelectElement>,
@@ -63,6 +66,10 @@ const Bookings = ({ bookings, filters }: BookingsProps) => {
         });
     };
 
+    const handleViewImage = (image: string | null) => {
+        setShow(true);
+        setViewImage(image);
+    };
     return (
         <AdminLayout>
             <Head title="Bookings" />
@@ -168,7 +175,10 @@ const Bookings = ({ bookings, filters }: BookingsProps) => {
                                 {booking.image ? (
                                     <img
                                         src={booking.image}
-                                        className="object-fit w-[200px] h-[200px]  mx-auto"
+                                        onClick={() =>
+                                            handleViewImage(booking.image)
+                                        }
+                                        className="cursor-pointer object-fit w-[200px] h-[200px]  mx-auto"
                                     />
                                 ) : null}
                             </TableBodyRowData>
@@ -189,6 +199,8 @@ const Bookings = ({ bookings, filters }: BookingsProps) => {
                     ))}
                 </TableBody>
             </Table>
+
+            <ViewImageModal image={viewImage} show={show} setShow={setShow} />
         </AdminLayout>
     );
 };

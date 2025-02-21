@@ -70,6 +70,8 @@ const CreateBooking = ({
     const [availableTables, setAvailableTables] = useState<TTable[]>(
         tables ?? []
     );
+
+    console.log(tables);
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const data = {
@@ -202,7 +204,7 @@ const CreateBooking = ({
         router.get("/create/booking", data, {
             preserveScroll: true,
             replace: true,
-            preserveState: true,
+            preserveState: false,
             onSuccess: () => {
                 toast.success(
                     `${availableTables.length} Table/s is/are vacant`

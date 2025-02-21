@@ -5,6 +5,7 @@ import TableBodyRow from "@/components/TableBodyRow";
 import TableBodyRowData from "@/components/TableBodyRowData";
 import TableHead from "@/components/TableHead";
 import TableHeadData from "@/components/TableHeadData";
+import ViewImageModal from "@/components/ViewImageModal";
 import getUserRoleString from "@/helpers/getUserRoleString";
 import AdminLayout from "@/Layouts/AdminLayout";
 import { User, UserRole } from "@/Types/types";
@@ -23,6 +24,8 @@ type FilterSearch = {
 const Users = ({ users, filters }: UserProps) => {
     const [search, setSearch] = useState<string>(filters.search ?? "");
     const [role, setRole] = useState<string>(filters.role ?? "");
+    const [show, setShow] = useState<boolean>(false);
+    const [viewImage, setViewImage] = useState<string | null>(null);
 
     const { auth } = usePage().props;
 
@@ -39,6 +42,11 @@ const Users = ({ users, filters }: UserProps) => {
             preserveState: true,
             replace: true,
         });
+    };
+
+    const handleViewImage = (image: string | null) => {
+        setShow(true);
+        setViewImage(image);
     };
     function handleAlertDelete(user: User) {
         toast(
@@ -137,16 +145,22 @@ const Users = ({ users, filters }: UserProps) => {
                             <TableBodyRowData>
                                 {user.profile ? (
                                     <img
+                                        onClick={() =>
+                                            handleViewImage(user.profile)
+                                        }
                                         src={user.profile}
-                                        className="object-contain w-[50px] h-[50px] rounded-full mx-auto"
+                                        className="cursor-pointer object-contain w-[50px] h-[50px] rounded-full mx-auto"
                                     />
                                 ) : null}
                             </TableBodyRowData>
                             <TableBodyRowData>
                                 {user.image ? (
                                     <img
+                                        onClick={() =>
+                                            handleViewImage(user.image)
+                                        }
                                         src={user.image}
-                                        className="object-contain w-[50px] h-[50px] rounded-full mx-auto"
+                                        className="cursor-pointer object-contain w-[50px] h-[50px] rounded-full mx-auto"
                                     />
                                 ) : null}
                             </TableBodyRowData>
@@ -177,6 +191,7 @@ const Users = ({ users, filters }: UserProps) => {
                     ))}
                 </TableBody>
             </Table>
+            <ViewImageModal image={viewImage} show={show} setShow={setShow} />
         </AdminLayout>
     );
 };
